@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+import { theme } from 'native-base'
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -13,8 +14,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background: ${(props) => props.theme['gray-900']};
-    color: ${(props) => props.theme['gray-300']};
+    background: ${theme.colors.dark['900']};
+    color: ${theme.colors.black};
   }
 
   body, input, textarea, button {

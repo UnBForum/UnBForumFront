@@ -10,8 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "native-base": "^3.4.28",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-inlinesvg": "^4.0.5",
+    "react-native-safe-area-context": "^3.3.2",
+    "react-native-svg": "^12.1.1",
+    "react-native-web": "^0.17.1",
+    "react-router-dom": "^6.16.0",
     "styled-components": "^6.0.8"
   },
   "devDependencies": {

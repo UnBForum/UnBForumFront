@@ -6,3 +6,8 @@ type ThemeType = typeof defaultTheme
 declare module 'styled-components' {
   export interface DefaultTheme extends ThemeType {}
 }
+
+declare module '*.svg' {
+  const content: React.FunctionComponent<React.SVGAttributes<SVGElement>>
+  export default content
+}

@@ -1,18 +1,40 @@
+import { ColorMode, NativeBaseProvider, StorageManager } from 'native-base'
+import { BrowserRouter } from 'react-router-dom'
+import { Router } from './Router'
+
 import { ThemeProvider } from 'styled-components'
-import { Button } from './components/Button'
 import { defaultTheme } from './styles/themes/default'
+
 import { GlobalStyle } from './styles/global'
 
 export function App() {
-  return (
-    <ThemeProvider theme={defaultTheme}>
-      <Button variant="primary" />
-      <Button variant="secondary" />
-      <Button variant="success" />
-      <Button variant="danger" />
-      <Button />
+  const colorModeManager: StorageManager = {
+    get: async () => {
+      try {
+        const mode = localStorage.getItem('@UnBForum:theme')
+        return mode === 'dark' ? 'dark' : 'light'
+      } catch (error) {
+        console.log(error)
+        return 'light'
+      }
+    },
+    set: async (mode: ColorMode) => {
+      try {
+        localStorage.setItem('@UnBForum:theme', mode!)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+  }
 
-      <GlobalStyle />
-    </ThemeProvider>
+  return (
+    <NativeBaseProvider colorModeManager={colorModeManager}>
+      <ThemeProvider theme={defaultTheme}>
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
+        <GlobalStyle />
+      </ThemeProvider>
+    </NativeBaseProvider>
   )
 }

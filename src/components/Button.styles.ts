@@ -1,8 +1,11 @@
+import { Button } from 'native-base'
 import styled from 'styled-components'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'success'
 
-export const ButtonContainer = styled.button`
+export const ButtonContainer = styled(Button).attrs(() => ({
+  size: 'md',
+}))`
   width: 100px;
   height: 40px;
   border-radius: 6px;
