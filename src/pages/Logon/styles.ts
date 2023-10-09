@@ -13,7 +13,7 @@ export const LoginContainer = styled.div`
     height: 25rem;
   }
 
-  .buttons {
+  .buttons-container {
     width: 100%;
     display: flex;
     flex-direction: column;
