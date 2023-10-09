@@ -5,8 +5,17 @@ import { Button } from 'native-base'
 
 import { InputsObjectProps, inputsObject } from './inputsObject'
 import { UnBForumSelect } from '../../components/UnBForumSelect'
+import { BaseSyntheticEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export function CreateAccount() {
+  const navigate = useNavigate()
+
+  function handleCreateAccount(event: BaseSyntheticEvent) {
+    event.preventDefault()
+    navigate('/login')
+  }
+
   function renderInput(inputObject: InputsObjectProps) {
     switch (inputObject.input) {
       case 'select':
@@ -42,7 +51,11 @@ export function CreateAccount() {
           return renderInput(inputObject)
         })}
 
-        <Button variant="solid" size="lg">
+        <Button
+          onPress={(e) => handleCreateAccount(e)}
+          variant="solid"
+          size="lg"
+        >
           Criar Conta
         </Button>
       </div>
