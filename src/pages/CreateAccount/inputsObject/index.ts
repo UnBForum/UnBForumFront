@@ -21,7 +21,7 @@ export const inputsObject = [
     input: 'normal',
     type: 'text',
     label: 'Email Institucional',
-    placeholder: 'Digite o email 240014099@unb.br..',
+    placeholder: 'Digite o email 240014099@unb.br...',
     accessibilityLabel: 'Digite o email',
   },
   {
