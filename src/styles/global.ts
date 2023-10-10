@@ -17,6 +17,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     background: ${theme.colors.dark['900']};
     color: ${theme.colors.black};
+    overflow-y: scroll;
   }
 
   body, input, textarea, button {
