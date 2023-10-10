@@ -5,18 +5,23 @@ import { Logon } from './pages/Logon'
 import { Login } from './pages/Login'
 import { CreateAccountLayout } from './layouts/CreateAccountLayout'
 import { CreateAccount } from './pages/CreateAccount'
+import { Profile } from './pages/Profile'
 
 export function Router() {
   return (
     <Routes>
       <Route path="/" element={<DefaultLayout />}>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/history" element={<History />} /> */}
       </Route>
+
+      <Route path="/profile" element={<DefaultLayout />}>
+        <Route path="/profile" element={<Profile />} />
+      </Route>
+
       <Route path="/login" element={<CreateAccountLayout />}>
+        <Route path="/login" element={<Login />} />
         <Route path="/login/logon" element={<Logon />} />
         <Route path="/login/create-account" element={<CreateAccount />} />
-        <Route path="/login" element={<Login />} />
       </Route>
     </Routes>
   )
