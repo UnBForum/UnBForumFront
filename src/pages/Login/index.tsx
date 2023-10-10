@@ -1,7 +1,7 @@
 import { Button } from 'native-base'
 
 import { LoginContainer } from './styles'
-import { Logo } from '../../assets/logo'
+import { Logo } from '../../assets/Logo'
 import { UnBForumInput } from '../../components/UnBForumInput'
 import { useNavigate } from 'react-router-dom'
 import { BaseSyntheticEvent } from 'react'
