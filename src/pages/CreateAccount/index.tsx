@@ -1,4 +1,4 @@
-import { Logo } from '../../assets/logo'
+import { Logo } from '../../assets/Logo'
 import { CreateAccountContainer } from './styles'
 import { UnBForumInput } from '../../components/UnBForumInput'
 import { Button } from 'native-base'

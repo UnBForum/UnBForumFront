@@ -9,6 +9,23 @@ export interface InputsObjectProps {
   options?: SelectOptions[]
 }
 
+export const unbForumProfiles = [
+  { label: 'Aluno', value: 'Aluno' },
+  { label: 'Coordenador', value: 'Coordenador' },
+  { label: 'Professor', value: 'Professor' },
+  { label: 'Secretaria', value: 'Secretaria' },
+  { label: 'Técnico', value: 'Técnico' },
+]
+
+export const unbForumCourses = [
+  { label: 'Engenharia Aeroespacial', value: 'Engenharia Aeroespacial' },
+  { label: 'Engenharia Automotiva', value: 'Engenharia Automotiva' },
+  { label: 'Engenharia de Energia', value: 'Engenharia de Energia' },
+  { label: 'Engenharia de Software', value: 'Engenharia de Software' },
+  { label: 'Engenharia Eletrônica', value: 'Engenharia Eletrônica' },
+  { label: 'Engenharias', value: 'Engenharias' },
+]
+
 export const inputsObject = [
   {
     input: 'normal',
@@ -30,13 +47,7 @@ export const inputsObject = [
     label: 'Papel na Instituição',
     placeholder: 'Selecione o seu papel...',
     accessibilityLabel: 'Selecione o seu papel na instituição',
-    options: [
-      { label: 'Aluno', value: 'Aluno' },
-      { label: 'Coordenador', value: 'Coordenador' },
-      { label: 'Professor', value: 'Professor' },
-      { label: 'Secretaria', value: 'Secretaria' },
-      { label: 'Técnico', value: 'Técnico' },
-    ],
+    options: unbForumProfiles,
   },
   {
     input: 'select',
@@ -44,14 +55,7 @@ export const inputsObject = [
     label: 'Curso',
     placeholder: 'Selecione o seu curso...',
     accessibilityLabel: 'Selecione o seu curso',
-    options: [
-      { label: 'Engenharia Aeroespacial', value: 'Engenharia Aeroespacial' },
-      { label: 'Engenharia Automotiva', value: 'Engenharia Automotiva' },
-      { label: 'Engenharia de Energia', value: 'Engenharia de Energia' },
-      { label: 'Engenharia de Software', value: 'Engenharia de Software' },
-      { label: 'Engenharia Eletrônica', value: 'Engenharia Eletrônica' },
-      { label: 'Engenharias', value: 'Engenharias' },
-    ],
+    options: unbForumCourses,
   },
   {
     input: 'normal',
