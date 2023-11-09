@@ -16,9 +16,47 @@ export const OptionsContainer = styled.div`
 export const FilterContainer = styled.div`
   width: 50%;
   display: flex;
+  gap: 0.5rem;
+
+  & > svg {
+    width: 2rem;
+    height: 2rem;
+    color: ${theme.colors.tertiary['300']};
+  }
+
+  & > div {
+    width: 85%;
+  }
+
+  option {
+    background-color: ${theme.colors.gray[200]};
+    color: ${theme.colors.black};
+    font-family: 'Poppins', 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    gap: 0.3rem;
+  }
 `
 
 export const OrdenationContainer = styled.div`
   width: 50%;
   display: flex;
+  gap: 0.5rem;
+
+  & > div {
+    width: 85%;
+  }
+
+  & > svg {
+    width: 2rem;
+    height: 2rem;
+    color: ${theme.colors.tertiary['300']};
+  }
+
+  option {
+    background-color: ${theme.colors.gray[200]};
+    color: ${theme.colors.black};
+    font-family: 'Poppins', 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    gap: 0.3rem;
+  }
 `
