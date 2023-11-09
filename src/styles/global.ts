@@ -20,7 +20,7 @@ export const GlobalStyle = createGlobalStyle`
     overflow-y: scroll;
   }
 
-  body, input, textarea, button {
+  body, input, textarea, button, div[role='button'] {
     font-family: 'Poppins', 'Montserrat', sans-serif;
     font-weight: 400;
     font-size: 1rem;
