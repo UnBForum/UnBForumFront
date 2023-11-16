@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export const HomeContainer = styled.main`
   width: 80%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
   margin-top: 2rem;
@@ -16,6 +16,7 @@ export const FeedContainer = styled.section`
   flex-direction: column;
   justify-content: flex-start;
   gap: 1rem;
+  margin-bottom: 1rem;
 
   & > div[role='button'] {
     font-size: 1rem;
@@ -38,8 +39,18 @@ export const LikesContainer = styled.section`
   width: 40%;
   display: flex;
   flex-direction: column;
-  /* align-items: flex-start; */
+  align-items: flex-start;
   justify-content: flex-start;
 
   background-color: blue;
+`
+
+export const PostsContainer = styled.main`
+  width: 100%;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  /* gap: 1rem; */
+  /* background-color: #f3f3f3; */
+  overflow-y: auto;
 `

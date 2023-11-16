@@ -1,6 +1,12 @@
 import { Button, theme, AddIcon } from 'native-base'
-import { FeedContainer, HomeContainer, LikesContainer } from './styles'
+import {
+  FeedContainer,
+  HomeContainer,
+  LikesContainer,
+  PostsContainer,
+} from './styles'
 import { Filter } from '../../components/Filter'
+import { Post } from '../../components/Post'
 
 export function Home() {
   return (
@@ -17,7 +23,11 @@ export function Home() {
 
         <Filter />
 
-        <h1>Posts</h1>
+        <PostsContainer>
+          {Array.from({ length: 20 }, (_, i) => i).map((i) => {
+            return <Post key={i} />
+          })}
+        </PostsContainer>
       </FeedContainer>
 
       <LikesContainer>
