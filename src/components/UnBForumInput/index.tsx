@@ -1,28 +1,32 @@
-import { Input } from 'native-base'
+import { IInputProps, Input } from 'native-base'
 import { InputContainer } from './styles'
 
-interface UnBForumInputProps {
+interface UnBForumInputProps extends IInputProps {
   inputType: 'text' | 'password' | undefined
-  label: string
+  label?: string
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   placeholder: string
   accessibilityLabel: string
 }
 
 export function UnBForumInput({
-  label,
+  label = '',
   inputType = 'text',
   placeholder,
   accessibilityLabel,
+  size = 'md',
+  ...rest
 }: UnBForumInputProps) {
   return (
     <InputContainer>
-      <label className="create-account-label">{label}</label>
+      {label && <label className="create-account-label">{label}</label>}
       <Input
         type={inputType}
         variant="outline"
-        size="md"
+        size={size}
         placeholder={placeholder}
         accessibilityLabel={accessibilityLabel}
+        {...rest}
       />
     </InputContainer>
   )
