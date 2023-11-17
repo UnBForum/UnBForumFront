@@ -70,6 +70,7 @@ export const AuthorContainer = styled.div`
 export const BadgesContainer = styled.div`
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   gap: 0.7rem;
 
