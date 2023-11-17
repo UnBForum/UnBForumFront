@@ -17,7 +17,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     background: ${theme.colors.dark['900']};
     color: ${theme.colors.black};
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   body, input, textarea, button, div[role='button'] {
@@ -38,6 +38,16 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.5;
     font-weight: 600;
     /* color: #000; */
+  }
+
+  #reactionButton {
+    box-shadow: none;
+
+    &:hover {
+      & > svg {
+        color: ${theme.colors.tertiary['500']}
+      }
+    }
   }
 
   /* Chrome, Safari, Edge, Opera */
