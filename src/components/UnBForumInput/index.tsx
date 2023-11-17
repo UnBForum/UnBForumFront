@@ -2,7 +2,7 @@ import { IInputProps, Input } from 'native-base'
 import { InputContainer } from './styles'
 
 interface UnBForumInputProps extends IInputProps {
-  inputType: 'text' | 'password' | undefined
+  inputType: 'text' | 'password'
   label?: string
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   placeholder: string

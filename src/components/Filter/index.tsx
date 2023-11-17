@@ -9,6 +9,7 @@ import {
   OrdenationContainer,
 } from './styles'
 import { unbForumCourses } from '../../pages/CreateAccount/inputsObject'
+import { unbForumFilters } from '../../constants'
 
 export function Filter() {
   return (
@@ -49,7 +50,7 @@ export function Filter() {
           placeholder="Selecione a ordenação..."
           accessibilityLabel="Selecione a opção"
         >
-          {[].map((option) => {
+          {unbForumFilters.map((option) => {
             return (
               <Select.Item
                 key={option.label}

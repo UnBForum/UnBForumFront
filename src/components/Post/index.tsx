@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import {
   ArrowUpIcon,
   ArrowDownIcon,
@@ -24,12 +24,12 @@ export function Post() {
   const [likes, setLikes] = useState(105)
   const [isMark, setIsMark] = useState(false)
 
-  function handleReaction(e: Event, valueToadd: number) {
+  function handleReaction(e: MouseEvent, valueToadd: number) {
     e.preventDefault()
     setLikes(likes + valueToadd)
   }
 
-  function handleSave(e: Event) {
+  function handleSave(e: MouseEvent) {
     e.preventDefault()
     setIsMark(!isMark)
   }

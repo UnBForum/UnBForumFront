@@ -2,9 +2,7 @@ import { Avatar, Badge, theme } from 'native-base'
 import {
   AuthorContainer,
   BadgesContainer,
-  CommentContainer,
   FavoritePostContainer,
-  InfoContainer,
   PostContentContainer,
 } from './styles'
 

@@ -2,11 +2,11 @@ import { SelectOptions } from '../../../components/UnBForumSelect'
 
 export interface InputsObjectProps {
   input: string
-  type: 'text' | 'password' | undefined
+  type: 'text' | 'password'
   label: string
   placeholder: string
   accessibilityLabel: string
-  options?: SelectOptions[]
+  options: SelectOptions[]
 }
 
 export const unbForumProfiles = [
@@ -26,13 +26,14 @@ export const unbForumCourses = [
   { label: 'Engenharias', value: 'Engenharias' },
 ]
 
-export const inputsObject = [
+export const inputsObject: InputsObjectProps[] = [
   {
     input: 'normal',
     type: 'text',
     label: 'Nome Completo',
     placeholder: 'Digite o nome completo...',
     accessibilityLabel: 'Digite o nome completo',
+    options: [],
   },
   {
     input: 'normal',
@@ -40,6 +41,7 @@ export const inputsObject = [
     label: 'Email Institucional',
     placeholder: 'Digite o email 240014099@unb.br...',
     accessibilityLabel: 'Digite o email',
+    options: [],
   },
   {
     input: 'select',
@@ -63,6 +65,7 @@ export const inputsObject = [
     label: 'Senha',
     placeholder: 'Digite a sua senha...',
     accessibilityLabel: 'Digite a sua senha',
+    options: [],
   },
   {
     input: 'normal',
@@ -70,5 +73,6 @@ export const inputsObject = [
     label: 'Confirme a senha',
     placeholder: 'Digite a sua senha novamente...',
     accessibilityLabel: 'Digite a sua senha novamente',
+    options: [],
   },
 ]
