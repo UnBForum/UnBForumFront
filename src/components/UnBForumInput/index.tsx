@@ -1,5 +1,5 @@
 import { IInputProps, Input } from 'native-base'
-import { InputContainer } from './styles'
+import { InputContainer, InputLabel } from './styles'
 
 interface UnBForumInputProps extends IInputProps {
   inputType: 'text' | 'password'
@@ -7,6 +7,7 @@ interface UnBForumInputProps extends IInputProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   placeholder: string
   accessibilityLabel: string
+  fontSize?: string
 }
 
 export function UnBForumInput({
@@ -15,11 +16,12 @@ export function UnBForumInput({
   placeholder,
   accessibilityLabel,
   size = 'md',
+  fontSize = '0.9rem',
   ...rest
 }: UnBForumInputProps) {
   return (
     <InputContainer>
-      {label && <label className="create-account-label">{label}</label>}
+      {label && <InputLabel fontSize={fontSize}>{label}</InputLabel>}
       <Input
         type={inputType}
         variant="outline"

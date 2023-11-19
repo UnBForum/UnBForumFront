@@ -6,10 +6,10 @@ export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   /* gap: 0.3rem; */
+`
 
-  .create-account-label {
-    font-size: 0.9rem;
-    line-height: 1.5rem;
-    color: ${theme.colors.text[500]};
-  }
+export const InputLabel = styled.label<{ fontSize: string }>`
+  font-size: ${({ fontSize }) => fontSize};
+  line-height: 1.5rem;
+  color: ${theme.colors.text[500]};
 `
