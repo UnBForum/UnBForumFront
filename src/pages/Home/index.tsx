@@ -10,11 +10,19 @@ import {
 import { Filter } from '../../components/Filter'
 import { Post } from '../../components/Post'
 import { FavoritePost } from '../../components/FavoritePost'
+import { CreateModalTopic } from '../../components/CreateTopicModal'
+import { useCallback, useState } from 'react'
 
 export function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   function handleSearch() {
-    console.log('oi')
+    console.log('Pesquisando...')
   }
+
+  const handleModalOpen = useCallback((modalState: boolean) => {
+    setIsModalOpen(modalState)
+  }, [])
 
   return (
     <HomeContainer>
@@ -24,6 +32,7 @@ export function Home() {
           size="lg"
           borderRadius="4px"
           rightIcon={<AddIcon />}
+          onPress={() => handleModalOpen(true)}
         >
           <p>Criar Tópico</p>
         </Button>
@@ -61,6 +70,11 @@ export function Home() {
           })}
         </FavoritesListContainer>
       </LikesContainer>
+
+      <CreateModalTopic
+        isModalOpen={isModalOpen}
+        setIsModalOpen={handleModalOpen}
+      />
     </HomeContainer>
   )
 }
