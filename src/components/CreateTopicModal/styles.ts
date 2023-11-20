@@ -53,3 +53,23 @@ export const ModalButtonsContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 `
+
+export const CloseButtonContainer = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.8rem;
+  border-radius: 0 8px 0 0;
+  transition: 0.3s all ease;
+
+  background-color: ${theme.colors.danger['600']};
+
+  &:hover {
+    filter: brightness(70%);
+  }
+`

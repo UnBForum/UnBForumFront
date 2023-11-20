@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Content, ModalButtonsContainer, Overlay } from './styles'
+import { CloseButtonContainer, Content, ModalButtonsContainer, Overlay } from './styles'
 import { UnBForumInput } from '../UnBForumInput'
 import { UnBForumTextArea } from '../UnBForumTextArea'
 import { UnBForumInputFile } from '../UnBForumInputFile'
-import { AddIcon, Button, CheckCircleIcon, theme } from 'native-base'
+import { AddIcon, Button, CheckCircleIcon, CloseIcon, theme } from 'native-base'
 
 interface CreateTopicModalProps {
   isModalOpen: boolean
@@ -59,6 +59,10 @@ export function CreateModalTopic({
       {modalVisible && (
         <Overlay isOpen={modalVisible} onClick={handleClose}>
           <Content isOpen={modalVisible} onClick={(e) => e.stopPropagation()}>
+            <CloseButtonContainer onClick={handleClose}>
+              <CloseIcon size="2rem" color={theme.colors.primary['50']} />
+            </CloseButtonContainer>
+
             <h1>Novo Tópico</h1>
 
             <UnBForumInput
