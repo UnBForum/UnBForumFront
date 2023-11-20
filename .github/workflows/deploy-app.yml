@@ -26,6 +26,7 @@ jobs:
         run: |
           git config --global user.email "lucasxboaventura@hotmail.com"
           git config --global user.name "lboaventura25"
+          git remote add origin https://github.com/UnBForum/UnBForumFront.git
       
       - name: Build app and Deploy
         run: |
