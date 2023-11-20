@@ -22,14 +22,6 @@ jobs:
         run: |
           npm install
       
-      - name: Build app
+      - name: Build app and Deploy
         run: |
-          npm run build
-      
-      - name: Deploy to a new branch
-        uses: nicholasgriffintn/github-branch-deployment-action@0.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.DEPLOYMENT_GITHUB_TOKEN }}
-          BRANCH: deploy
-          FOLDER: dist
-          MESSAGE: 'Build: ({sha}) {msg}'
+          npm run deploy -- -m "Deploy UnBForum to Github Pages"
