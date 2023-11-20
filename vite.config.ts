@@ -1,10 +1,11 @@
-import { defineConfig } from 'vite'
+import { defineConfig, splitVendorChunkPlugin } from 'vite'
 import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   define: {
-    global: 'global',
+    // global: 'window',
   },
   optimizeDeps: {
     include: ['@react-navigation/native'],
@@ -17,16 +18,17 @@ export default defineConfig({
     extensions: ['.web.tsx', '.web.jsx', '.web.js', '.tsx', '.ts', '.js'],
     alias: {
       'react-native': 'react-native-web',
-      'process': "process/browser",
-      'stream': "stream-browserify",
-      'zlib': "browserify-zlib",
-      'util': 'util',
     },
   },
-  plugins: [react()],
+  plugins: [react(), splitVendorChunkPlugin()],
   build: {
     commonjsOptions: {
       transformMixedEsModules: true,
+    },
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+      },
     },
   },
   server: {
