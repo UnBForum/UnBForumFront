@@ -9,6 +9,14 @@ export const HomeContainer = styled.main`
   justify-content: space-between;
   gap: 1rem;
   margin-top: 2rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1rem;
+  }
 `
 
 export const FeedContainer = styled.section`
@@ -34,6 +42,14 @@ export const FeedContainer = styled.section`
       height: 0.6rem;
     }
   }
+
+  @media (max-width: 768px) {
+    width: 90%;
+
+    & > div[role='button'] {
+      font-size: 0.9rem;
+    }
+  }
 `
 
 export const PostsContainer = styled.main`
@@ -44,6 +60,11 @@ export const PostsContainer = styled.main`
   /* gap: 1rem; */
   /* background-color: #f3f3f3; */
   overflow-y: auto;
+
+  @media (max-width: 768px) {
+    height: auto;
+    /* overflow-y: hidden; */
+  }
 `
 
 export const LikesContainer = styled.section`
@@ -53,6 +74,11 @@ export const LikesContainer = styled.section`
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 90%;
+    margin-bottom: 1rem;
+  }
 `
 
 export const SearchInput = styled(UnBForumInput)``
@@ -85,5 +111,9 @@ export const FavoritesListContainer = styled.aside`
     font-size: 1.5rem;
     font-weight: 600;
     color: ${theme.colors.rose['600']};
+  }
+
+  @media (max-width: 768px) {
+    height: auto;
   }
 `
