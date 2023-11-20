@@ -13,7 +13,7 @@ export function CreateAccount() {
 
   function handleCreateAccount(event: BaseSyntheticEvent) {
     event.preventDefault()
-    navigate('/login')
+    navigate('/login/logon')
   }
 
   function renderInput(inputObject: InputsObjectProps) {

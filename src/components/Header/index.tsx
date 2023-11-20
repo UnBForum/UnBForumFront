@@ -10,7 +10,7 @@ export function Header() {
 
   function handleClickUserIcon(event: BaseSyntheticEvent) {
     event.preventDefault()
-    navigate('/login')
+    navigate('/login/logon')
   }
 
   return (
