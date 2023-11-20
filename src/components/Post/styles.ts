@@ -33,10 +33,20 @@ export const LikesContainer = styled.div`
   #markButton:focus {
     box-shadow: none;
   }
+
+  @media (max-width: 768px) {
+    width: 15%;
+    gap: 0.2rem;
+
+    & > p {
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+  }
 `
 
 export const InfoContainer = styled.div`
-  width: 90%;
+  width: 100%;
   display: flex;
 `
 
@@ -53,6 +63,15 @@ export const PostContentContainer = styled.div`
     color: ${theme.colors.black};
     line-height: 2;
   }
+
+  @media (max-width: 768px) {
+    gap: 0.4rem;
+
+    & > p {
+      font-size: 0.7rem;
+      line-height: 1.7;
+    }
+  }
 `
 
 export const AuthorContainer = styled.div`
@@ -64,6 +83,12 @@ export const AuthorContainer = styled.div`
     font-weight: 600;
     font-size: 1rem;
     color: ${theme.colors.black};
+  }
+
+  @media (max-width: 768px) {
+    & > p {
+      font-size: 0.8rem;
+    }
   }
 `
 
@@ -79,6 +104,15 @@ export const BadgesContainer = styled.div`
     font-size: 1rem;
     line-height: 1.5;
     font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    gap: 0.4rem;
+
+    #post-badge-text {
+      font-size: 0.7rem;
+      line-height: 1.3;
+    }
   }
 `
 
@@ -117,5 +151,13 @@ export const CommentContainer = styled.button`
 
   &:focus {
     box-shadow: none;
+  }
+
+  @media (max-width: 768px) {
+    gap: 0.3rem;
+
+    & > p {
+      font-size: 1rem;
+    }
   }
 `
