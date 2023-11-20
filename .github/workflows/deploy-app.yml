@@ -21,6 +21,11 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
+
+      - name: Setup git configs
+        run: |
+          git config --global user.email "lucasxboaventura@hotmail.com"
+          git config --global user.name "lboaventura25"
       
       - name: Build app and Deploy
         run: |
