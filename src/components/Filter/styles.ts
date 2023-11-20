@@ -11,6 +11,11 @@ export const OptionsContainer = styled.div`
   border-radius: 5px;
 
   color: white;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `
 
 export const FilterContainer = styled.div`
@@ -35,6 +40,16 @@ export const FilterContainer = styled.div`
     font-size: 0.9rem;
     gap: 0.3rem;
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+
+    option {
+      font-size: 0.8rem;
+    }
+  }
 `
 
 export const OrdenationContainer = styled.div`
@@ -58,5 +73,15 @@ export const OrdenationContainer = styled.div`
     font-family: 'Poppins', 'Montserrat', sans-serif;
     font-size: 0.9rem;
     gap: 0.3rem;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+
+    option {
+      font-size: 0.8rem;
+    }
   }
 `
