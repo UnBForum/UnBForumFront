@@ -24,10 +24,15 @@ jobs:
 
       - name: Setup git configs
         run: |
-          git config --global user.email "lucasxboaventura@hotmail.com"
-          git config --global user.name "lboaventura25"
-          git remote add origin https://github.com/UnBForum/UnBForumFront.git
+          git config --global user.email $user_email
+          git config --global user.name $user_name
+          git remote set-url origin https://${github_token}@github.com/${repository}
       
       - name: Build app and Deploy
         run: |
           npm run deploy -- -m "Deploy UnBForum to Github Pages"
+        env:
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          github_token: ${{ secrets.DEPLOYMENT_GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
