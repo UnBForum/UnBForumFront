@@ -1,5 +1,5 @@
 import { ColorMode, NativeBaseProvider, StorageManager } from 'native-base'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Router } from './Router'
 
 import { ThemeProvider } from 'styled-components'
@@ -30,9 +30,9 @@ export function App() {
   return (
     <NativeBaseProvider colorModeManager={colorModeManager}>
       <ThemeProvider theme={defaultTheme}>
-        <HashRouter>
+        <BrowserRouter>
           <Router />
-        </HashRouter>
+        </BrowserRouter>
         <GlobalStyle />
       </ThemeProvider>
     </NativeBaseProvider>
