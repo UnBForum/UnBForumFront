@@ -41,7 +41,7 @@ export function Home() {
 
         <PostsContainer>
           {Array.from({ length: 20 }, (_, i) => i).map((i) => {
-            return <Post key={i} />
+            return <Post key={i} id={i} />
           })}
         </PostsContainer>
       </FeedContainer>
