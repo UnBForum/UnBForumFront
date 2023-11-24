@@ -64,6 +64,15 @@ export const PostContentContainer = styled.div`
     line-height: 2;
   }
 
+  &:focus {
+    box-shadow: none;
+  }
+
+  #post-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+  }
+
   @media (max-width: 768px) {
     gap: 0.4rem;
 
@@ -82,6 +91,7 @@ export const AuthorContainer = styled.div`
   & > p {
     font-weight: 600;
     font-size: 1rem;
+    text-align: left;
     color: ${theme.colors.black};
   }
 

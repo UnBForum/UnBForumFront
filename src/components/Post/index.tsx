@@ -19,10 +19,25 @@ import {
   PostContainer,
   PostContentContainer,
 } from './styles'
+import { useNavigate } from 'react-router-dom'
 
-export function Post() {
+interface PostProps {
+  id: number
+  isInsideTopic?: boolean
+}
+
+export function Post({ id, isInsideTopic = false }: PostProps) {
+  const navigate = useNavigate()
+
+  const author = 'Sandalo Henrique'
+  const title = 'Horários de Atendimento coordenação de Eng. de Software'
+
   const [likes, setLikes] = useState(105)
   const [isMark, setIsMark] = useState(false)
+
+  function handleClickOnPost() {
+    navigate(`/topic/${id}`)
+  }
 
   function handleReaction(e: MouseEvent, valueToadd: number) {
     e.preventDefault()
@@ -49,31 +64,35 @@ export function Post() {
   return (
     <>
       <PostContainer>
-        <LikesContainer>
-          <button id="reactionButton" onClick={(e) => handleReaction(e, 1)}>
-            <ArrowUpIcon color={theme.colors.muted['500']} size="md" />
-          </button>
+        {!isInsideTopic && (
+          <LikesContainer>
+            <button id="reactionButton" onClick={(e) => handleReaction(e, 1)}>
+              <ArrowUpIcon color={theme.colors.muted['500']} size="md" />
+            </button>
 
-          <p>{likes}</p>
+            <p>{likes}</p>
 
-          <button id="reactionButton" onClick={(e) => handleReaction(e, -1)}>
-            <ArrowDownIcon color={theme.colors.muted['500']} size="md" />
-          </button>
+            <button id="reactionButton" onClick={(e) => handleReaction(e, -1)}>
+              <ArrowDownIcon color={theme.colors.muted['500']} size="md" />
+            </button>
 
-          <button id="markButton" onClick={(e) => handleSave(e)}>
-            {renderMarkIcon()}
-          </button>
-        </LikesContainer>
+            <button id="markButton" onClick={(e) => handleSave(e)}>
+              {renderMarkIcon()}
+            </button>
+          </LikesContainer>
+        )}
 
         <InfoContainer>
           <PostContentContainer>
+            {isInsideTopic && <h1 id="post-title">{title}</h1>}
+
             <AuthorContainer>
               <Avatar bg="emerald.600" marginRight="0.8rem" size="sm">
                 SH
               </Avatar>
               <p>
-                Sandalo Henrique - Horários de Atendimento coordenação de Eng.
-                de Software
+                {author}
+                {!isInsideTopic && ` - ${title}`}
               </p>
             </AuthorContainer>
 
@@ -121,7 +140,7 @@ export function Post() {
               )}
             </BadgesContainer>
 
-            <CommentContainer>
+            <CommentContainer onClick={() => handleClickOnPost()}>
               <FaComment size="22" />
               <p>15</p>
             </CommentContainer>
