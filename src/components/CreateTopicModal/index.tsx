@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { CloseButtonContainer, Content, ModalButtonsContainer, Overlay } from './styles'
+import {
+  CloseButtonContainer,
+  Content,
+  ModalButtonsContainer,
+  Overlay,
+} from './styles'
 import { UnBForumInput } from '../UnBForumInput'
 import { UnBForumTextArea } from '../UnBForumTextArea'
 import { UnBForumInputFile } from '../UnBForumInputFile'
@@ -21,7 +26,6 @@ export function CreateModalTopic({
   const [files, setFiles] = useState<string[]>([])
 
   useEffect(() => {
-    // console.log({ isModalOpen })
     setModalVisible(isModalOpen)
   }, [isModalOpen])
 
