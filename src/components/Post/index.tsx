@@ -6,7 +6,6 @@ import {
   Avatar,
   Divider,
   Badge,
-  themeTools,
 } from 'native-base'
 import { FaComment } from 'react-icons/fa'
 import { IoBookmarkOutline, IoBookmark } from 'react-icons/io5'

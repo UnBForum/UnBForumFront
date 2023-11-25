@@ -1,5 +1,9 @@
 import { Button, theme } from 'native-base'
 import styled, { css } from 'styled-components'
+import {
+  setFontSizeToPostContent,
+  setFontSizeToPostContentMobile,
+} from './utils'
 
 export const PostContainer = styled.div`
   width: 100%;
@@ -83,8 +87,9 @@ export const PostContentContainer = styled.div<{
     width: ${({ isInsideTopic }) => (isInsideTopic ? '90%' : '100%')};
     text-align: left;
     font-weight: ${({ isComment, isInsideTopic }) =>
-      isComment || !isInsideTopic ? '400' : '500'};
-    font-size: ${({ isComment }) => (isComment ? '0.8rem' : '0.9rem')};
+      isComment || !isInsideTopic ? '400' : '400'};
+    font-size: ${({ isComment, isInsideTopic }) =>
+      setFontSizeToPostContent(isComment, isInsideTopic)};
     color: ${theme.colors.black};
     line-height: ${({ isComment }) => (isComment ? '1.7' : '2')};
   }
@@ -104,7 +109,8 @@ export const PostContentContainer = styled.div<{
 
     & > p {
       width: 100%;
-      font-size: 0.7rem;
+      font-size: ${({ isComment, isInsideTopic }) =>
+        setFontSizeToPostContentMobile(isComment, isInsideTopic)};
       line-height: 1.7;
     }
 
