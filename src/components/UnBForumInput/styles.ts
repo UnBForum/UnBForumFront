@@ -12,4 +12,9 @@ export const InputLabel = styled.label<{ fontSize: string }>`
   font-size: ${({ fontSize }) => fontSize};
   line-height: 1.5rem;
   color: ${theme.colors.text[500]};
+
+  @media (max-width: 768px) {
+    font-size: ${({ fontSize }) =>
+      Number(fontSize.split('rem')[0]) - 0.2 + 'rem'};
+  }
 `

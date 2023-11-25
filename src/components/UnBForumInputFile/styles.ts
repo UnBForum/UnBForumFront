@@ -24,6 +24,11 @@ export const InputLabel = styled.label<{ fontSize: string }>`
   font-size: ${({ fontSize }) => fontSize};
   line-height: 1.5rem;
   color: ${theme.colors.text[500]};
+
+  @media (max-width: 768px) {
+    font-size: ${({ fontSize }) =>
+      Number(fontSize.split('rem')[0]) - 0.2 + 'rem'};
+  }
 `
 
 export const FilesContainer = styled.div`
@@ -90,5 +95,33 @@ export const FilesContainer = styled.div`
     background-color: transparent;
 
     padding: 0;
+  }
+
+  @media (max-width: 768px) {
+    height: 7rem;
+    gap: 0.5rem;
+
+    & > p {
+      width: 8rem;
+      gap: 0.5rem;
+
+      padding: 0.4rem 0.5rem;
+
+      line-height: 1.4;
+
+      background-color: ${theme.colors.tertiary['100']};
+    }
+
+    #file {
+      font-size: 0.7rem;
+    }
+
+    #delete-file-button {
+      padding: 0.1rem;
+    }
+
+    #no-files {
+      font-size: 0.7rem;
+    }
   }
 `
