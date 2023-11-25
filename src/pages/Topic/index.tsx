@@ -1,9 +1,12 @@
 import { useParams } from 'react-router-dom'
 import { Post } from '../../components/Post'
 import { CommentContainer, TopicContainer } from './styles'
+import { useEffect } from 'react'
 
 export function Topic() {
   const { id } = useParams()
+
+  useEffect(() => window.scrollTo(0, 0), [])
 
   return (
     <TopicContainer>
