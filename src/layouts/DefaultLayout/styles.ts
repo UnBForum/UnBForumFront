@@ -2,7 +2,7 @@ import { theme } from 'native-base'
 import styled from 'styled-components'
 
 export const LayoutContainer = styled.div`
-  background: ${theme.colors.white};
+  background: ${theme.colors.dark['900']};
   width: 100%;
   height: 100vh;
   display: flex;
