@@ -19,10 +19,30 @@ import {
   PostContainer,
   PostContentContainer,
 } from './styles'
+import { useNavigate } from 'react-router-dom'
 
-export function Post() {
+interface PostProps {
+  id: number
+  isInsideTopic?: boolean
+  isComment?: boolean
+}
+
+export function Post({
+  id,
+  isInsideTopic = false,
+  isComment = false,
+}: PostProps) {
+  const navigate = useNavigate()
+
+  const author = 'Sandalo Henrique'
+  const title = 'Horários de Atendimento coordenação de Eng. de Software'
+
   const [likes, setLikes] = useState(105)
   const [isMark, setIsMark] = useState(false)
+
+  function handleClickOnPost() {
+    navigate(`/topic/${id}`)
+  }
 
   function handleReaction(e: MouseEvent, valueToadd: number) {
     e.preventDefault()
@@ -49,31 +69,42 @@ export function Post() {
   return (
     <>
       <PostContainer>
-        <LikesContainer>
+        <LikesContainer isInsideTopic={isInsideTopic} isComment={isComment}>
           <button id="reactionButton" onClick={(e) => handleReaction(e, 1)}>
-            <ArrowUpIcon color={theme.colors.muted['500']} size="md" />
+            <ArrowUpIcon color={theme.colors.muted['500']} size="18" />
           </button>
 
           <p>{likes}</p>
 
           <button id="reactionButton" onClick={(e) => handleReaction(e, -1)}>
-            <ArrowDownIcon color={theme.colors.muted['500']} size="md" />
+            <ArrowDownIcon color={theme.colors.muted['500']} size="18" />
           </button>
 
-          <button id="markButton" onClick={(e) => handleSave(e)}>
-            {renderMarkIcon()}
-          </button>
+          {!isComment && (
+            <button id="markButton" onClick={(e) => handleSave(e)}>
+              {renderMarkIcon()}
+            </button>
+          )}
         </LikesContainer>
 
         <InfoContainer>
-          <PostContentContainer>
-            <AuthorContainer>
-              <Avatar bg="emerald.600" marginRight="0.8rem" size="sm">
+          <PostContentContainer
+            isInsideTopic={isInsideTopic}
+            isComment={isComment}
+          >
+            {isInsideTopic && <h1 id="post-title">{title}</h1>}
+
+            <AuthorContainer isInsideTopic={isInsideTopic}>
+              <Avatar
+                bg={isComment ? 'lime.600' : 'emerald.600'}
+                marginRight="0.8rem"
+                size={isComment ? 'xs' : 'sm'}
+              >
                 SH
               </Avatar>
               <p>
-                Sandalo Henrique - Horários de Atendimento coordenação de Eng.
-                de Software
+                {author}
+                {!isInsideTopic && !isComment && ` - ${title}`}
               </p>
             </AuthorContainer>
 
@@ -92,7 +123,7 @@ export function Post() {
               <br />
               ***Não haverá atendimento via Chat Teams durante esse período.
               <br />
-              *** Att, TA
+              *** AA
               <br />
               <br />
               Para visualizar acesse{' '}
@@ -102,35 +133,52 @@ export function Post() {
               <br />
             </p>
 
-            <BadgesContainer>
-              {['TCC', 'Eng. Software', 'Eng. Eletrônica', '27/07'].map(
-                (label, key) => {
-                  return (
-                    <Badge
-                      key={key}
-                      variant="solid"
-                      bg={theme.colors.tertiary['500']}
-                      alignSelf="center"
-                      size="md"
-                      textDecoration="solid .8rem bold"
-                    >
-                      <p id="post-badge-text">{label}</p>
-                    </Badge>
-                  )
-                },
-              )}
-            </BadgesContainer>
+            {!isComment && (
+              <BadgesContainer>
+                {['TCC', 'Eng. Software', 'Eng. Eletrônica', '27/07'].map(
+                  (label, key) => {
+                    return (
+                      <Badge
+                        key={key}
+                        variant="solid"
+                        bg={theme.colors.tertiary['500']}
+                        alignSelf="center"
+                        size="md"
+                        textDecoration="solid .8rem bold"
+                      >
+                        <p id="post-badge-text">{label}</p>
+                      </Badge>
+                    )
+                  },
+                )}
+              </BadgesContainer>
+            )}
 
-            <CommentContainer>
-              <FaComment size="22" />
-              <p>15</p>
-            </CommentContainer>
+            {!isInsideTopic && !isComment && (
+              <CommentContainer
+                variant="outline"
+                width="95%"
+                size="xs"
+                _text={{ fontSize: '1rem' }}
+                isInsideTopic={isInsideTopic}
+                onPress={isInsideTopic ? () => {} : () => handleClickOnPost()}
+                rightIcon={
+                  <FaComment size="22" color={theme.colors.primary['700']} />
+                }
+                _icon={{ marginLeft: '1rem' }}
+              >
+                Ver comentários (15)
+              </CommentContainer>
+            )}
           </PostContentContainer>
         </InfoContainer>
       </PostContainer>
 
       <Divider
-        marginTop="0.5rem"
+        alignSelf="flex-end"
+        width={isComment ? '95%' : '100%'}
+        marginTop={isInsideTopic ? '0rem' : '0.5rem'}
+        height={isComment || !isInsideTopic ? '0.05rem' : '.1rem'}
         _light={{
           bg: 'muted.800',
         }}

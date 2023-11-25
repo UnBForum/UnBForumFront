@@ -11,10 +11,12 @@ import { Filter } from '../../components/Filter'
 import { Post } from '../../components/Post'
 import { FavoritePost } from '../../components/FavoritePost'
 import { CreateModalTopic } from '../../components/CreateTopicModal'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  useEffect(() => window.scrollTo(0, 0), [])
 
   function handleSearch() {
     console.log('Pesquisando...')
@@ -41,7 +43,7 @@ export function Home() {
 
         <PostsContainer>
           {Array.from({ length: 20 }, (_, i) => i).map((i) => {
-            return <Post key={i} />
+            return <Post key={i} id={i} />
           })}
         </PostsContainer>
       </FeedContainer>

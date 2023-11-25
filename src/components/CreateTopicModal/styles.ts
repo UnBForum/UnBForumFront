@@ -44,6 +44,20 @@ export const Content = styled.div<{ isOpen: boolean }>`
     line-height: 1.5;
     color: ${theme.colors.text['700']};
   }
+
+  @media (max-width: 768px) {
+    width: 90%;
+    max-width: none;
+    gap: 0.5rem;
+
+    padding: 1rem 1.5rem;
+
+    & > h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+  }
 `
 
 export const ModalButtonsContainer = styled.div`
@@ -71,5 +85,9 @@ export const CloseButtonContainer = styled.button`
 
   &:hover {
     filter: brightness(70%);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
   }
 `

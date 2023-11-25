@@ -6,12 +6,14 @@ import { Login } from './pages/Login'
 import { CreateAccountLayout } from './layouts/CreateAccountLayout'
 import { CreateAccount } from './pages/CreateAccount'
 import { Profile } from './pages/Profile'
+import { Topic } from './pages/Topic'
 
 export function Router() {
   return (
     <Routes>
       <Route path="/" element={<DefaultLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/topic/:id" element={<Topic />} />
       </Route>
 
       <Route path="/profile" element={<DefaultLayout />}>
