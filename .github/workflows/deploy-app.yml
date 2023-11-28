@@ -36,4 +36,6 @@ jobs:
       - name: Build app and Deploy
         run: |
           npm run deploy -- -m "Deploy UnBForum to Github Pages"
+        env:
+          VITE_API_ENDPOINT: ${{ secrets.VITE_API_ENDPOINT }}
 
