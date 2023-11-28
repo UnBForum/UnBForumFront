@@ -9,10 +9,12 @@ import { validateLoginUser } from '../../utils/validateLoginUser'
 import { ToastAlert } from '../../components/Alert'
 import { loginUser } from '../../service/auth'
 import { formatLoginUser } from '../../utils/formatLoginUser'
+import { useUser } from '../../hooks/user'
 
 export function Login() {
   const navigate = useNavigate()
   const toast = useToast()
+  const { changeToken } = useUser()
 
   const [loginData, setLoginData] = useState({
     email: '',
@@ -20,10 +22,6 @@ export function Login() {
   })
 
   const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => {
-    console.log(loginData)
-  }, [loginData])
 
   const handleChangeLogin = useCallback(
     (field: string, value: string) => {
@@ -68,7 +66,7 @@ export function Login() {
     setIsLoading(true)
 
     loginUser(formatLoginUser(loginData))
-      .then((_) => {
+      .then((response) => {
         toast.show({
           placement: 'top-right',
           render: () => {
@@ -82,6 +80,8 @@ export function Login() {
             )
           },
         })
+
+        changeToken(response.data.access_token)
 
         navigate('/')
       })
