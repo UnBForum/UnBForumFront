@@ -928,6 +928,10 @@ import{s,t as i,j as e,I as J,F as W,S as v,P as B,n as S,B as h,u as Q,r as u,A
     height: 100vh;
 
     padding: 1rem 0 1rem 0;
+
+    .inputs-container {
+      gap: 0.7rem;
+    }
   }
 `,h3=s.div`
   width: 100%;
