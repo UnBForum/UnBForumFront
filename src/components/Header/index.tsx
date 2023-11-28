@@ -4,8 +4,10 @@ import { ButtonUserIcon, HeaderContainer } from './styles'
 import { FaUser } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { BaseSyntheticEvent } from 'react'
+import { useUser } from '../../hooks/user'
 
 export function Header() {
+  const { name, token, email, scopes } = useUser()
   const navigate = useNavigate()
 
   function handleClickUserIcon(event: BaseSyntheticEvent) {
@@ -19,7 +21,7 @@ export function Header() {
         <InlineLogo />
 
         <div className="user-container">
-          <h3 className="user-name">Lucas</h3>
+          <h3 className="user-name">{name}</h3>
 
           <ButtonUserIcon onClick={(e) => handleClickUserIcon(e)}>
             <FaUser size="2.5rem" color={theme.colors.tertiary['300']} />
