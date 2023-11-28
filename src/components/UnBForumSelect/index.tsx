@@ -10,21 +10,34 @@ interface UnBForumSelectProps {
   label: string
   placeholder: string
   accessibilityLabel: string
+  name: string
   options?: SelectOptions[]
+  isRequired?: boolean
+  fontSize?: string
+  onChange: (field: string, value: string) => void
 }
 
 export function UnBForumSelect({
   label,
   placeholder,
   options = [],
+  onChange,
+  isRequired = true,
+  fontSize = '0.9rem',
+  name,
 }: UnBForumSelectProps) {
   return (
-    <SelectContainer>
-      <label className="create-account-label">{label}</label>
+    <SelectContainer fontSize={fontSize}>
+      <label className="create-account-label">
+        {label}
+        {isRequired && <p id="required">{'*'}</p>}
+      </label>
+
       <Select
         variant="outline"
         height={9}
         size="md"
+        onValueChange={(itemValue) => onChange(name, itemValue)}
         placeholder={placeholder}
         accessibilityLabel="Selecione a opção"
       >
