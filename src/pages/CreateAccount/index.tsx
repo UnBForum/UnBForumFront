@@ -1,7 +1,7 @@
 import { Logo } from '../../assets/Logo'
 import { CreateAccountContainer } from './styles'
 import { UnBForumInput } from '../../components/UnBForumInput'
-import { Button, useToast } from 'native-base'
+import { Button, useBreakpointValue, useToast } from 'native-base'
 
 import { InputsObjectProps, inputsObject } from './inputsObject'
 import { UnBForumSelect } from '../../components/UnBForumSelect'
@@ -16,6 +16,11 @@ export function CreateAccount() {
   const navigate = useNavigate()
   const toast = useToast()
 
+  const buttonSize = useBreakpointValue({
+    lg: 'lg',
+    base: 'md',
+  })
+
   const [userData, setUserData] = useState({
     name: '',
     email: '',
@@ -26,10 +31,6 @@ export function CreateAccount() {
   })
 
   const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => {
-    // console.log(userData)
-  }, [userData])
 
   const handleChangeForm = useCallback(
     (field: string, value: string) => {
@@ -82,8 +83,8 @@ export function CreateAccount() {
             return (
               <ToastAlert
                 id="create-user-success"
-                title="Bem-vindo ao UnBFórum"
-                description={`Usuário criado com sucesso!\nClique em 'Entrar' e faça o seu login na aplicação!`}
+                title="Estamos quase lá!"
+                description={`Conta criada com sucesso!\nClique em 'Entrar' e faça o seu login na aplicação!`}
                 status="success"
               />
             )
@@ -164,14 +165,18 @@ export function CreateAccount() {
         <Button
           onPress={(e) => handleCreateAccount(e)}
           variant="solid"
-          size="lg"
+          size={buttonSize}
           isLoading={isLoading}
           isLoadingText="Criando usuário..."
         >
           Criar Conta
         </Button>
 
-        <Button onPress={(_) => navigate(-1)} variant="outline" size="lg">
+        <Button
+          onPress={(_) => navigate(-1)}
+          variant="outline"
+          size={buttonSize}
+        >
           Voltar
         </Button>
       </div>
