@@ -26,5 +26,9 @@ export const CreateAccountContainer = styled.div`
     height: 100vh;
 
     padding: 1rem 0 1rem 0;
+
+    .inputs-container {
+      gap: 0.7rem;
+    }
   }
 `
