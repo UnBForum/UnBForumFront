@@ -23,5 +23,8 @@ export const CreateAccountContainer = styled.div`
   @media (max-width: 768px) {
     max-width: 90%;
     width: 90%;
+    height: 100vh;
+
+    padding: 1rem 0 1rem 0;
   }
 `
