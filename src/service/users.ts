@@ -1,14 +1,9 @@
 import { AxiosResponse } from 'axios'
 import api from '../api'
+import { CreateUser } from '../utils/interfaces'
 
-interface CreateUserData {}
-
-export const createUser = async (
-  data: CreateUserData,
-): Promise<AxiosResponse> => {
+export const createUser = async (data: CreateUser): Promise<AxiosResponse> => {
   const response = await api.post('users', data)
-
-  console.log(response)
 
   return response
 }
