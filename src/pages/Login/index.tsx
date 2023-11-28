@@ -20,6 +20,8 @@ export function Login() {
 
       <div className="buttons-container">
         <UnBForumInput
+          name="email"
+          onChange={() => {}}
           accessibilityLabel="Digite o seu email Institucional"
           inputType="text"
           label="Email Institucional"
@@ -27,6 +29,8 @@ export function Login() {
         />
 
         <UnBForumInput
+          name="password"
+          onChange={() => {}}
           accessibilityLabel="Senha"
           inputType="password"
           label="Digite a sua senha"

@@ -70,6 +70,8 @@ export function CreateModalTopic({
             <h1>Novo Tópico</h1>
 
             <UnBForumInput
+              name="title"
+              onChange={() => {}}
               fontSize="1.2rem"
               size="lg"
               inputType="text"

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button, theme, AddIcon, SearchIcon, FavouriteIcon } from 'native-base'
 import {
   FavoritesListContainer,

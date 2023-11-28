@@ -18,30 +18,40 @@ export function Profile() {
       <section className="inputs-profile-container">
         <h1 className="profile-page-title">Perfil de Usuário</h1>
         <UnBForumInput
+          name="name"
+          onChange={() => {}}
           label="Nome Completo"
           placeholder="Digite seu nome completo..."
           inputType="text"
           accessibilityLabel="Digite o seu nome completo..."
         />
         <UnBForumInput
+          name="email"
+          onChange={() => {}}
           label="Email Institucional"
           placeholder="Digite seu nome email..."
           inputType="text"
           accessibilityLabel="Digite o seu email..."
         />
         <UnBForumSelect
+          name="profile"
+          onChange={() => {}}
           label="Papel na Instituição"
           placeholder="Selecione o seu papel na instituição..."
           options={unbForumProfiles}
           accessibilityLabel="Selecione o seu papel na instituição..."
         />
         <UnBForumSelect
+          name="course"
+          onChange={() => {}}
           label="Curso"
           placeholder="Selecione seu curso..."
           options={unbForumCourses}
           accessibilityLabel="Selecione seu curso..."
         />
         <UnBForumInput
+          name="password"
+          onChange={() => {}}
           label="Senha"
           placeholder="Digite sua senha"
           inputType="password"

@@ -75,7 +75,7 @@ export function CreateAccount() {
     setIsLoading(true)
 
     createUser(formatCreateUser(userData))
-      .then((response) => {
+      .then((_) => {
         toast.show({
           placement: 'top-right',
           render: () => {
