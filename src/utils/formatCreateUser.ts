@@ -8,6 +8,6 @@ export const formatCreateUser = (userData: UserData): CreateUser => {
     email,
     password,
     // tags: [],
-    // tags: [profile, course],
+    tags: [profile, course],
   }
 }
