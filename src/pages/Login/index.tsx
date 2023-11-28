@@ -1,17 +1,116 @@
-import { Button } from 'native-base'
+import { Button, useToast } from 'native-base'
 
 import { LoginContainer } from './styles'
 import { Logo } from '../../assets/Logo'
 import { UnBForumInput } from '../../components/UnBForumInput'
 import { useNavigate } from 'react-router-dom'
-import { BaseSyntheticEvent } from 'react'
+import { BaseSyntheticEvent, useCallback, useEffect, useState } from 'react'
+import { validateLoginUser } from '../../utils/validateLoginUser'
+import { ToastAlert } from '../../components/Alert'
+import { loginUser } from '../../service/auth'
+import { formatLoginUser } from '../../utils/formatLoginUser'
 
 export function Login() {
   const navigate = useNavigate()
+  const toast = useToast()
+
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: '',
+  })
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    console.log(loginData)
+  }, [loginData])
+
+  const handleChangeLogin = useCallback(
+    (field: string, value: string) => {
+      setLoginData({
+        ...loginData,
+        [field]: value,
+      })
+    },
+    [loginData],
+  )
 
   function handleLogin(event: BaseSyntheticEvent) {
     event.preventDefault()
-    navigate('/')
+
+    const { isValid, fieldErrors } = validateLoginUser(loginData)
+
+    if (!isValid) {
+      toast.show({
+        placement: 'top-right',
+        render: () => {
+          return (
+            <ToastAlert
+              id="login-user-error"
+              title="Campos Inválidos"
+              description={`Os sequintes campos estão incorretos: ${fieldErrors.reduce(
+                (prev, curr, idx) => {
+                  if (idx === 0) return `'${curr}'`
+                  if (idx === fieldErrors.length - 1)
+                    return `${prev} e '${curr}'`
+                  return `${prev}, '${curr}'`
+                },
+                '',
+              )}`}
+              status=""
+            />
+          )
+        },
+      })
+      return
+    }
+
+    setIsLoading(true)
+
+    loginUser(formatLoginUser(loginData))
+      .then((_) => {
+        toast.show({
+          placement: 'top-right',
+          render: () => {
+            return (
+              <ToastAlert
+                id="create-user-success"
+                title="Bem-vindo ao UnBFórum"
+                description={`Usuário logado com sucesso!`}
+                status="success"
+              />
+            )
+          },
+        })
+
+        navigate('/')
+      })
+      .catch((error) => {
+        toast.show({
+          placement: 'top-right',
+          render: () => {
+            let msg = ''
+
+            if (typeof error.response.data.detail === 'object') {
+              msg = error.response.data.detail[0].msg.split(', ')[1]
+            } else {
+              msg = error.response.data.detail
+            }
+
+            return (
+              <ToastAlert
+                id="create-user-error"
+                title="Campos Inválidos"
+                description={`Erro: ${msg}`}
+                status=""
+              />
+            )
+          },
+        })
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   return (
@@ -21,7 +120,7 @@ export function Login() {
       <div className="buttons-container">
         <UnBForumInput
           name="email"
-          onChange={() => {}}
+          onChange={handleChangeLogin}
           accessibilityLabel="Digite o seu email Institucional"
           inputType="text"
           label="Email Institucional"
@@ -30,14 +129,20 @@ export function Login() {
 
         <UnBForumInput
           name="password"
-          onChange={() => {}}
+          onChange={handleChangeLogin}
           accessibilityLabel="Senha"
           inputType="password"
           label="Digite a sua senha"
           placeholder="Digite a sua senha"
         />
 
-        <Button onPress={(e) => handleLogin(e)} variant="solid" size="lg">
+        <Button
+          onPress={(e) => handleLogin(e)}
+          variant="solid"
+          size="lg"
+          isLoading={isLoading}
+          isLoadingText="Entrando..."
+        >
           Entrar
         </Button>
 
