@@ -6,6 +6,7 @@ import { ThemeProvider } from 'styled-components'
 import { defaultTheme } from './styles/themes/default'
 
 import { GlobalStyle } from './styles/global'
+import { UserProvider } from './hooks/user'
 
 export function App() {
   const colorModeManager: StorageManager = {
@@ -30,10 +31,12 @@ export function App() {
   return (
     <NativeBaseProvider colorModeManager={colorModeManager}>
       <ThemeProvider theme={defaultTheme}>
-        <HashRouter>
-          <Router />
-        </HashRouter>
-        <GlobalStyle />
+        <UserProvider>
+          <HashRouter>
+            <Router />
+          </HashRouter>
+          <GlobalStyle />
+        </UserProvider>
       </ThemeProvider>
     </NativeBaseProvider>
   )
