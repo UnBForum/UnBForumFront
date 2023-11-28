@@ -36,6 +36,10 @@ export function Login() {
         <Button onPress={(e) => handleLogin(e)} variant="solid" size="lg">
           Entrar
         </Button>
+
+        <Button onPress={(_) => navigate(-1)} variant="outline" size="lg">
+          Voltar
+        </Button>
       </div>
     </LoginContainer>
   )
