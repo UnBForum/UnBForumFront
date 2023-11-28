@@ -32,4 +32,11 @@ export const SelectContainer = styled.div<{ fontSize: string }>`
     font-size: 0.9rem;
     gap: 0.3rem;
   }
+
+  @media (max-width: 768px) {
+    .create-account-label {
+      font-size: ${({ fontSize }) =>
+        Number(fontSize.split('rem')[0]) - 0.2 + 'rem'};
+    }
+  }
 `
