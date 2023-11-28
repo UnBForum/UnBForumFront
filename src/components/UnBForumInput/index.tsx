@@ -1,9 +1,4 @@
-import {
-  FormControl,
-  IInputProps,
-  Input,
-  WarningOutlineIcon,
-} from 'native-base'
+import { Input } from 'native-base'
 import { InputContainer, InputLabel } from './styles'
 
 interface UnBForumInputProps {

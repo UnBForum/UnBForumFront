@@ -25,6 +25,8 @@ export function CreateAccount() {
     passwordConfirm: '',
   })
 
+  const [isLoading, setIsLoading] = useState(false)
+
   useEffect(() => {
     // console.log(userData)
   }, [userData])
@@ -70,30 +72,54 @@ export function CreateAccount() {
       return
     }
 
-    const response = await createUser(formatCreateUser(userData))
+    setIsLoading(true)
 
-    console.log('AHHHHH', response.status)
+    createUser(formatCreateUser(userData))
+      .then((response) => {
+        toast.show({
+          placement: 'top-right',
+          render: () => {
+            return (
+              <ToastAlert
+                id="create-user-success"
+                title="Bem-vindo ao UnBFórum"
+                description={`Usuário criado com sucesso!\nClique em 'Entrar' e faça o seu login na aplicação!`}
+                status="success"
+              />
+            )
+          },
+        })
 
-    if (response.status !== 200) {
-      toast.show({
-        placement: 'top-right',
-        render: () => {
-          return (
-            <ToastAlert
-              id="create-user-error"
-              title="Campos Inválidos"
-              description={`Erro: ${response.data.detail}`}
-              status=""
-            />
-          )
-        },
+        navigate('/login/logon')
       })
-      return
-    }
+      .catch((error) => {
+        toast.show({
+          placement: 'top-right',
+          render: () => {
+            let msg = ''
+
+            if (typeof error.response.data.detail === 'object') {
+              msg = error.response.data.detail[0].msg.split(', ')[1]
+            } else {
+              msg = error.response.data.detail
+            }
+
+            return (
+              <ToastAlert
+                id="create-user-error"
+                title="Campos Inválidos"
+                description={`Erro: ${msg}`}
+                status=""
+              />
+            )
+          },
+        })
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
 
     // console.log(response.status, response.data)
-
-    navigate('/login/logon')
   }
 
   function renderInput(inputObject: InputsObjectProps) {
@@ -139,8 +165,14 @@ export function CreateAccount() {
           onPress={(e) => handleCreateAccount(e)}
           variant="solid"
           size="lg"
+          isLoading={isLoading}
+          isLoadingText="Criando usuário..."
         >
           Criar Conta
+        </Button>
+
+        <Button onPress={(_) => navigate(-1)} variant="outline" size="lg">
+          Voltar
         </Button>
       </div>
     </CreateAccountContainer>
