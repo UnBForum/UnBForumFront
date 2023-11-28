@@ -13,3 +13,13 @@ export interface CreateUser {
   password: string
   tags?: string[]
 }
+
+export interface LoginData {
+  email: string
+  password: string
+}
+
+export interface LoginUser {
+  username: string
+  password: string
+}
