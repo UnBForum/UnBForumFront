@@ -8,7 +8,7 @@ export const CreateAccountContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  svg {
+  & > svg {
     width: 10rem;
     height: 12rem;
   }
