@@ -12,7 +12,7 @@ interface UnBForumInputProps {
   isRequired?: boolean
   isEditing?: boolean
   onChange: (field: string, value: string) => void
-  value?: string | null
+  value?: string | undefined
 }
 
 export function UnBForumInput({
@@ -25,7 +25,7 @@ export function UnBForumInput({
   name,
   isRequired = true,
   isEditing = true,
-  value = null,
+  value = undefined,
   onChange,
   ...rest
 }: UnBForumInputProps) {
