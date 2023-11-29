@@ -10,7 +10,9 @@ interface UnBForumInputProps {
   accessibilityLabel: string
   fontSize?: string
   isRequired?: boolean
+  isEditing?: boolean
   onChange: (field: string, value: string) => void
+  value?: string | null
 }
 
 export function UnBForumInput({
@@ -22,6 +24,8 @@ export function UnBForumInput({
   fontSize = '0.9rem',
   name,
   isRequired = true,
+  isEditing = true,
+  value = null,
   onChange,
   ...rest
 }: UnBForumInputProps) {
@@ -36,18 +40,16 @@ export function UnBForumInput({
 
       <Input
         type={inputType}
-        variant="outline"
+        variant={isEditing ? 'outline' : 'filled'}
         size={size}
         isRequired={isRequired}
+        value={value}
         placeholder={placeholder}
+        editable={isEditing}
         accessibilityLabel={accessibilityLabel}
         onChangeText={(text) => onChange(name, text)}
         {...rest}
       />
-      {/* <span id="error-feedback">
-        <WarningOutlineIcon size="12" />
-        Campo obrigatório
-      </span> */}
     </InputContainer>
   )
 }

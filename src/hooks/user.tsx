@@ -18,6 +18,7 @@ interface UserContextData {
   token: string
   logoutUser: () => void
   changeToken: (newToken: string) => void
+  setName: (name: string) => void
   scopes: string[]
   email: string
   name: string
@@ -26,6 +27,7 @@ interface UserContextData {
 interface TokenPayload {
   sub: string
   scopes: string[]
+  name: string
 }
 
 const UserContext = createContext<UserContextData | null>(null)
@@ -48,7 +50,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       setToken(jwtToken.split(' ')[1])
       setScopes(user.scopes)
       setEmail(user.sub)
-      setName('Lucas')
+      setName(user.name)
     }
   }, [])
 
@@ -61,7 +63,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     setToken(newJWToken)
     setScopes(user.scopes)
     setEmail(user.sub)
-    setName('Lucas')
+    setName(user.name)
   }, [])
 
   const logoutUser = useCallback((): void => {
@@ -82,6 +84,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         scopes,
         changeToken,
         logoutUser,
+        setName,
       }}
     >
       {children}
