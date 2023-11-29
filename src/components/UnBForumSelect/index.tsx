@@ -13,6 +13,7 @@ interface UnBForumSelectProps {
   name: string
   options?: SelectOptions[]
   isRequired?: boolean
+  isEditing?: boolean
   fontSize?: string
   onChange: (field: string, value: string) => void
 }
@@ -24,6 +25,7 @@ export function UnBForumSelect({
   onChange,
   isRequired = true,
   fontSize = '0.9rem',
+  isEditing = true,
   name,
 }: UnBForumSelectProps) {
   return (
@@ -37,6 +39,7 @@ export function UnBForumSelect({
         variant="outline"
         height={9}
         size="md"
+        isDisabled={!isEditing}
         onValueChange={(itemValue) => onChange(name, itemValue)}
         placeholder={placeholder}
         accessibilityLabel="Selecione a opção"
