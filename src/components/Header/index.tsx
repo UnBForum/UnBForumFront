@@ -1,6 +1,6 @@
 import { Button, theme } from 'native-base'
 import { InlineLogo } from '../../assets/InlineLogo'
-import { ButtonUserIcon, HeaderContainer } from './styles'
+import { HeaderContainer } from './styles'
 import { FaUser } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { BaseSyntheticEvent } from 'react'
