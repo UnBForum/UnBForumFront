@@ -22,7 +22,7 @@ export const ProfileContainer = styled.section`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1.4rem;
+    gap: 1rem;
 
     & > div[role='button'] {
       width: 100%;
