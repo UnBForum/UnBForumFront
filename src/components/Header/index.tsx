@@ -7,6 +7,7 @@ import { BaseSyntheticEvent } from 'react'
 import { useUser } from '../../hooks/user'
 import { FiLogIn } from 'react-icons/fi'
 import { useMediaQuery } from 'usehooks-ts'
+import { UnBForumMenu } from '../UnBForumMenu'
 
 export function Header() {
   const { name, token } = useUser()
@@ -29,7 +30,7 @@ export function Header() {
         <InlineLogo />
 
         <div className="user-container">
-          {token && (
+          {token && !isMobile && (
             <>
               <Button
                 onPress={(e) => handleClickUserIcon(e)}
@@ -42,7 +43,7 @@ export function Header() {
             </>
           )}
 
-          {!token && (
+          {!token && !isMobile && (
             <>
               <Button
                 variant="solid"
@@ -55,6 +56,8 @@ export function Header() {
               </Button>
             </>
           )}
+
+          <UnBForumMenu />
         </div>
       </section>
     </HeaderContainer>
