@@ -40,3 +40,9 @@ export interface UpdateUserPassword {
   current_password: string
   new_password: string
 }
+
+export interface TopicData {
+  title: string
+  content: string
+  files: string[]
+}
