@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  BaseSyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import {
   CloseButtonContainer,
   Content,
@@ -8,26 +14,143 @@ import {
 import { UnBForumInput } from '../UnBForumInput'
 import { UnBForumTextArea } from '../UnBForumTextArea'
 import { UnBForumInputFile } from '../UnBForumInputFile'
-import { AddIcon, Button, CheckCircleIcon, CloseIcon, theme } from 'native-base'
+import {
+  AddIcon,
+  Button,
+  CheckCircleIcon,
+  CloseIcon,
+  theme,
+  useToast,
+} from 'native-base'
+import { TopicData } from '../../utils/interfaces'
+import { validateCreateTopic } from '../../utils/validateCreateTopic'
+import { ToastAlert } from '../Alert'
+import { createTopic } from '../../service/topics'
 
 interface CreateTopicModalProps {
   isModalOpen: boolean
   setIsModalOpen: (isOpen: boolean) => void
 }
+// // Olá a tod@s, espero que estejam bem e com saúde!
 
+// Amanhã será um grande dia para todos nós, dia de alegria e celebração, vamos juntos!
+
+// Aguardo todos lá.
+// Até logo!
 export function CreateModalTopic({
   isModalOpen,
   setIsModalOpen,
 }: CreateTopicModalProps) {
+  const toast = useToast()
+
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [modalVisible, setModalVisible] = useState(false)
 
-  const [files, setFiles] = useState<string[]>([])
+  // const [files, setFiles] = useState<string[]>([])
+
+  const [topicData, setTopicData] = useState<TopicData>({
+    title: '',
+    content: '',
+    files: [],
+  })
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => console.log(topicData), [topicData])
 
   useEffect(() => {
     setModalVisible(isModalOpen)
   }, [isModalOpen])
+
+  const handleTopicChange = useCallback(
+    (field: string, value: string) => {
+      setTopicData({
+        ...topicData,
+        [field]: value,
+      })
+    },
+    [topicData],
+  )
+
+  const handleCreateTopic = (event: BaseSyntheticEvent) => {
+    event.preventDefault()
+
+    const { isValid, fieldErrors } = validateCreateTopic(topicData)
+
+    if (!isValid) {
+      toast.show({
+        placement: 'top-right',
+        render: () => {
+          return (
+            <ToastAlert
+              id="create-topic-error"
+              title="Campos Inválidos"
+              description={`Os sequintes campos estão incorretos: ${fieldErrors.reduce(
+                (prev, curr, idx) => {
+                  if (idx === 0) return `'${curr}'`
+                  if (idx === fieldErrors.length - 1)
+                    return `${prev} e '${curr}'`
+                  return `${prev}, '${curr}'`
+                },
+                '',
+              )}`}
+              status=""
+            />
+          )
+        },
+      })
+      return
+    }
+
+    setIsLoading(true)
+
+    createTopic(topicData)
+      .then((_) => {
+        toast.show({
+          placement: 'top-right',
+          render: () => {
+            return (
+              <ToastAlert
+                id="create-topic-success"
+                title="Tópico Criado com Sucesso"
+                description={`Agora todos podem ver seu novo tópico!`}
+                status="success"
+              />
+            )
+          },
+        })
+
+        handleClose()
+        setTopicData({ title: '', content: '', files: [] })
+      })
+      .catch((error) => {
+        toast.show({
+          placement: 'top-right',
+          render: () => {
+            let msg = ''
+
+            if (typeof error.response.data.detail === 'object') {
+              msg = error.response.data.detail[0].msg.split(', ')[1]
+            } else {
+              msg = error.response.data.detail
+            }
+
+            return (
+              <ToastAlert
+                id="create-topic-error"
+                title="Campos Inválidos"
+                description={`Erro: ${msg}`}
+                status=""
+              />
+            )
+          },
+        })
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
 
   const handleClose = () => {
     setModalVisible(false)
@@ -38,18 +161,18 @@ export function CreateModalTopic({
 
   const handleAddFile = useCallback(
     (fileName: string) => {
-      setFiles([...files, fileName])
+      setTopicData({ ...topicData, files: [...topicData.files, fileName] })
     },
-    [files],
+    [topicData],
   )
 
   const handleDeleteFile = useCallback(
     (fileName: string) => {
-      const remainingFiles = files.filter((f) => f !== fileName)
+      const remainingFiles = topicData.files.filter((f) => f !== fileName)
 
-      setFiles(remainingFiles)
+      setTopicData({ ...topicData, files: remainingFiles })
     },
-    [files],
+    [topicData],
   )
 
   const handleAddFileButtonClick = () => {
@@ -71,7 +194,7 @@ export function CreateModalTopic({
 
             <UnBForumInput
               name="title"
-              onChange={() => {}}
+              onChange={handleTopicChange}
               fontSize="1.2rem"
               size="lg"
               inputType="text"
@@ -81,6 +204,8 @@ export function CreateModalTopic({
             />
 
             <UnBForumTextArea
+              name="content"
+              onChange={handleTopicChange}
               fontSize="1.2rem"
               size="lg"
               inputType="text"
@@ -90,10 +215,11 @@ export function CreateModalTopic({
             />
 
             <UnBForumInputFile
+              filesUploadLimit={2}
               fileInputRef={fileInputRef}
               handleAddFile={handleAddFile}
               handleDeleteFile={handleDeleteFile}
-              files={files}
+              files={topicData.files}
             />
 
             <ModalButtonsContainer>
@@ -109,13 +235,13 @@ export function CreateModalTopic({
 
               <Button
                 id="create-topic-button"
-                onPress={() => {}}
+                onPress={(e) => handleCreateTopic(e)}
                 bgColor={theme.colors.success['600']}
                 size="md"
                 borderRadius="4px"
                 _text={{ fontSize: '1rem', fontWeight: '700' }}
-                // isLoadingText="Criando..."
-                // isLoading
+                isLoadingText="Criando..."
+                isLoading={isLoading}
                 rightIcon={<CheckCircleIcon />}
               >
                 Criar

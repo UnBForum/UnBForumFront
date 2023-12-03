@@ -48,7 +48,6 @@ export const Content = styled.div<{ isOpen: boolean }>`
   @media (max-width: 768px) {
     width: 90%;
     max-width: none;
-    gap: 0.5rem;
 
     padding: 1rem 1.5rem;
 
