@@ -1,11 +1,8 @@
 import { Button, HamburgerIcon, Menu, theme } from 'native-base'
 import { useNavigate } from 'react-router-dom'
-import { useMediaQuery } from 'usehooks-ts'
 import { useUser } from '../../hooks/user'
 
 export function UnBForumMenu() {
-  const isMobile = useMediaQuery('(max-width: 768px)')
-
   const navigate = useNavigate()
   const { token } = useUser()
 

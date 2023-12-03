@@ -11,7 +11,7 @@ export function Topic() {
 
   const [topic, setTopic] = useState<TopicInterface | null>(null)
 
-  const [isLoadingTopic, setIsLoadingTopic] = useState(false)
+  const [_, setIsLoadingTopic] = useState(false)
 
   useEffect(() => window.scrollTo(0, 0), [])
   useEffect(() => {
