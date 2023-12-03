@@ -18,6 +18,11 @@ export function Logon() {
     navigate('/login')
   }
 
+  function handleGoToUnbForum(event: BaseSyntheticEvent) {
+    event.preventDefault()
+    navigate('/')
+  }
+
   return (
     <LoginContainer>
       <Logo />
@@ -26,12 +31,17 @@ export function Logon() {
         <Button onPress={(e) => handleLogin(e)} variant="outline" size="lg">
           Entrar
         </Button>
+
         <Button
           onPress={(e) => handleCreateAccount(e)}
           variant="solid"
           size="lg"
         >
           Criar Conta
+        </Button>
+
+        <Button onPress={(e) => handleGoToUnbForum(e)} variant="link" size="lg">
+          Ir para o UnBFórum
         </Button>
       </div>
     </LoginContainer>

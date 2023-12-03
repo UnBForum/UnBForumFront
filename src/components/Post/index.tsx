@@ -20,28 +20,59 @@ import {
   PostContentContainer,
 } from './styles'
 import { useNavigate } from 'react-router-dom'
+import { Category } from '../../pages/Home'
 
 interface PostProps {
   id: number
   isInsideTopic?: boolean
   isComment?: boolean
+  title: string
+  author: string
+  content: string
+  categories: Category[]
+  commentsCount?: number
 }
 
 export function Post({
   id,
   isInsideTopic = false,
   isComment = false,
+  title,
+  author,
+  content,
+  categories,
+  commentsCount = 0,
 }: PostProps) {
   const navigate = useNavigate()
 
-  const author = 'Sandalo Henrique'
-  const title = 'Horários de Atendimento coordenação de Eng. de Software'
+  // const author = 'Sandalo Henrique'
+  // const title = 'Horários de Atendimento coordenação de Eng. de Software'
 
   const [likes, setLikes] = useState(105)
   const [isMark, setIsMark] = useState(false)
 
   function handleClickOnPost() {
     navigate(`/topic/${id}`)
+  }
+
+  function getInitialsLetters(name: string) {
+    const splittedName = name.split(' ')
+
+    if (splittedName.length >= 2) {
+      const firstName = splittedName[0]
+      const lastName = splittedName[splittedName.length - 1]
+
+      const initialFirstName = firstName[0]
+      const initialLastName = lastName[0]
+
+      const iniciais =
+        initialFirstName.toUpperCase() + initialLastName.toUpperCase()
+
+      return iniciais
+    } else {
+      // return <IoPerson color={theme.colors.white} />
+      return splittedName[0][0].toUpperCase()
+    }
   }
 
   function handleReaction(e: MouseEvent, valueToadd: number) {
@@ -100,7 +131,7 @@ export function Post({
                 marginRight="0.8rem"
                 size={isComment ? 'xs' : 'sm'}
               >
-                SH
+                {getInitialsLetters(author)}
               </Avatar>
               <p>
                 {author}
@@ -108,8 +139,13 @@ export function Post({
               </p>
             </AuthorContainer>
 
-            <p>
-              Prezad@s discentes,
+            <p
+              dangerouslySetInnerHTML={{
+                __html: content.replace(/\n/g, '<br>'),
+              }}
+            />
+            {/* <p>
+              {Prezad@s discentes,
               <br />
               <br />
               Prezad@s discentes, Bom dia! Espero que estejam bem. Deixo aqui
@@ -130,12 +166,26 @@ export function Post({
               <a href="https://teste.com.br/teste">
                 https://teste.com.br/teste
               </a>
-              <br />
-            </p>
+              <br />}
+            </p> */}
 
             {!isComment && (
               <BadgesContainer>
-                {['TCC', 'Eng. Software', 'Eng. Eletrônica', '27/07'].map(
+                {categories.map((category) => {
+                  return (
+                    <Badge
+                      key={category.id}
+                      variant="solid"
+                      bg={category.color}
+                      alignSelf="center"
+                      size="md"
+                      textDecoration="solid .8rem bold"
+                    >
+                      <p id="post-badge-text">{category.name}</p>
+                    </Badge>
+                  )
+                })}
+                {/* {['TCC', 'Eng. Software', 'Eng. Eletrônica', '27/07'].map(
                   (label, key) => {
                     return (
                       <Badge
@@ -150,7 +200,7 @@ export function Post({
                       </Badge>
                     )
                   },
-                )}
+                )} */}
               </BadgesContainer>
             )}
 
@@ -167,7 +217,7 @@ export function Post({
                 }
                 _icon={{ marginLeft: '1rem' }}
               >
-                Ver comentários (15)
+                {`Ver comentários (${commentsCount})`}
               </CommentContainer>
             )}
           </PostContentContainer>
