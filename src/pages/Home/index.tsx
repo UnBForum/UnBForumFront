@@ -1,5 +1,12 @@
 // @ts-nocheck
-import { Button, theme, AddIcon, SearchIcon, FavouriteIcon } from 'native-base'
+import {
+  Button,
+  theme,
+  AddIcon,
+  SearchIcon,
+  FavouriteIcon,
+  Spinner,
+} from 'native-base'
 import {
   FavoritesListContainer,
   FeedContainer,
@@ -13,11 +20,43 @@ import { Post } from '../../components/Post'
 import { FavoritePost } from '../../components/FavoritePost'
 import { CreateModalTopic } from '../../components/CreateTopicModal'
 import { useCallback, useEffect, useState } from 'react'
+import { getAllTopics } from '../../service/topics'
+import { Loading } from '../../components/Loading'
+
+export interface Category {
+  id: number
+  color: string
+  name: string
+}
+
+export interface Topic {
+  categories: Category[]
+  content: string
+  id: number
+  is_fixed: boolean
+  title: string
+  author: BackendUser
+  comments_count: number
+}
 
 export function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [topics, setTopics] = useState<Topic[]>([])
+
+  const [isLoadingTopics, setIsLoadingTopics] = useState(false)
 
   useEffect(() => window.scrollTo(0, 0), [])
+  useEffect(() => console.log(topics), [topics])
+
+  useEffect(() => {
+    setIsLoadingTopics(true)
+
+    getAllTopics()
+      .then((response) => {
+        setTopics(response.data)
+      })
+      .finally(() => setIsLoadingTopics(false))
+  }, [isModalOpen])
 
   function handleSearch() {
     console.log('Pesquisando...')
@@ -42,11 +81,32 @@ export function Home() {
 
         <Filter />
 
-        <PostsContainer>
+        {isLoadingTopics ? (
+          <Loading accessibilityLabel="Carregando os tópicos..." />
+        ) : (
+          <>
+            <PostsContainer>
+              {topics.map((topic) => {
+                return (
+                  <Post
+                    key={topic.id}
+                    id={topic.id}
+                    title={topic.title}
+                    content={topic.content}
+                    author={topic.author.name}
+                    commentsCount={topic.comments_count}
+                    categories={topic.categories}
+                  />
+                )
+              })}
+            </PostsContainer>
+            {/* <PostsContainer>
           {Array.from({ length: 20 }, (_, i) => i).map((i) => {
             return <Post key={i} id={i} />
           })}
-        </PostsContainer>
+        </PostsContainer> */}
+          </>
+        )}
       </FeedContainer>
 
       <LikesContainer>
