@@ -1,12 +1,5 @@
 // @ts-nocheck
-import {
-  Button,
-  theme,
-  AddIcon,
-  SearchIcon,
-  FavouriteIcon,
-  Spinner,
-} from 'native-base'
+import { Button, theme, AddIcon, SearchIcon, FavouriteIcon } from 'native-base'
 import {
   FavoritesListContainer,
   FeedContainer,
@@ -22,11 +15,18 @@ import { CreateModalTopic } from '../../components/CreateTopicModal'
 import { useCallback, useEffect, useState } from 'react'
 import { getAllTopics } from '../../service/topics'
 import { Loading } from '../../components/Loading'
+import { useMediaQuery } from 'usehooks-ts'
 
 export interface Category {
   id: number
   color: string
   name: string
+}
+
+export interface Comment {
+  id: number
+  content: string
+  is_fixed: boolean
 }
 
 export interface Topic {
@@ -36,10 +36,14 @@ export interface Topic {
   is_fixed: boolean
   title: string
   author: BackendUser
+  rating: number
+  comments: Comment[]
   comments_count: number
 }
 
 export function Home() {
+  const isMobile = useMediaQuery('(max-width: 768px)')
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [topics, setTopics] = useState<Topic[]>([])
 
@@ -71,7 +75,7 @@ export function Home() {
       <FeedContainer>
         <Button
           bgColor={theme.colors.success['600']}
-          size="lg"
+          size={isMobile ? 'xs' : 'lg'}
           borderRadius="4px"
           rightIcon={<AddIcon />}
           onPress={() => handleModalOpen(true)}
@@ -92,6 +96,7 @@ export function Home() {
                     key={topic.id}
                     id={topic.id}
                     title={topic.title}
+                    rating={topic.rating}
                     content={topic.content}
                     author={topic.author.name}
                     commentsCount={topic.comments_count}
@@ -100,11 +105,6 @@ export function Home() {
                 )
               })}
             </PostsContainer>
-            {/* <PostsContainer>
-          {Array.from({ length: 20 }, (_, i) => i).map((i) => {
-            return <Post key={i} id={i} />
-          })}
-        </PostsContainer> */}
           </>
         )}
       </FeedContainer>
