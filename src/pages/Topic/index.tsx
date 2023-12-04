@@ -39,16 +39,14 @@ export function Topic() {
           />
 
           <CommentContainer>
-            {Array.from({ length: 10 }, (_, i) => i).map((i) => {
+            {topic.comments.map((comment) => {
               return (
                 <Post
-                  key={i}
-                  id={i}
+                  key={comment.id}
+                  id={comment.id}
                   isComment
                   author="Lucas"
-                  title=""
-                  content=""
-                  categories={[]}
+                  content={comment.content}
                 />
               )
             })}
