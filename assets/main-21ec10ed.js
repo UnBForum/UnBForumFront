@@ -920,7 +920,7 @@ import{s as A,t as i,j as e,I as x1,F as g1,S as V,P as N1,n as $,B as x,u as P,
       width: 100%;
     }
   }
-`,n3="/UnBForumFront/assets/create-account-24b27e13.png";function i3(){return e.jsxs(s3,{children:[e.jsx("img",{className:"create-account-image",src:n3,alt:""}),e.jsx("div",{className:"content",children:e.jsx(c1,{})})]})}const r3=A.div`
+`,n3="/assets/create-account-24b27e13.png";function i3(){return e.jsxs(s3,{children:[e.jsx("img",{className:"create-account-image",src:n3,alt:""}),e.jsx("div",{className:"content",children:e.jsx(c1,{})})]})}const r3=A.div`
   max-width: 65%;
   width: 65%;
   display: flex;
