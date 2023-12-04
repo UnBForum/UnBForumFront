@@ -21,15 +21,17 @@ import {
 } from './styles'
 import { useNavigate } from 'react-router-dom'
 import { Category } from '../../pages/Home'
+import { useMediaQuery } from 'usehooks-ts'
 
 interface PostProps {
   id: number
   isInsideTopic?: boolean
   isComment?: boolean
-  title: string
+  title?: string
   author: string
   content: string
-  categories: Category[]
+  rating?: number
+  categories?: Category[]
   commentsCount?: number
 }
 
@@ -37,18 +39,20 @@ export function Post({
   id,
   isInsideTopic = false,
   isComment = false,
-  title,
+  title = '',
   author,
   content,
-  categories,
+  rating = 0,
+  categories = [],
   commentsCount = 0,
 }: PostProps) {
   const navigate = useNavigate()
+  const isMobile = useMediaQuery('(max-width: 768px)')
 
   // const author = 'Sandalo Henrique'
   // const title = 'Horários de Atendimento coordenação de Eng. de Software'
 
-  const [likes, setLikes] = useState(105)
+  const [likes, setLikes] = useState(rating)
   const [isMark, setIsMark] = useState(false)
 
   function handleClickOnPost() {
@@ -209,11 +213,14 @@ export function Post({
                 variant="outline"
                 width="95%"
                 size="xs"
-                _text={{ fontSize: '1rem' }}
+                _text={{ fontSize: isMobile ? '0.8rem' : '1rem' }}
                 isInsideTopic={isInsideTopic}
                 onPress={isInsideTopic ? () => {} : () => handleClickOnPost()}
                 rightIcon={
-                  <FaComment size="22" color={theme.colors.primary['700']} />
+                  <FaComment
+                    size={isMobile ? '18' : '20'}
+                    color={theme.colors.primary['700']}
+                  />
                 }
                 _icon={{ marginLeft: '1rem' }}
               >
