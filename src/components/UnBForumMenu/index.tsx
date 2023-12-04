@@ -9,6 +9,7 @@ export function UnBForumMenu() {
   return (
     <Menu
       w="190"
+      placement="bottom right"
       trigger={(triggerProps) => {
         return (
           <Button
@@ -22,11 +23,11 @@ export function UnBForumMenu() {
         )
       }}
     >
-      <Menu.Item _focus={{}} onPress={() => navigate('/')}>
-        Feed
-      </Menu.Item>
+      <Menu.Item onPress={() => navigate('/')}>Feed</Menu.Item>
       {token && (
-        <Menu.Item onPress={() => navigate('/profile')}>Perfil</Menu.Item>
+        <Menu.Item i onPress={() => navigate('/profile')}>
+          Perfil
+        </Menu.Item>
       )}
       {!token && (
         <Menu.Item onPress={() => navigate('/login/logon')}>Entrar</Menu.Item>
