@@ -1,5 +1,6 @@
 import { Select, theme } from 'native-base'
 
+import { useEffect, useState } from 'react'
 import { FaFilter } from 'react-icons/fa'
 import { PiArrowsDownUpBold } from 'react-icons/pi'
 
@@ -8,10 +9,19 @@ import {
   OptionsContainer,
   OrdenationContainer,
 } from './styles'
-import { unbForumCourses } from '../../pages/CreateAccount/inputsObject'
 import { unbForumFilters } from '../../constants'
+import { Category } from '../../utils/interfaces'
+import { getAllCategories } from '../../service/categories'
 
 export function Filter() {
+  const [categories, setCategories] = useState<Category[]>([])
+
+  useEffect(() => {
+    getAllCategories().then((response) => {
+      setCategories(response.data)
+    })
+  }, [])
+
   return (
     <OptionsContainer>
       <FilterContainer>
@@ -26,12 +36,12 @@ export function Filter() {
           placeholder="Selecione os filtros..."
           accessibilityLabel="Selecione a opção"
         >
-          {unbForumCourses.map((option) => {
+          {categories.map((category) => {
             return (
               <Select.Item
-                key={option.label}
-                label={option.label}
-                value={option.value}
+                key={category.id}
+                label={category.name}
+                value={category.id.toString()}
               />
             )
           })}

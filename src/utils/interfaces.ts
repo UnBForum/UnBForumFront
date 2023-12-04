@@ -46,3 +46,9 @@ export interface TopicData {
   content: string
   files: string[]
 }
+
+export interface Category {
+  id: number
+  name: string
+  color: string
+}
