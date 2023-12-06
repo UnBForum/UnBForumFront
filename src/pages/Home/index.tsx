@@ -17,6 +17,7 @@ import { getAllTopics } from '../../service/topics'
 import { Loading } from '../../components/Loading'
 import { useMediaQuery } from 'usehooks-ts'
 import { BackendUser } from '../../utils/interfaces'
+import { useUser } from '../../hooks/user'
 
 export interface Category {
   id: number
@@ -47,6 +48,7 @@ export interface Topic {
 }
 
 export function Home() {
+  const { token } = useUser()
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -79,6 +81,7 @@ export function Home() {
     <HomeContainer>
       <FeedContainer>
         <Button
+          isDisabled={!token}
           bgColor={theme.colors.success['600']}
           size={isMobile ? 'xs' : 'lg'}
           borderRadius="4px"
