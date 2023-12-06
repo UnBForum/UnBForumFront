@@ -1,5 +1,12 @@
 // @ts-nocheck
-import { Button, theme, AddIcon, SearchIcon, FavouriteIcon } from 'native-base'
+import {
+  Button,
+  theme,
+  AddIcon,
+  SearchIcon,
+  FavouriteIcon,
+  Tooltip,
+} from 'native-base'
 import {
   FavoritesListContainer,
   FeedContainer,
@@ -80,16 +87,23 @@ export function Home() {
   return (
     <HomeContainer>
       <FeedContainer>
-        <Button
-          isDisabled={!token}
-          bgColor={theme.colors.success['600']}
-          size={isMobile ? 'xs' : 'lg'}
-          borderRadius="4px"
-          rightIcon={<AddIcon />}
-          onPress={() => handleModalOpen(true)}
+        <Tooltip
+          isDisabled={token}
+          label={
+            !token ? 'Para criar um tópico é necessário estar logado' : null
+          }
         >
-          <p>Criar Tópico</p>
-        </Button>
+          <Button
+            isDisabled={!token}
+            bgColor={theme.colors.success['600']}
+            size={isMobile ? 'xs' : 'lg'}
+            borderRadius="4px"
+            rightIcon={<AddIcon />}
+            onPress={() => handleModalOpen(true)}
+          >
+            <p>Criar Tópico</p>
+          </Button>
+        </Tooltip>
 
         <Filter />
 
