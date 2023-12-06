@@ -3,7 +3,7 @@ import api from '../api'
 
 export const makeUpvoteComment = async (
   commentId: number,
-  topicId: number,
+  topicId: number | null,
 ): Promise<AxiosResponse> => {
   const response = await api.post(
     `topics/${topicId}/comments/${commentId}/upvote`,
@@ -14,7 +14,7 @@ export const makeUpvoteComment = async (
 
 export const makeDownvoteComment = async (
   commentId: number,
-  topicId: number,
+  topicId: number | null,
 ): Promise<AxiosResponse> => {
   const response = await api.post(
     `topics/${topicId}/comments/${commentId}/downvote`,
