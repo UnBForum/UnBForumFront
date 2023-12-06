@@ -25,9 +25,7 @@ export function UnBForumMenu() {
     >
       <Menu.Item onPress={() => navigate('/')}>Feed</Menu.Item>
       {token && (
-        <Menu.Item i onPress={() => navigate('/profile')}>
-          Perfil
-        </Menu.Item>
+        <Menu.Item onPress={() => navigate('/profile')}>Perfil</Menu.Item>
       )}
       {!token && (
         <Menu.Item onPress={() => navigate('/login/logon')}>Entrar</Menu.Item>
