@@ -15,6 +15,7 @@ export function Topic() {
 
   useEffect(() => window.scrollTo(0, 0), [])
   useEffect(() => {
+    console.log(id)
     if (id) {
       setIsLoadingTopic(true)
       getOneTopic(Number(id))
@@ -35,6 +36,8 @@ export function Topic() {
             title={topic.title}
             categories={topic.categories}
             content={topic.content}
+            rating={topic.rating}
+            currentRating={topic.current_user_rating}
             isInsideTopic
           />
 
@@ -45,7 +48,10 @@ export function Topic() {
                   key={comment.id}
                   id={comment.id}
                   isComment
-                  author="Lucas"
+                  topicId={topic.id}
+                  author={comment.author.name}
+                  rating={comment.rating}
+                  currentRating={comment.current_user_rating}
                   content={comment.content}
                 />
               )

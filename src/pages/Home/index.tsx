@@ -16,6 +16,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { getAllTopics } from '../../service/topics'
 import { Loading } from '../../components/Loading'
 import { useMediaQuery } from 'usehooks-ts'
+import { BackendUser } from '../../utils/interfaces'
 
 export interface Category {
   id: number
@@ -27,11 +28,15 @@ export interface Comment {
   id: number
   content: string
   is_fixed: boolean
+  author: BackendUser
+  rating: number
+  current_user_rating: number
 }
 
 export interface Topic {
   categories: Category[]
   content: string
+  current_user_rating: number
   id: number
   is_fixed: boolean
   title: string
@@ -97,6 +102,7 @@ export function Home() {
                     id={topic.id}
                     title={topic.title}
                     rating={topic.rating}
+                    currentRating={topic.current_user_rating}
                     content={topic.content}
                     author={topic.author.name}
                     commentsCount={topic.comments_count}
