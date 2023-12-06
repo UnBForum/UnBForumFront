@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import {
   ArrowUpIcon,
   ArrowDownIcon,
@@ -6,6 +6,7 @@ import {
   Avatar,
   Divider,
   Badge,
+  useToast,
 } from 'native-base'
 import { FaComment } from 'react-icons/fa'
 import { IoBookmarkOutline, IoBookmark } from 'react-icons/io5'
@@ -22,6 +23,10 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { Category } from '../../pages/Home'
 import { useMediaQuery } from 'usehooks-ts'
+import { makeDownvoteTopic, makeUpvoteTopic } from '../../service/topics'
+import { useUser } from '../../hooks/user'
+import { ToastAlert } from '../Alert'
+import { makeDownvoteComment, makeUpvoteComment } from '../../service/comment'
 
 interface PostProps {
   id: number
@@ -29,7 +34,9 @@ interface PostProps {
   isComment?: boolean
   title?: string
   author: string
+  topicId?: number | null
   content: string
+  currentRating?: number
   rating?: number
   categories?: Category[]
   commentsCount?: number
@@ -42,10 +49,14 @@ export function Post({
   title = '',
   author,
   content,
+  topicId = null,
+  currentRating = 0,
   rating = 0,
   categories = [],
   commentsCount = 0,
 }: PostProps) {
+  const { token } = useUser()
+  const toast = useToast()
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)')
 
@@ -54,6 +65,12 @@ export function Post({
 
   const [likes, setLikes] = useState(rating)
   const [isMark, setIsMark] = useState(false)
+  const [currentUserRating, setCurrentUserRating] = useState(currentRating)
+
+  useEffect(() => {
+    setCurrentUserRating(currentRating)
+    setLikes(rating)
+  }, [currentRating, rating])
 
   function handleClickOnPost() {
     navigate(`/topic/${id}`)
@@ -79,9 +96,47 @@ export function Post({
     }
   }
 
-  function handleReaction(e: MouseEvent, valueToadd: number) {
+  const renderAlertErrorForUnloggedUser = () => {
+    toast.show({
+      placement: 'top-right',
+      render: () => {
+        return (
+          <ToastAlert
+            id="user-unlogged-error"
+            title="Opa!"
+            description={`Para interagir com um tópico ou comentário, você precisa fazer login!`}
+            status=""
+          />
+        )
+      },
+    })
+  }
+
+  async function handleReaction(e: MouseEvent, valueToadd: number) {
     e.preventDefault()
-    setLikes(likes + valueToadd)
+
+    if (!token) {
+      renderAlertErrorForUnloggedUser()
+      return
+    }
+
+    if (valueToadd > 0) {
+      const response = await (isComment
+        ? makeUpvoteComment(id, topicId)
+        : makeUpvoteTopic(id))
+
+      setLikes(response.data.rating)
+
+      setCurrentUserRating(currentUserRating > 0 ? 0 : 1)
+    } else {
+      const response = await (isComment
+        ? makeDownvoteComment(id, topicId)
+        : makeDownvoteTopic(id))
+
+      setLikes(response.data.rating)
+
+      setCurrentUserRating(currentUserRating < 0 ? 0 : -1)
+    }
   }
 
   function handleSave(e: MouseEvent) {
@@ -106,13 +161,27 @@ export function Post({
       <PostContainer>
         <LikesContainer isInsideTopic={isInsideTopic} isComment={isComment}>
           <button id="reactionButton" onClick={(e) => handleReaction(e, 1)}>
-            <ArrowUpIcon color={theme.colors.muted['500']} size="18" />
+            <ArrowUpIcon
+              color={
+                currentUserRating > 0
+                  ? theme.colors.tertiary['500']
+                  : theme.colors.muted['500']
+              }
+              size="18"
+            />
           </button>
 
           <p>{likes}</p>
 
           <button id="reactionButton" onClick={(e) => handleReaction(e, -1)}>
-            <ArrowDownIcon color={theme.colors.muted['500']} size="18" />
+            <ArrowDownIcon
+              color={
+                currentUserRating < 0
+                  ? theme.colors.tertiary['500']
+                  : theme.colors.muted['500']
+              }
+              size="18"
+            />
           </button>
 
           {!isComment && (
