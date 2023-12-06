@@ -3,6 +3,7 @@ import { FilesContainer, InputFileContainer, InputLabel } from './styles'
 import { DeleteIcon, theme, useToast } from 'native-base'
 import { FiFileText } from 'react-icons/fi'
 import { ToastAlert } from '../Alert'
+import { uploadFile } from '../../service/file'
 
 interface UnBForumInputFileProps {
   handleAddFile: (fileName: string) => void
@@ -21,12 +22,13 @@ export function UnBForumInputFile({
 }: UnBForumInputFileProps) {
   const toast = useToast()
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files && event.target.files[0]
 
     if (selectedFile && files.length + 1 <= filesUploadLimit) {
-      console.log('Arquivo selecionado:', selectedFile.name)
-      console.log('Arquivos:', files)
+      const uploadResponse = await uploadFile(selectedFile)
+
+      console.log(uploadResponse)
 
       handleAddFile(selectedFile.name)
     } else {
