@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Button, theme, AddIcon, FavouriteIcon } from 'native-base'
+import { Button, theme, AddIcon, FavouriteIcon, Tooltip } from 'native-base'
 import {
   FavoritesListContainer,
   FeedContainer,
@@ -14,6 +14,9 @@ import { CreateModalTopic } from '../../components/CreateTopicModal'
 import { useCallback, useEffect, useState } from 'react'
 import { getAllTopics } from '../../service/topics'
 import { Loading } from '../../components/Loading'
+import { useMediaQuery } from 'usehooks-ts'
+import { BackendUser, FileData } from '../../utils/interfaces'
+import { useUser } from '../../hooks/user'
 
 export interface Category {
   id: number
@@ -21,17 +24,33 @@ export interface Category {
   name: string
 }
 
+export interface Comment {
+  id: number
+  content: string
+  is_fixed: boolean
+  author: BackendUser
+  rating: number
+  current_user_rating: number
+}
+
 export interface Topic {
   categories: Category[]
   content: string
+  current_user_rating: number
   id: number
   is_fixed: boolean
   title: string
   author: BackendUser
+  rating: number
+  comments: Comment[]
+  files: FileData[]
   comments_count: number
 }
 
 export function Home() {
+  const { token } = useUser()
+  const isMobile = useMediaQuery('(max-width: 768px)')
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [topics, setTopics] = useState<Topic[]>([])
 
@@ -46,17 +65,19 @@ export function Home() {
   useEffect(() => console.log(topics), [topics])
 
   useEffect(() => {
-    setIsLoadingTopics(true)
+    if (!isModalOpen) {
+      setIsLoadingTopics(true)
 
-    getAllTopics({
-      search: searchText,
-      order_by: orderBy,
-      category__id__in: categoryFilters,
-    })
-      .then((response) => {
-        setTopics(response.data)
+      getAllTopics({
+        search: searchText,
+        order_by: orderBy,
+        category__id__in: categoryFilters,
       })
-      .finally(() => setIsLoadingTopics(false))
+        .then((response) => {
+          setTopics(response.data)
+        })
+        .finally(() => setIsLoadingTopics(false))
+    }
   }, [isModalOpen, searchText, orderBy, categoryFilters])
 
   const handleModalOpen = useCallback((modalState: boolean) => {
@@ -82,15 +103,23 @@ export function Home() {
   return (
     <HomeContainer>
       <FeedContainer>
-        <Button
-          bgColor={theme.colors.success['600']}
-          size="lg"
-          borderRadius="4px"
-          rightIcon={<AddIcon />}
-          onPress={() => handleModalOpen(true)}
+        <Tooltip
+          isDisabled={token}
+          label={
+            !token ? 'Para criar um tópico é necessário estar logado' : null
+          }
         >
-          <p>Criar Tópico</p>
-        </Button>
+          <Button
+            isDisabled={!token}
+            bgColor={theme.colors.success['600']}
+            size={isMobile ? 'xs' : 'lg'}
+            borderRadius="4px"
+            rightIcon={<AddIcon />}
+            onPress={() => handleModalOpen(true)}
+          >
+            <p>Criar Tópico</p>
+          </Button>
+        </Tooltip>
 
         <Filter
           onChangeCategoriesFilter={onChangeCategoriesFilter}
@@ -110,6 +139,9 @@ export function Home() {
                     key={topic.id}
                     id={topic.id}
                     title={topic.title}
+                    rating={topic.rating}
+                    files={topic.files}
+                    currentRating={topic.current_user_rating}
                     content={topic.content}
                     author={topic.author.name}
                     commentsCount={topic.comments_count}
@@ -118,11 +150,6 @@ export function Home() {
                 )
               })}
             </PostsContainer>
-            {/* <PostsContainer>
-          {Array.from({ length: 20 }, (_, i) => i).map((i) => {
-            return <Post key={i} id={i} />
-          })}
-        </PostsContainer> */}
           </>
         )}
       </FeedContainer>

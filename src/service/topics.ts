@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios'
 import queryString from 'query-string'
 
 import api from '../api'
-import { TopicData } from '../utils/interfaces'
+import { CreateTopic } from '../utils/interfaces'
 
 interface getTopicsParams {
   search?: string
@@ -25,8 +25,26 @@ export const getOneTopic = async (id: number): Promise<AxiosResponse> => {
   return response
 }
 
-export const createTopic = async (data: TopicData): Promise<AxiosResponse> => {
+export const createTopic = async (
+  data: CreateTopic,
+): Promise<AxiosResponse> => {
   const response = await api.post(`topics`, data)
+
+  return response
+}
+
+export const makeUpvoteTopic = async (
+  topicId: number,
+): Promise<AxiosResponse> => {
+  const response = await api.post(`topics/${topicId}/upvote`)
+
+  return response
+}
+
+export const makeDownvoteTopic = async (
+  topicId: number,
+): Promise<AxiosResponse> => {
+  const response = await api.post(`topics/${topicId}/downvote`)
 
   return response
 }

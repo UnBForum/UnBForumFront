@@ -45,6 +45,7 @@ export const FeedContainer = styled.section`
 
   @media (max-width: 768px) {
     width: 90%;
+    gap: 0.7rem;
 
     & > div[role='button'] {
       font-size: 0.9rem;

@@ -41,10 +41,23 @@ export interface UpdateUserPassword {
   new_password: string
 }
 
+export interface FileData {
+  content_type: string
+  id: number
+  name: string
+  upload_path: string
+}
+
 export interface TopicData {
   title: string
   content: string
-  files: string[]
+  files: FileData[]
+}
+
+export interface CreateTopic {
+  title: string
+  content: string
+  files: number[]
 }
 
 export interface Category {
