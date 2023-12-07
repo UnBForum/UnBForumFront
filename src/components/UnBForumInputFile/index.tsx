@@ -4,11 +4,13 @@ import { DeleteIcon, theme, useToast } from 'native-base'
 import { FiFileText } from 'react-icons/fi'
 import { ToastAlert } from '../Alert'
 import { uploadFile } from '../../service/file'
+import { FileData } from '../../utils/interfaces'
 
 interface UnBForumInputFileProps {
-  handleAddFile: (fileName: string) => void
+  handleAddFile: (file: FileData) => void
   handleDeleteFile: (fileName: string) => void
-  files: string[]
+  setIsAddFileLoading: (isAddFileLoading: boolean) => void
+  files: FileData[]
   fileInputRef: RefObject<HTMLInputElement>
   filesUploadLimit: number
 }
@@ -19,6 +21,7 @@ export function UnBForumInputFile({
   files,
   fileInputRef,
   filesUploadLimit = 2,
+  setIsAddFileLoading,
 }: UnBForumInputFileProps) {
   const toast = useToast()
 
@@ -26,11 +29,35 @@ export function UnBForumInputFile({
     const selectedFile = event.target.files && event.target.files[0]
 
     if (selectedFile && files.length + 1 <= filesUploadLimit) {
-      const uploadResponse = await uploadFile(selectedFile)
+      console.log('tentando subir arquivo1')
+      setIsAddFileLoading(true)
+      console.log('tentando subir arquivo2')
 
-      console.log(uploadResponse)
+      // const uploadResponse = await uploadFile(selectedFile)
+      uploadFile(selectedFile)
+        .then((uploadResponse) => {
+          console.log(uploadResponse.data[0])
 
-      handleAddFile(selectedFile.name)
+          handleAddFile(uploadResponse.data[0])
+        })
+        .catch((_) => {
+          toast.show({
+            placement: 'top',
+            render: () => {
+              return (
+                <ToastAlert
+                  id="files-upload-error"
+                  status="error"
+                  title="Opa!"
+                  description="Erro ao fazer upload do arquivo."
+                />
+              )
+            },
+          })
+        })
+        .finally(() => {
+          setIsAddFileLoading(false)
+        })
     } else {
       toast.show({
         placement: 'top',
@@ -56,14 +83,14 @@ export function UnBForumInputFile({
         <p id="file" key={idx}>
           <button
             id="delete-file-button"
-            onClick={() => handleDeleteFile(file)}
+            onClick={() => handleDeleteFile(file.name)}
           >
             <DeleteIcon size="1.7rem" color={theme.colors.primary['50']} />
           </button>
 
           <FiFileText size="38" color={theme.colors.gray['500']} />
 
-          {file}
+          {file.name}
         </p>,
       )
     })

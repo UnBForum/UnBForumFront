@@ -33,7 +33,7 @@ export const InputLabel = styled.label<{ fontSize: string }>`
 
 export const FilesContainer = styled.div`
   width: 100%;
-  height: 10rem;
+  height: 12rem;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -98,7 +98,7 @@ export const FilesContainer = styled.div`
   }
 
   @media (max-width: 768px) {
-    height: 7rem;
+    height: 10rem;
     gap: 0.5rem;
 
     & > p {
