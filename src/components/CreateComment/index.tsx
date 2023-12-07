@@ -85,7 +85,11 @@ export const CreateComment: React.FC<CreateCommentProps> = ({
   return (
     <CreateCommentContainer>
       <CommentInputContainer>
-        <Avatar bg={'lime.600'} marginRight="0.8rem" size={'sm'}>
+        <Avatar
+          bg={'lime.600'}
+          marginRight="0.8rem"
+          size={isMobile ? 'xs' : 'sm'}
+        >
           {getInitialsLetters(name)}
         </Avatar>
 
