@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { theme } from 'native-base'
 
-export const TextAreaContainer = styled.div`
+export const TextAreaContainer = styled.div<{ isComment: boolean }>`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -9,7 +9,7 @@ export const TextAreaContainer = styled.div`
 
   & > div,
   textarea {
-    height: 10rem;
+    height: ${({ isComment }) => (isComment ? '5rem' : '13rem')};
   }
 
   & > textarea {

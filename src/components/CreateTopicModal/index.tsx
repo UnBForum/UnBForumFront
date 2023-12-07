@@ -22,10 +22,11 @@ import {
   theme,
   useToast,
 } from 'native-base'
-import { TopicData } from '../../utils/interfaces'
+import { FileData, TopicData } from '../../utils/interfaces'
 import { validateCreateTopic } from '../../utils/validateCreateTopic'
 import { ToastAlert } from '../Alert'
 import { createTopic } from '../../service/topics'
+import { formatCreateTopic } from '../../utils/formatCreateTopic'
 
 interface CreateTopicModalProps {
   isModalOpen: boolean
@@ -47,8 +48,6 @@ export function CreateModalTopic({
 
   const [modalVisible, setModalVisible] = useState(false)
 
-  // const [files, setFiles] = useState<string[]>([])
-
   const [topicData, setTopicData] = useState<TopicData>({
     title: '',
     content: '',
@@ -56,11 +55,13 @@ export function CreateModalTopic({
   })
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isAddFileLoading, setIsAddFileLoading] = useState(false)
 
   useEffect(() => console.log(topicData), [topicData])
 
   useEffect(() => {
     setModalVisible(isModalOpen)
+    setTopicData({ title: '', content: '', files: [] })
   }, [isModalOpen])
 
   const handleTopicChange = useCallback(
@@ -72,6 +73,10 @@ export function CreateModalTopic({
     },
     [topicData],
   )
+
+  const handleIsAddFileLoading = useCallback((loading: boolean) => {
+    setIsAddFileLoading(loading)
+  }, [])
 
   const handleCreateTopic = (event: BaseSyntheticEvent) => {
     event.preventDefault()
@@ -105,7 +110,7 @@ export function CreateModalTopic({
 
     setIsLoading(true)
 
-    createTopic(topicData)
+    createTopic(formatCreateTopic(topicData))
       .then((_) => {
         toast.show({
           placement: 'top-right',
@@ -160,15 +165,15 @@ export function CreateModalTopic({
   }
 
   const handleAddFile = useCallback(
-    (fileName: string) => {
-      setTopicData({ ...topicData, files: [...topicData.files, fileName] })
+    (file: FileData) => {
+      setTopicData({ ...topicData, files: [...topicData.files, file] })
     },
     [topicData],
   )
 
   const handleDeleteFile = useCallback(
     (fileName: string) => {
-      const remainingFiles = topicData.files.filter((f) => f !== fileName)
+      const remainingFiles = topicData.files.filter((f) => f.name !== fileName)
 
       setTopicData({ ...topicData, files: remainingFiles })
     },
@@ -220,12 +225,15 @@ export function CreateModalTopic({
               handleAddFile={handleAddFile}
               handleDeleteFile={handleDeleteFile}
               files={topicData.files}
+              setIsAddFileLoading={handleIsAddFileLoading}
             />
 
             <ModalButtonsContainer>
               <Button
                 onPress={() => handleAddFileButtonClick()}
                 size="md"
+                isLoading={isAddFileLoading}
+                isLoadingText="Adicionando arquivo..."
                 borderRadius="4px"
                 _text={{ fontSize: '1rem', fontWeight: '400' }}
                 rightIcon={<AddIcon />}
@@ -238,6 +246,7 @@ export function CreateModalTopic({
                 onPress={(e) => handleCreateTopic(e)}
                 bgColor={theme.colors.success['600']}
                 size="md"
+                isDisabled={isAddFileLoading}
                 borderRadius="4px"
                 _text={{ fontSize: '1rem', fontWeight: '700' }}
                 isLoadingText="Criando..."

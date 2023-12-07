@@ -13,6 +13,7 @@ interface UnBForumTextAreaProps {
   onChange: (field: string, value: string) => void
   value?: string | undefined
   name: string
+  isComment?: boolean
 }
 
 export function UnBForumTextArea({
@@ -25,12 +26,13 @@ export function UnBForumTextArea({
   isRequired = true,
   isEditing = true,
   name,
+  isComment = false,
   value = undefined,
   onChange,
   ...rest
 }: UnBForumTextAreaProps) {
   return (
-    <TextAreaContainer>
+    <TextAreaContainer isComment={isComment}>
       {label && (
         <InputLabel fontSize={fontSize}>
           {label}

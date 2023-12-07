@@ -74,7 +74,7 @@ export function Login() {
               <ToastAlert
                 id="create-user-success"
                 title="Bem-vindo ao UnBFórum"
-                description={`Usuário logado com sucesso!`}
+                description={`Usuário logado com sucesso!\nAgora você pode criar tópicos e interagir com eles!`}
                 status="success"
               />
             )

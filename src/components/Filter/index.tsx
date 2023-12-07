@@ -10,19 +10,22 @@ import {
 } from './styles'
 import { unbForumCourses } from '../../pages/CreateAccount/inputsObject'
 import { unbForumFilters } from '../../constants'
+import { useMediaQuery } from 'usehooks-ts'
 
 export function Filter() {
+  const isMobile = useMediaQuery('(max-width: 768px)')
+
   return (
     <OptionsContainer>
       <FilterContainer>
-        <FaFilter />
+        <FaFilter size={20} color={theme.colors.tertiary['300']} />
 
         <Select
           backgroundColor={theme.colors.white}
           color={theme.colors.black}
           variant="outline"
           height={9}
-          size="lg"
+          size={isMobile ? 'sm' : 'lg'}
           placeholder="Selecione os filtros..."
           accessibilityLabel="Selecione a opção"
         >
@@ -39,14 +42,14 @@ export function Filter() {
       </FilterContainer>
 
       <OrdenationContainer>
-        <PiArrowsDownUpBold />
+        <PiArrowsDownUpBold size={22} color={theme.colors.tertiary['300']} />
 
         <Select
           backgroundColor={theme.colors.white}
           color={theme.colors.black}
           variant="outline"
           height={9}
-          size="lg"
+          size={isMobile ? 'sm' : 'lg'}
           placeholder="Selecione a ordenação..."
           accessibilityLabel="Selecione a opção"
         >

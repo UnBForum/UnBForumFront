@@ -7,27 +7,28 @@ export const OptionsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.9rem 0.8rem;
+  padding: 0.7rem 0.7rem;
   border-radius: 5px;
 
   color: white;
 
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
   }
 `
 
 export const FilterContainer = styled.div`
   width: 50%;
   display: flex;
+  align-items: center;
   gap: 0.5rem;
 
-  & > svg {
+  /* & > svg {
     width: 2rem;
     height: 2rem;
     color: ${theme.colors.tertiary['300']};
-  }
+  } */
 
   & > div {
     width: 85%;
@@ -55,17 +56,18 @@ export const FilterContainer = styled.div`
 export const OrdenationContainer = styled.div`
   width: 50%;
   display: flex;
+  align-items: center;
   gap: 0.5rem;
 
   & > div {
     width: 85%;
   }
 
-  & > svg {
+  /* & > svg {
     width: 2rem;
     height: 2rem;
     color: ${theme.colors.tertiary['300']};
-  }
+  } */
 
   option {
     background-color: ${theme.colors.gray[200]};

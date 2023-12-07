@@ -72,6 +72,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     setEmail('')
     setName('')
 
+    api.defaults.headers.common.Authorization = null
+
     localStorage.removeItem('@UnBForum:token')
   }, [])
 
