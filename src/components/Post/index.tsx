@@ -27,6 +27,9 @@ import { makeDownvoteTopic, makeUpvoteTopic } from '../../service/topics'
 import { useUser } from '../../hooks/user'
 import { ToastAlert } from '../Alert'
 import { makeDownvoteComment, makeUpvoteComment } from '../../service/comment'
+import { FileData } from '../../utils/interfaces'
+import { createFileUrlDownload } from '../../utils/createFileUrlDownload'
+import { getInitialsLetters } from '../../utils/getInitialsLetter'
 
 interface PostProps {
   id: number
@@ -35,6 +38,7 @@ interface PostProps {
   title?: string
   author: string
   topicId?: number | null
+  files?: FileData[]
   content: string
   currentRating?: number
   rating?: number
@@ -52,6 +56,7 @@ export function Post({
   topicId = null,
   currentRating = 0,
   rating = 0,
+  files = [],
   categories = [],
   commentsCount = 0,
 }: PostProps) {
@@ -59,9 +64,6 @@ export function Post({
   const toast = useToast()
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)')
-
-  // const author = 'Sandalo Henrique'
-  // const title = 'Horários de Atendimento coordenação de Eng. de Software'
 
   const [likes, setLikes] = useState(rating)
   const [isMark, setIsMark] = useState(false)
@@ -74,26 +76,6 @@ export function Post({
 
   function handleClickOnPost() {
     navigate(`/topic/${id}`)
-  }
-
-  function getInitialsLetters(name: string) {
-    const splittedName = name.split(' ')
-
-    if (splittedName.length >= 2) {
-      const firstName = splittedName[0]
-      const lastName = splittedName[splittedName.length - 1]
-
-      const initialFirstName = firstName[0]
-      const initialLastName = lastName[0]
-
-      const iniciais =
-        initialFirstName.toUpperCase() + initialLastName.toUpperCase()
-
-      return iniciais
-    } else {
-      // return <IoPerson color={theme.colors.white} />
-      return splittedName[0][0].toUpperCase()
-    }
   }
 
   const renderAlertErrorForUnloggedUser = () => {
@@ -217,30 +199,20 @@ export function Post({
                 __html: content.replace(/\n/g, '<br>'),
               }}
             />
-            {/* <p>
-              {Prezad@s discentes,
-              <br />
-              <br />
-              Prezad@s discentes, Bom dia! Espero que estejam bem. Deixo aqui
-              informações sobre a dinâmica de atendimento da Coordenação de Eng.
-              de Software durante o período da matrícula: - atendimento
-              presencial nas 2a-feiras de 0830h às 0930h; - atendimento
-              presencial nas 4a-feiras de 0830h às 1100h. Além do atendimento
-              presencial, vocês têm acesso ao sistema Sigaa que disponibiliza
-              canal de contato com o Coordenador para envio de mensagens.
-              <br />
-              <br />
-              ***Não haverá atendimento via Chat Teams durante esse período.
-              <br />
-              *** AA
-              <br />
-              <br />
-              Para visualizar acesse{' '}
-              <a href="https://teste.com.br/teste">
-                https://teste.com.br/teste
-              </a>
-              <br />}
-            </p> */}
+
+            {files.length > 0 && <Divider width="80%" />}
+            {files.map((f, i) => (
+              <span key={f.id}>
+                Para acessar o arquivo {`${i + 1}: `}
+                <a
+                  href={createFileUrlDownload(f)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  clique aqui
+                </a>
+              </span>
+            ))}
 
             {!isComment && (
               <BadgesContainer>
@@ -258,22 +230,6 @@ export function Post({
                     </Badge>
                   )
                 })}
-                {/* {['TCC', 'Eng. Software', 'Eng. Eletrônica', '27/07'].map(
-                  (label, key) => {
-                    return (
-                      <Badge
-                        key={key}
-                        variant="solid"
-                        bg={theme.colors.tertiary['500']}
-                        alignSelf="center"
-                        size="md"
-                        textDecoration="solid .8rem bold"
-                      >
-                        <p id="post-badge-text">{label}</p>
-                      </Badge>
-                    )
-                  },
-                )} */}
               </BadgesContainer>
             )}
 

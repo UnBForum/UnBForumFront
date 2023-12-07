@@ -94,9 +94,17 @@ export const PostContentContainer = styled.div<{
     line-height: ${({ isComment }) => (isComment ? '1.7' : '2')};
   }
 
-  &:focus {
-    box-shadow: none;
+  & > span {
+    font-size: 0.8rem;
+    font-weight: ${({ isComment, isInsideTopic }) =>
+      isComment || !isInsideTopic ? '400' : '400'};
+    color: ${theme.colors.black};
+    line-height: 1;
   }
+
+  /* &:focus {
+    box-shadow: none;
+  } */
 
   #post-title {
     font-size: 2.5rem;
@@ -114,6 +122,10 @@ export const PostContentContainer = styled.div<{
       line-height: 1.7;
     }
 
+    & > span {
+      font-size: 0.65rem;
+    }
+
     #post-title {
       font-size: 1.2rem;
       font-weight: 600;
@@ -126,6 +138,7 @@ export const AuthorContainer = styled.div<{ isInsideTopic: boolean }>`
   display: flex;
   align-items: ${({ isInsideTopic }) => (isInsideTopic ? 'center' : 'center')};
   flex-direction: row;
+  margin-bottom: 1rem;
 
   & > p {
     font-weight: ${({ isInsideTopic }) => (isInsideTopic ? 500 : 600)};
