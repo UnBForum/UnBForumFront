@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import api from '../api'
-import { CreateTopic, TopicData } from '../utils/interfaces'
+import { CreateTopic } from '../utils/interfaces'
 
 export const getAllTopics = async (): Promise<AxiosResponse> => {
   const response = await api.get('topics')
