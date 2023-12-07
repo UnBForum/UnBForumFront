@@ -1,19 +1,11 @@
 // @ts-nocheck
-import {
-  Button,
-  theme,
-  AddIcon,
-  SearchIcon,
-  FavouriteIcon,
-  Spinner,
-} from 'native-base'
+import { Button, theme, AddIcon, FavouriteIcon } from 'native-base'
 import {
   FavoritesListContainer,
   FeedContainer,
   HomeContainer,
   LikesContainer,
   PostsContainer,
-  SearchInput,
 } from './styles'
 import { Filter } from '../../components/Filter'
 import { Post } from '../../components/Post'
@@ -43,6 +35,11 @@ export function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [topics, setTopics] = useState<Topic[]>([])
 
+  const [categoryFilters, setCategoryFilters] = useState<number[]>([])
+  const [orderBy, setOrderBy] = useState('-created_at')
+  const [onChangeSearchText, setOnChangeSearchText] = useState('')
+  const [searchText, setSearchText] = useState('')
+
   const [isLoadingTopics, setIsLoadingTopics] = useState(false)
 
   useEffect(() => window.scrollTo(0, 0), [])
@@ -51,20 +48,36 @@ export function Home() {
   useEffect(() => {
     setIsLoadingTopics(true)
 
-    getAllTopics()
+    getAllTopics({
+      search: searchText,
+      order_by: orderBy,
+      category__id__in: categoryFilters,
+    })
       .then((response) => {
         setTopics(response.data)
       })
       .finally(() => setIsLoadingTopics(false))
-  }, [isModalOpen])
-
-  function handleSearch() {
-    console.log('Pesquisando...')
-  }
+  }, [isModalOpen, searchText, orderBy, categoryFilters])
 
   const handleModalOpen = useCallback((modalState: boolean) => {
     setIsModalOpen(modalState)
   }, [])
+
+  const onChangeCategoriesFilter = useCallback((newValue) => {
+    setCategoryFilters(newValue.map((item) => item.value))
+  }, [])
+
+  const onChangeOrderBy = useCallback((item) => {
+    setOrderBy(item.value)
+  }, [])
+
+  const onChangeSearchInput = useCallback((_, text) => {
+    setOnChangeSearchText(text)
+  }, [])
+
+  const handleSearch = useCallback(() => {
+    setSearchText(onChangeSearchText)
+  }, [onChangeSearchText])
 
   return (
     <HomeContainer>
@@ -79,7 +92,12 @@ export function Home() {
           <p>Criar Tópico</p>
         </Button>
 
-        <Filter />
+        <Filter
+          onChangeCategoriesFilter={onChangeCategoriesFilter}
+          onChangeOrderBy={onChangeOrderBy}
+          onChangeSearchInput={onChangeSearchInput}
+          handleSearch={handleSearch}
+        />
 
         {isLoadingTopics ? (
           <Loading accessibilityLabel="Carregando os tópicos..." />
@@ -110,18 +128,6 @@ export function Home() {
       </FeedContainer>
 
       <LikesContainer>
-        <SearchInput
-          size="xl"
-          accessibilityLabel="Pesquisar"
-          placeholder="Pesquisar..."
-          inputType="text"
-          InputRightElement={
-            <Button rounded="none" w="1/6" h="full" onPress={handleSearch}>
-              <SearchIcon color={theme.colors.white} size="22" />
-            </Button>
-          }
-        />
-
         <FavoritesListContainer>
           <div id="favorite-title-container">
             <h1 id="title-favorites">Tópicos Fixados</h1>
