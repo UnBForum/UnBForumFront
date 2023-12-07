@@ -23,7 +23,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { getAllTopics } from '../../service/topics'
 import { Loading } from '../../components/Loading'
 import { useMediaQuery } from 'usehooks-ts'
-import { BackendUser } from '../../utils/interfaces'
+import { BackendUser, FileData } from '../../utils/interfaces'
 import { useUser } from '../../hooks/user'
 
 export interface Category {
@@ -51,6 +51,7 @@ export interface Topic {
   author: BackendUser
   rating: number
   comments: Comment[]
+  files: FileData[]
   comments_count: number
 }
 
@@ -67,13 +68,15 @@ export function Home() {
   useEffect(() => console.log(topics), [topics])
 
   useEffect(() => {
-    setIsLoadingTopics(true)
+    if (!isModalOpen) {
+      setIsLoadingTopics(true)
 
-    getAllTopics()
-      .then((response) => {
-        setTopics(response.data)
-      })
-      .finally(() => setIsLoadingTopics(false))
+      getAllTopics()
+        .then((response) => {
+          setTopics(response.data)
+        })
+        .finally(() => setIsLoadingTopics(false))
+    }
   }, [isModalOpen])
 
   function handleSearch() {
@@ -119,6 +122,7 @@ export function Home() {
                     id={topic.id}
                     title={topic.title}
                     rating={topic.rating}
+                    files={topic.files}
                     currentRating={topic.current_user_rating}
                     content={topic.content}
                     author={topic.author.name}
