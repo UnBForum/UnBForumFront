@@ -13,6 +13,8 @@ interface UnBForumInputProps {
   isEditing?: boolean
   onChange: (field: string, value: string) => void
   value?: string | undefined
+  backgroundColor?: string | null
+  height?: string | null
 }
 
 export function UnBForumInput({
@@ -26,6 +28,8 @@ export function UnBForumInput({
   isRequired = true,
   isEditing = true,
   value = undefined,
+  backgroundColor = null,
+  height = null,
   onChange,
   ...rest
 }: UnBForumInputProps) {
@@ -39,9 +43,11 @@ export function UnBForumInput({
       )}
 
       <Input
+        height={height || null}
         type={inputType}
         variant={isEditing ? 'outline' : 'filled'}
         size={size}
+        backgroundColor={backgroundColor || null}
         isRequired={isRequired}
         value={value}
         placeholder={placeholder}

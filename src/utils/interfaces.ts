@@ -59,3 +59,9 @@ export interface CreateTopic {
   content: string
   files: number[]
 }
+
+export interface Category {
+  id: number
+  name: string
+  color: string
+}
