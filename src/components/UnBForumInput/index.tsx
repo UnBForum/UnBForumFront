@@ -1,4 +1,4 @@
-import { Input, theme } from 'native-base'
+import { Input } from 'native-base'
 import { InputContainer, InputLabel } from './styles'
 
 interface UnBForumInputProps {
