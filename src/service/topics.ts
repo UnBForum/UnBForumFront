@@ -1,11 +1,22 @@
 import { AxiosResponse } from 'axios'
+import queryString from 'query-string'
+
 import api from '../api'
 import { CreateTopic } from '../utils/interfaces'
 
-export const getAllTopics = async (): Promise<AxiosResponse> => {
-  const response = await api.get('topics')
+interface getTopicsParams {
+  search?: string
+  order_by?: string
+  is_fixed?: boolean
+  category__id__in?: number[]
+}
 
-  return response
+export const getAllTopics = async (
+  params: getTopicsParams,
+): Promise<AxiosResponse> => {
+  return await api.get(
+    `topics/?${queryString.stringify(params, { arrayFormat: 'comma' })}`,
+  )
 }
 
 export const getOneTopic = async (id: number): Promise<AxiosResponse> => {

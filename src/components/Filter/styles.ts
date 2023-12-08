@@ -6,9 +6,10 @@ export const OptionsContainer = styled.div`
   background-color: ${theme.colors.info['700']};
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 0.7rem 0.7rem;
   border-radius: 5px;
+  gap: 1rem;
 
   color: white;
 
@@ -18,72 +19,55 @@ export const OptionsContainer = styled.div`
   }
 `
 
-export const FilterContainer = styled.div`
-  width: 50%;
+export const FiltersContainer = styled.div`
+  width: 100%;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 0.5rem;
-
-  /* & > svg {
-    width: 2rem;
-    height: 2rem;
-    color: ${theme.colors.tertiary['300']};
-  } */
+  justify-content: space-between;
+  gap: 1rem;
 
   & > div {
-    width: 85%;
-  }
-
-  option {
-    background-color: ${theme.colors.gray[200]};
-    color: ${theme.colors.black};
-    font-family: 'Poppins', 'Montserrat', sans-serif;
-    font-size: 0.9rem;
-    gap: 0.3rem;
+    width: 95%;
   }
 
   @media (max-width: 768px) {
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-
-    option {
-      font-size: 0.8rem;
-    }
+    gap: 0.5rem;
   }
 `
 
-export const OrdenationContainer = styled.div`
-  width: 50%;
+export const SearchContainer = styled.div`
+  width: 100%;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
+  gap: 1rem;
 
   & > div {
-    width: 85%;
-  }
-
-  /* & > svg {
-    width: 2rem;
-    height: 2rem;
-    color: ${theme.colors.tertiary['300']};
-  } */
-
-  option {
-    background-color: ${theme.colors.gray[200]};
-    color: ${theme.colors.black};
-    font-family: 'Poppins', 'Montserrat', sans-serif;
-    font-size: 0.9rem;
-    gap: 0.3rem;
+    width: 95%;
   }
 
   @media (max-width: 768px) {
-    width: 100%;
-    justify-content: center;
-    align-items: center;
+    /* width: 100%; */
+    gap: 0.5rem;
+  }
+`
 
-    option {
-      font-size: 0.8rem;
-    }
+export const OrderByContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  & > div {
+    width: 95%;
+  }
+
+  @media (max-width: 768px) {
+    /* width: 100%; */
+    gap: 0.5rem;
   }
 `
