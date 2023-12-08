@@ -153,7 +153,7 @@ export function Filter({
         <UnBForumInput
           name="topic-search"
           height="2.4rem"
-          // size={isMobile ? 'md' : 'lg'}
+          size={isMobile ? 'md' : 'lg'}
           backgroundColor={theme.colors.white}
           accessibilityLabel="Buscar tópicos"
           placeholder="Buscar tópicos..."

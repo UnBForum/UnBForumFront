@@ -103,6 +103,7 @@ export function Home() {
   return (
     <HomeContainer>
       <FeedContainer>
+        {/* {isMobile && ( */}
         <Tooltip
           isDisabled={token}
           label={
@@ -120,6 +121,7 @@ export function Home() {
             <p>Criar Tópico</p>
           </Button>
         </Tooltip>
+        {/* )} */}
 
         <Filter
           onChangeCategoriesFilter={onChangeCategoriesFilter}
