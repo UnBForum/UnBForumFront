@@ -101,78 +101,79 @@ export function Home() {
   }, [onChangeSearchText])
 
   return (
-    <HomeContainer>
-      <FeedContainer>
-        {/* {isMobile && ( */}
-        <Tooltip
-          isDisabled={token}
-          label={
-            !token ? 'Para criar um tópico é necessário estar logado' : null
-          }
-        >
-          <Button
-            isDisabled={!token}
-            bgColor={theme.colors.success['600']}
-            size={isMobile ? 'xs' : 'lg'}
-            borderRadius="4px"
-            rightIcon={<AddIcon />}
-            onPress={() => handleModalOpen(true)}
+    <>
+      <HomeContainer>
+        <FeedContainer>
+          {/* {isMobile && ( */}
+          <Tooltip
+            isDisabled={token}
+            label={
+              !token ? 'Para criar um tópico é necessário estar logado' : null
+            }
           >
-            <p>Criar Tópico</p>
-          </Button>
-        </Tooltip>
-        {/* )} */}
+            <Button
+              isDisabled={!token}
+              bgColor={theme.colors.success['600']}
+              size={isMobile ? 'xs' : 'lg'}
+              borderRadius="4px"
+              rightIcon={<AddIcon />}
+              onPress={() => handleModalOpen(true)}
+            >
+              <p>Criar Tópico</p>
+            </Button>
+          </Tooltip>
+          {/* )} */}
 
-        <Filter
-          onChangeCategoriesFilter={onChangeCategoriesFilter}
-          onChangeOrderBy={onChangeOrderBy}
-          onChangeSearchInput={onChangeSearchInput}
-          handleSearch={handleSearch}
-        />
+          <Filter
+            onChangeCategoriesFilter={onChangeCategoriesFilter}
+            onChangeOrderBy={onChangeOrderBy}
+            onChangeSearchInput={onChangeSearchInput}
+            handleSearch={handleSearch}
+          />
 
-        {isLoadingTopics ? (
-          <Loading accessibilityLabel="Carregando os tópicos..." />
-        ) : (
-          <>
-            <PostsContainer>
-              {topics.map((topic) => {
-                return (
-                  <Post
-                    key={topic.id}
-                    id={topic.id}
-                    title={topic.title}
-                    rating={topic.rating}
-                    files={topic.files}
-                    currentRating={topic.current_user_rating}
-                    content={topic.content}
-                    author={topic.author.name}
-                    commentsCount={topic.comments_count}
-                    categories={topic.categories}
-                  />
-                )
-              })}
-            </PostsContainer>
-          </>
-        )}
-      </FeedContainer>
+          {isLoadingTopics ? (
+            <Loading accessibilityLabel="Carregando os tópicos..." />
+          ) : (
+            <>
+              <PostsContainer>
+                {topics.map((topic) => {
+                  return (
+                    <Post
+                      key={topic.id}
+                      id={topic.id}
+                      title={topic.title}
+                      rating={topic.rating}
+                      files={topic.files}
+                      currentRating={topic.current_user_rating}
+                      content={topic.content}
+                      author={topic.author.name}
+                      commentsCount={topic.comments_count}
+                      categories={topic.categories}
+                    />
+                  )
+                })}
+              </PostsContainer>
+            </>
+          )}
+        </FeedContainer>
 
-      <LikesContainer>
-        <FavoritesListContainer>
-          <div id="favorite-title-container">
-            <h1 id="title-favorites">Tópicos Fixados</h1>
-            <FavouriteIcon color={theme.colors.rose['600']} size="22" />
-          </div>
+        <LikesContainer>
+          <FavoritesListContainer>
+            <div id="favorite-title-container">
+              <h1 id="title-favorites">Tópicos Fixados</h1>
+              <FavouriteIcon color={theme.colors.rose['600']} size="22" />
+            </div>
 
-          {Array.from({ length: 10 }).map((_, i) => {
-            return <FavoritePost key={i} />
-          })}
-        </FavoritesListContainer>
-      </LikesContainer>
-
+            {Array.from({ length: 10 }).map((_, i) => {
+              return <FavoritePost key={i} />
+            })}
+          </FavoritesListContainer>
+        </LikesContainer>
+      </HomeContainer>
       <CreateModalTopic
         isModalOpen={isModalOpen}
         setIsModalOpen={handleModalOpen}
       />
-    </HomeContainer>
+    </>
   )
 }

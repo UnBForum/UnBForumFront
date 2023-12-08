@@ -17,6 +17,13 @@ export const TextAreaContainer = styled.div<{ isComment: boolean }>`
     line-height: 1rem;
     color: ${theme.colors.black};
   }
+
+  @media (max-width: 768px) {
+    & > div,
+    textarea {
+      height: ${({ isComment }) => (isComment ? '5rem' : '7rem')};
+    }
+  }
 `
 
 export const InputLabel = styled.label<{ fontSize: string }>`
