@@ -20,7 +20,7 @@ import {
   ArrowBackIcon,
   Button,
   CheckCircleIcon,
-  CloseIcon,
+  // CloseIcon,
   theme,
   useToast,
 } from 'native-base'
