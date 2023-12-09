@@ -17,6 +17,7 @@ import { UnBForumTextArea } from '../UnBForumTextArea'
 import { UnBForumInputFile } from '../UnBForumInputFile'
 import {
   AddIcon,
+  ArrowBackIcon,
   Button,
   CheckCircleIcon,
   CloseIcon,
@@ -283,98 +284,97 @@ export function CreateModalTopic({
 
   return (
     <>
-      {modalVisible && (
-        <Overlay isOpen={modalVisible} onClick={handleClose}>
-          <Content isOpen={modalVisible} onClick={(e) => e.stopPropagation()}>
-            <CloseButtonContainer onClick={handleClose}>
-              <CloseIcon size="2rem" color={theme.colors.primary['50']} />
-            </CloseButtonContainer>
+      {/* {modalVisible && ( */}
+      <Overlay isOpen={modalVisible}>
+        {/* <Overlay isOpen={modalVisible} onClick={handleClose}> */}
+        <Content isOpen={modalVisible} onClick={(e) => e.stopPropagation()}>
+          <CloseButtonContainer onClick={handleClose}>
+            <ArrowBackIcon size="2rem" color={theme.colors.tertiary['400']} />
+          </CloseButtonContainer>
 
-            <h1>Novo Tópico</h1>
+          <h1>Novo Tópico</h1>
 
-            <UnBForumInput
-              name="title"
-              onChange={handleTopicChange}
-              fontSize="1.2rem"
-              size="lg"
-              inputType="text"
-              accessibilityLabel="Título"
-              label="Título"
-              placeholder="Digite o título do tópico..."
+          <UnBForumInput
+            name="title"
+            onChange={handleTopicChange}
+            fontSize="1.2rem"
+            size="lg"
+            inputType="text"
+            accessibilityLabel="Título"
+            label="Título"
+            placeholder="Digite o título do tópico..."
+          />
+
+          <UnBForumTextArea
+            name="content"
+            onChange={handleTopicChange}
+            fontSize="1.2rem"
+            size="lg"
+            inputType="text"
+            accessibilityLabel="Conteúdo"
+            label="Conteúdo"
+            placeholder="Digite o conteúdo do tópico aqui..."
+          />
+
+          <CategoriesContainer>
+            <Select
+              isMulti
+              closeMenuOnSelect={false}
+              options={categories.map(
+                (category): OptionsType => ({
+                  value: category.id.toString(),
+                  label: category.name,
+                  color: category.color,
+                }),
+              )}
+              styles={colourStyles}
+              onChange={(newValue) => handleTopicChange('categories', newValue)}
+              placeholder="Adicionar categorias"
             />
+          </CategoriesContainer>
 
-            <UnBForumTextArea
-              name="content"
-              onChange={handleTopicChange}
-              fontSize="1.2rem"
-              size="lg"
-              inputType="text"
-              accessibilityLabel="Conteúdo"
-              label="Conteúdo"
-              placeholder="Digite o conteúdo do tópico aqui..."
-            />
+          <UnBForumInputFile
+            filesUploadLimit={2}
+            fileInputRef={fileInputRef}
+            handleAddFile={handleAddFile}
+            handleDeleteFile={handleDeleteFile}
+            files={topicData.files}
+            setIsAddFileLoading={handleIsAddFileLoading}
+          />
 
-            <CategoriesContainer>
-              <Select
-                isMulti
-                closeMenuOnSelect={false}
-                options={categories.map(
-                  (category): OptionsType => ({
-                    value: category.id.toString(),
-                    label: category.name,
-                    color: category.color,
-                  }),
-                )}
-                styles={colourStyles}
-                onChange={(newValue) =>
-                  handleTopicChange('categories', newValue)
-                }
-                placeholder="Adicionar categorias"
-              />
-            </CategoriesContainer>
+          <ModalButtonsContainer>
+            <Button
+              onPress={() => handleAddFileButtonClick()}
+              size={isMobile ? 'xs' : 'md'}
+              isLoading={isAddFileLoading}
+              isLoadingText="Adicionando arquivo..."
+              borderRadius="4px"
+              _text={{ fontSize: '1rem', fontWeight: '400' }}
+              rightIcon={<AddIcon />}
+            >
+              Adicionar arquivos
+            </Button>
 
-            <UnBForumInputFile
-              filesUploadLimit={2}
-              fileInputRef={fileInputRef}
-              handleAddFile={handleAddFile}
-              handleDeleteFile={handleDeleteFile}
-              files={topicData.files}
-              setIsAddFileLoading={handleIsAddFileLoading}
-            />
+            <Button
+              id="create-topic-button"
+              onPress={(e) => handleCreateTopic(e)}
+              bgColor={theme.colors.success['600']}
+              size={isMobile ? 'xs' : 'md'}
+              isDisabled={isAddFileLoading}
+              borderRadius="4px"
+              _text={{ fontSize: '1rem', fontWeight: '700' }}
+              isLoadingText="Criando..."
+              isLoading={isLoading}
+              rightIcon={<CheckCircleIcon />}
+            >
+              Criar
+            </Button>
+          </ModalButtonsContainer>
 
-            <ModalButtonsContainer>
-              <Button
-                onPress={() => handleAddFileButtonClick()}
-                size={isMobile ? 'xs' : 'md'}
-                isLoading={isAddFileLoading}
-                isLoadingText="Adicionando arquivo..."
-                borderRadius="4px"
-                _text={{ fontSize: '1rem', fontWeight: '400' }}
-                rightIcon={<AddIcon />}
-              >
-                Adicionar arquivos
-              </Button>
-
-              <Button
-                id="create-topic-button"
-                onPress={(e) => handleCreateTopic(e)}
-                bgColor={theme.colors.success['600']}
-                size={isMobile ? 'xs' : 'md'}
-                isDisabled={isAddFileLoading}
-                borderRadius="4px"
-                _text={{ fontSize: '1rem', fontWeight: '700' }}
-                isLoadingText="Criando..."
-                isLoading={isLoading}
-                rightIcon={<CheckCircleIcon />}
-              >
-                Criar
-              </Button>
-            </ModalButtonsContainer>
-
-            {/* <button onClick={handleClose}>Fechar</button> */}
-          </Content>
-        </Overlay>
-      )}
+          {/* <button onClick={handleClose}>Fechar</button> */}
+        </Content>
+      </Overlay>
+      {/* )} */}
     </>
   )
 }

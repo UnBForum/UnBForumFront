@@ -7,6 +7,7 @@ import { CreateAccountLayout } from './layouts/CreateAccountLayout'
 import { CreateAccount } from './pages/CreateAccount'
 import { Profile } from './pages/Profile'
 import { Topic } from './pages/Topic'
+import { CreateTopic } from './pages/CreateTopic'
 
 export function Router() {
   return (
@@ -18,6 +19,10 @@ export function Router() {
 
       <Route path="/profile" element={<DefaultLayout />}>
         <Route path="/profile" element={<Profile />} />
+      </Route>
+
+      <Route path="/create-topic" element={<DefaultLayout />}>
+        <Route path="/create-topic" element={<CreateTopic />} />
       </Route>
 
       <Route path="/login" element={<CreateAccountLayout />}>

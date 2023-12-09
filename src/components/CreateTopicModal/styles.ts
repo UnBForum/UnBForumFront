@@ -2,12 +2,12 @@ import { theme } from 'native-base'
 import styled from 'styled-components'
 
 export const Overlay = styled.div<{ isOpen: boolean }>`
-  position: fixed;
+  /* position: fixed;
   top: 0;
-  left: 0;
+  left: 0; */
   width: 100%;
-  height: 100%;
-  background-color: ${theme.colors.black + '75'}; /* fundo escurecido */
+  /* height: 100%; */
+  /* background-color: ${theme.colors.black + '75'}; fundo escurecido */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,7 +20,7 @@ export const Overlay = styled.div<{ isOpen: boolean }>`
 
 export const Content = styled.section<{ isOpen: boolean }>`
   position: relative;
-  background-color: white;
+  /* background-color: white; */
   width: 60%;
   max-width: 880px;
   height: 80vh;
@@ -29,11 +29,11 @@ export const Content = styled.section<{ isOpen: boolean }>`
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1rem;
-  overflow: auto;
+  /* overflow: auto; */
 
   border-radius: 8px;
   padding: 1.7rem 3rem;
-  box-shadow: 0 0 10px ${theme.colors.black + '50'};
+  /* box-shadow: 0 0 10px ${theme.colors.black + '50'}; */
   opacity: ${({ isOpen }) => (isOpen ? '1' : '0')};
   /* transform: translateY(-50px);
   transition:
@@ -52,7 +52,7 @@ export const Content = styled.section<{ isOpen: boolean }>`
     height: 90vh;
     max-width: none;
 
-    padding: 1rem 1.5rem;
+    padding: 0.5rem 1rem;
 
     & > h1 {
       font-size: 1.5rem;
@@ -87,7 +87,7 @@ export const CloseButtonContainer = styled.button`
   border-radius: 0 8px 0 0;
   transition: 0.3s all ease;
 
-  background-color: ${theme.colors.danger['600']};
+  /* background-color: ${theme.colors.danger['600']}; */
 
   &:hover {
     filter: brightness(70%);

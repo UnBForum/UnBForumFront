@@ -17,6 +17,7 @@ import { Loading } from '../../components/Loading'
 import { useMediaQuery } from 'usehooks-ts'
 import { BackendUser, FileData } from '../../utils/interfaces'
 import { useUser } from '../../hooks/user'
+import { useNavigate } from 'react-router-dom'
 
 export interface Category {
   id: number
@@ -49,6 +50,7 @@ export interface Topic {
 
 export function Home() {
   const { token } = useUser()
+  const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -80,9 +82,13 @@ export function Home() {
     }
   }, [isModalOpen, searchText, orderBy, categoryFilters])
 
-  const handleModalOpen = useCallback((modalState: boolean) => {
-    setIsModalOpen(modalState)
-  }, [])
+  const handleModalOpen = useCallback(
+    (_) => {
+      // setIsModalOpen(modalState)
+      navigate('/create-topic')
+    },
+    [navigate],
+  )
 
   const onChangeCategoriesFilter = useCallback((newValue) => {
     setCategoryFilters(newValue.map((item) => item.value))
@@ -104,7 +110,6 @@ export function Home() {
     <>
       <HomeContainer>
         <FeedContainer>
-          {/* {isMobile && ( */}
           <Tooltip
             isDisabled={token}
             label={
@@ -122,7 +127,6 @@ export function Home() {
               <p>Criar Tópico</p>
             </Button>
           </Tooltip>
-          {/* )} */}
 
           <Filter
             onChangeCategoriesFilter={onChangeCategoriesFilter}
@@ -170,10 +174,10 @@ export function Home() {
           </FavoritesListContainer>
         </LikesContainer>
       </HomeContainer>
-      <CreateModalTopic
+      {/* <CreateModalTopic
         isModalOpen={isModalOpen}
         setIsModalOpen={handleModalOpen}
-      />
+      /> */}
     </>
   )
 }
