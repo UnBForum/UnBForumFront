@@ -52,10 +52,18 @@ export interface TopicData {
   title: string
   content: string
   files: FileData[]
+  categories: number[]
 }
 
 export interface CreateTopic {
   title: string
   content: string
   files: number[]
+  categories: number[]
+}
+
+export interface Category {
+  id: number
+  name: string
+  color: string
 }

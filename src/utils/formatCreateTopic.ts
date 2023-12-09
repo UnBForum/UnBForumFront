@@ -1,12 +1,12 @@
 import { CreateTopic, TopicData } from './interfaces'
 
 export const formatCreateTopic = (topicData: TopicData): CreateTopic => {
-  const { title, content, files } = topicData
+  const { title, content, files, categories } = topicData
 
   return {
     title,
     content,
-    // categories: [],
+    categories,
     files: files.map((f) => f.id),
   }
 }

@@ -5,7 +5,7 @@ export const LoadingContainer = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
-  height: 70vh;
+  height: 65vh;
   gap: 1rem;
 
   @media (max-width: 768px) {

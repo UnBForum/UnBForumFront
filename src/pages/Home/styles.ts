@@ -1,6 +1,5 @@
 import { theme } from 'native-base'
 import styled from 'styled-components'
-import { UnBForumInput } from '../../components/UnBForumInput'
 
 export const HomeContainer = styled.main`
   width: 70%;
@@ -28,6 +27,7 @@ export const FeedContainer = styled.section`
   margin-bottom: 1rem;
 
   & > div[role='button'] {
+    width: 100%;
     font-size: 1rem;
     font-weight: bold;
     color: ${theme.colors.text['50']};
@@ -55,7 +55,7 @@ export const FeedContainer = styled.section`
 
 export const PostsContainer = styled.main`
   width: 100%;
-  height: 70vh;
+  height: 65vh;
   display: flex;
   flex-direction: column;
   /* gap: 1rem; */
@@ -76,13 +76,32 @@ export const LikesContainer = styled.section`
   justify-content: flex-start;
   gap: 1rem;
 
+  & > div[role='button'] {
+    width: 100%;
+    font-size: 1rem;
+    font-weight: bold;
+    color: ${theme.colors.text['50']};
+    transition: all 0.2s;
+
+    &:hover {
+      box-shadow: 0 0 10px ${theme.colors.success['600']};
+    }
+
+    & > svg {
+      width: 0.6rem;
+      height: 0.6rem;
+    }
+  }
+
   @media (max-width: 768px) {
     width: 90%;
     margin-bottom: 1rem;
+
+    & > div[role='button'] {
+      font-size: 0.9rem;
+    }
   }
 `
-
-export const SearchInput = styled(UnBForumInput)``
 
 export const FavoritesListContainer = styled.aside`
   width: 100%;
