@@ -170,7 +170,7 @@ export function CreateCategoryModal({
               name="name"
               onChange={handleTopicChange}
               fontSize="1.2rem"
-              value={category.name || null}
+              value={category.name || undefined}
               size="lg"
               inputType="text"
               accessibilityLabel="Nome da Categoria"

@@ -12,7 +12,7 @@ interface UnBForumInputProps {
   isRequired?: boolean
   isEditing?: boolean
   onChange: (field: string, value: string) => void
-  value?: string | undefined | null
+  value?: string | undefined
   backgroundColor?: string | null
   height?: string | null
 }
