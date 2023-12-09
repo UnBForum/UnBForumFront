@@ -30,6 +30,7 @@ export function UnBForumMenu() {
       {!token && (
         <Menu.Item onPress={() => navigate('/login/logon')}>Entrar</Menu.Item>
       )}
+      <Menu.Item onPress={() => navigate('/categories')}>Categorias</Menu.Item>
     </Menu>
   )
 }

@@ -55,7 +55,7 @@ export const FeedContainer = styled.section`
 
 export const PostsContainer = styled.main`
   width: 100%;
-  height: 65vh;
+  height: 60vh;
   display: flex;
   flex-direction: column;
   /* gap: 1rem; */
