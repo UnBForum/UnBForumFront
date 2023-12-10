@@ -19,6 +19,7 @@ interface UserContextData {
   logoutUser: () => void
   changeToken: (newToken: string) => void
   setName: (name: string) => void
+  checkScopePermissions: (permissionToCheck: string) => boolean
   scopes: string[]
   email: string
   name: string
@@ -29,6 +30,10 @@ interface TokenPayload {
   scopes: string[]
   name: string
 }
+
+export const MODERATOR_SCOPE = 'moderator'
+export const ADMIN_SCOPE = 'administrator'
+export const MEMBER_SCOPE = 'member'
 
 const UserContext = createContext<UserContextData | null>(null)
 
@@ -66,6 +71,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     setName(user.name)
   }, [])
 
+  const checkScopePermissions = useCallback(
+    (permissionToCheck: string) => {
+      return scopes.some((s) => s === permissionToCheck)
+    },
+    [scopes],
+  )
+
   const logoutUser = useCallback((): void => {
     setToken('')
     setScopes([])
@@ -85,6 +97,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         email,
         scopes,
         changeToken,
+        checkScopePermissions,
         logoutUser,
         setName,
       }}

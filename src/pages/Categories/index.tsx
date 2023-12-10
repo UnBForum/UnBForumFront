@@ -15,11 +15,13 @@ import { Category } from '../../utils/interfaces'
 import { CreateCategoryModal } from '../../components/CreateCategoryModal'
 import { Loading } from '../../components/Loading'
 import { ToastAlert } from '../../components/Alert'
+import { ADMIN_SCOPE, MODERATOR_SCOPE, useUser } from '../../hooks/user'
 
 const defaultModalTitle = 'Nova Categoria'
 
 export function Categories() {
   const toast = useToast()
+  const { checkScopePermissions } = useUser()
   const [categories, setCategories] = useState<Category[]>([])
 
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
@@ -124,13 +126,16 @@ export function Categories() {
         <section className="categories-list">
           <div id="create-category">
             <h1 className="categories-page-title">Lista de Categorias</h1>
-            <Button
-              size="lg"
-              rightIcon={<AddIcon />}
-              onPress={() => handleModalOpen(true)}
-            >
-              Criar categoria
-            </Button>
+            {(checkScopePermissions(ADMIN_SCOPE) ||
+              checkScopePermissions(MODERATOR_SCOPE)) && (
+              <Button
+                size="lg"
+                rightIcon={<AddIcon />}
+                onPress={() => handleModalOpen(true)}
+              >
+                Criar categoria
+              </Button>
+            )}
           </div>
 
           <CategoriesListContainer>
@@ -140,19 +145,22 @@ export function Categories() {
               <>
                 {categories.map((category) => (
                   <div key={category.id} id="category-card">
-                    <CategoryButtonsContainer>
-                      <EditButtonContainer
-                        onClick={(e) => handleEditCategory(e, category)}
-                      >
-                        <FaEdit color={theme.colors.primary['50']} />
-                      </EditButtonContainer>
+                    {(checkScopePermissions(ADMIN_SCOPE) ||
+                      checkScopePermissions(MODERATOR_SCOPE)) && (
+                      <CategoryButtonsContainer>
+                        <EditButtonContainer
+                          onClick={(e) => handleEditCategory(e, category)}
+                        >
+                          <FaEdit color={theme.colors.primary['50']} />
+                        </EditButtonContainer>
 
-                      <DeleteButtonContainer
-                        onClick={(e) => handleDeleteCategory(e, category.id)}
-                      >
-                        <DeleteIcon color={theme.colors.primary['50']} />
-                      </DeleteButtonContainer>
-                    </CategoryButtonsContainer>
+                        <DeleteButtonContainer
+                          onClick={(e) => handleDeleteCategory(e, category.id)}
+                        >
+                          <DeleteIcon color={theme.colors.primary['50']} />
+                        </DeleteButtonContainer>
+                      </CategoryButtonsContainer>
+                    )}
 
                     <p id="category-name">{category.name}</p>
                     <ColorIndicator colorIndicator={category.color} />
@@ -164,13 +172,16 @@ export function Categories() {
         </section>
       </CategoriesContainer>
 
-      <CreateCategoryModal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={handleModalOpen}
-        selectedCategory={selectedCategory}
-        isEditing={selectedCategory !== null}
-        title={modalTitle}
-      />
+      {(checkScopePermissions(ADMIN_SCOPE) ||
+        checkScopePermissions(MODERATOR_SCOPE)) && (
+        <CreateCategoryModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={handleModalOpen}
+          selectedCategory={selectedCategory}
+          isEditing={selectedCategory !== null}
+          title={modalTitle}
+        />
+      )}
     </>
   )
 }
