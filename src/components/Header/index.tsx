@@ -1,4 +1,4 @@
-import { Button, theme } from 'native-base'
+import { Button, Menu, theme } from 'native-base'
 import { InlineLogo } from '../../assets/InlineLogo'
 import { HeaderContainer } from './styles'
 import { FaUser } from 'react-icons/fa'
@@ -29,6 +29,34 @@ export function Header() {
     navigate('/')
   }
 
+  function renderMenuButtonText() {
+    if (token) {
+      return isMobile ? '' : name
+    } else {
+      return isMobile ? '' : 'Entrar'
+    }
+  }
+
+  function renderMenuOptions() {
+    return (
+      <>
+        {!token && (
+          <Menu.Item onPress={() => navigate('/login/logon')}>Entrar</Menu.Item>
+        )}
+
+        <Menu.Item onPress={() => navigate('/')}>Feed</Menu.Item>
+
+        {token && (
+          <Menu.Item onPress={() => navigate('/profile')}>Perfil</Menu.Item>
+        )}
+
+        <Menu.Item onPress={() => navigate('/categories')}>
+          Categorias
+        </Menu.Item>
+      </>
+    )
+  }
+
   return (
     <HeaderContainer>
       <section className="header-container">
@@ -37,34 +65,29 @@ export function Header() {
         </button>
 
         <div className="user-container">
-          {token && !isMobile && (
-            <>
-              <Button
-                onPress={(e) => handleClickUserIcon(e)}
-                rightIcon={
-                  <FaUser size="30" color={theme.colors.tertiary['300']} />
-                }
-              >
-                {isMobile ? '' : name}
-              </Button>
-            </>
-          )}
-
-          {!token && !isMobile && (
-            <>
-              <Button
-                variant="solid"
-                bgColor={theme.colors.tertiary['500']}
-                _hover={{ shadow: '8' }}
-                rightIcon={<FiLogIn size={30} color={theme.colors.white} />}
-                onPress={(e) => handleClickLogin(e)}
-              >
-                {isMobile ? '' : 'Entrar'}
-              </Button>
-            </>
-          )}
-
-          <UnBForumMenu />
+          <Menu
+            w="190"
+            placement="bottom right"
+            trigger={(triggerProps) => {
+              return (
+                <Button
+                  // onPress={(e) => handleClickUserIcon(e)}
+                  rightIcon={
+                    token ? (
+                      <FaUser size="30" color={theme.colors.tertiary['300']} />
+                    ) : (
+                      <FiLogIn size={30} color={theme.colors.white} />
+                    )
+                  }
+                  {...triggerProps}
+                >
+                  {renderMenuButtonText()}
+                </Button>
+              )
+            }}
+          >
+            {renderMenuOptions()}
+          </Menu>
         </div>
       </section>
     </HeaderContainer>
