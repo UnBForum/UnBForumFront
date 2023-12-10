@@ -24,10 +24,17 @@ export function Header() {
     navigate('/login/logon')
   }
 
+  function handleLogoClick(event: BaseSyntheticEvent) {
+    event.preventDefault()
+    navigate('/')
+  }
+
   return (
     <HeaderContainer>
       <section className="header-container">
-        <InlineLogo />
+        <button onClick={(e) => handleLogoClick(e)}>
+          <InlineLogo />
+        </button>
 
         <div className="user-container">
           {token && !isMobile && (
