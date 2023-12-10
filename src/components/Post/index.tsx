@@ -23,7 +23,11 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { Category } from '../../pages/Home'
 import { useMediaQuery } from 'usehooks-ts'
-import { makeDownvoteTopic, makeUpvoteTopic } from '../../service/topics'
+import {
+  makeDownvoteTopic,
+  makeUpvoteTopic,
+  saveTopic,
+} from '../../service/topics'
 import { useUser } from '../../hooks/user'
 import { ToastAlert } from '../Alert'
 import { makeDownvoteComment, makeUpvoteComment } from '../../service/comment'
@@ -123,7 +127,12 @@ export function Post({
 
   function handleSave(e: MouseEvent) {
     e.preventDefault()
-    setIsMark(!isMark)
+
+    saveTopic(id)
+      .then((_) => {
+        setIsMark(!isMark)
+      })
+      .catch((_) => {})
   }
 
   function renderMarkIcon() {
