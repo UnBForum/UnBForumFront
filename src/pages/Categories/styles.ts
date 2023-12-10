@@ -70,6 +70,11 @@ export const CategoriesContainer = styled.section`
 
     .categories-list {
       width: 100%;
+
+      .categories-page-title {
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
     }
   }
 `

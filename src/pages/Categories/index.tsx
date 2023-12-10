@@ -16,12 +16,15 @@ import { CreateCategoryModal } from '../../components/CreateCategoryModal'
 import { Loading } from '../../components/Loading'
 import { ToastAlert } from '../../components/Alert'
 import { ADMIN_SCOPE, MODERATOR_SCOPE, useUser } from '../../hooks/user'
+import { useMediaQuery } from 'usehooks-ts'
 
 const defaultModalTitle = 'Nova Categoria'
 
 export function Categories() {
   const toast = useToast()
   const { checkScopePermissions } = useUser()
+  const isMobile = useMediaQuery('(max-width: 768px)')
+
   const [categories, setCategories] = useState<Category[]>([])
 
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
@@ -126,10 +129,11 @@ export function Categories() {
         <section className="categories-list">
           <div id="create-category">
             <h1 className="categories-page-title">Lista de Categorias</h1>
+
             {(checkScopePermissions(ADMIN_SCOPE) ||
               checkScopePermissions(MODERATOR_SCOPE)) && (
               <Button
-                size="lg"
+                size={isMobile ? 'sm' : 'lg'}
                 rightIcon={<AddIcon />}
                 onPress={() => handleModalOpen(true)}
               >
