@@ -7,22 +7,11 @@ import { BaseSyntheticEvent } from 'react'
 import { useUser } from '../../hooks/user'
 import { FiLogIn } from 'react-icons/fi'
 import { useMediaQuery } from 'usehooks-ts'
-import { UnBForumMenu } from '../UnBForumMenu'
 
 export function Header() {
   const { name, token } = useUser()
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)')
-
-  function handleClickUserIcon(event: BaseSyntheticEvent) {
-    event.preventDefault()
-    navigate('/profile')
-  }
-
-  function handleClickLogin(event: BaseSyntheticEvent) {
-    event.preventDefault()
-    navigate('/login/logon')
-  }
 
   function handleLogoClick(event: BaseSyntheticEvent) {
     event.preventDefault()
