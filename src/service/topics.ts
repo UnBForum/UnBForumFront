@@ -48,3 +48,9 @@ export const makeDownvoteTopic = async (
 
   return response
 }
+
+export const saveTopic = async (topicId: number): Promise<AxiosResponse> => {
+  const response = await api.post(`topics/${topicId}/save/`)
+
+  return response
+}
