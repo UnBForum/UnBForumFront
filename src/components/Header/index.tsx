@@ -19,6 +19,11 @@ export function Header() {
     navigate('/')
   }
 
+  function handleClickLogin(event: BaseSyntheticEvent) {
+    event.preventDefault()
+    navigate('/login/logon')
+  }
+
   function renderMenuButtonText() {
     if (token) {
       return isMobile ? '' : name
@@ -56,29 +61,44 @@ export function Header() {
         </button>
 
         <div className="user-container">
-          <Menu
-            w="190"
-            placement="bottom right"
-            trigger={(triggerProps) => {
-              return (
-                <Button
-                  // onPress={(e) => handleClickUserIcon(e)}
-                  rightIcon={
-                    token ? (
-                      <FaUser size="30" color={theme.colors.tertiary['300']} />
-                    ) : (
-                      <FiLogIn size={30} color={theme.colors.white} />
-                    )
-                  }
-                  {...triggerProps}
-                >
-                  {renderMenuButtonText()}
-                </Button>
-              )
-            }}
-          >
-            {renderMenuOptions()}
-          </Menu>
+          {token ? (
+            <Menu
+              w="190"
+              placement="bottom right"
+              trigger={(triggerProps) => {
+                return (
+                  <Button
+                    // onPress={(e) => handleClickUserIcon(e)}
+                    rightIcon={
+                      token ? (
+                        <FaUser
+                          size="30"
+                          color={theme.colors.tertiary['300']}
+                        />
+                      ) : (
+                        <FiLogIn size={30} color={theme.colors.white} />
+                      )
+                    }
+                    {...triggerProps}
+                  >
+                    {renderMenuButtonText()}
+                  </Button>
+                )
+              }}
+            >
+              {renderMenuOptions()}
+            </Menu>
+          ) : (
+            <Button
+              variant="solid"
+              bgColor={theme.colors.tertiary['500']}
+              _hover={{ shadow: '8' }}
+              rightIcon={<FiLogIn size={30} color={theme.colors.white} />}
+              onPress={(e) => handleClickLogin(e)}
+            >
+              {isMobile ? '' : 'Entrar'}
+            </Button>
+          )}
         </div>
       </section>
     </HeaderContainer>
