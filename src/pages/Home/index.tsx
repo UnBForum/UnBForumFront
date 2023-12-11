@@ -46,6 +46,7 @@ export interface Topic {
   comments: Comment[]
   files: FileData[]
   comments_count: number
+  current_user_has_saved: boolean
 }
 
 export function Home() {
@@ -153,6 +154,7 @@ export function Home() {
                       author={topic.author.name}
                       commentsCount={topic.comments_count}
                       categories={topic.categories}
+                      isSave={topic.current_user_has_saved}
                     />
                   )
                 })}

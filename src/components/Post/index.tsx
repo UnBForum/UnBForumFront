@@ -23,7 +23,12 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { Category } from '../../pages/Home'
 import { useMediaQuery } from 'usehooks-ts'
-import { makeDownvoteTopic, makeUpvoteTopic } from '../../service/topics'
+import {
+  makeDownvoteTopic,
+  makeUpvoteTopic,
+  saveTopic,
+  unsaveTopic,
+} from '../../service/topics'
 import { useUser } from '../../hooks/user'
 import { ToastAlert } from '../Alert'
 import { makeDownvoteComment, makeUpvoteComment } from '../../service/comment'
@@ -44,6 +49,7 @@ interface PostProps {
   rating?: number
   categories?: Category[]
   commentsCount?: number
+  isSave?: boolean
 }
 
 export function Post({
@@ -59,6 +65,7 @@ export function Post({
   files = [],
   categories = [],
   commentsCount = 0,
+  isSave = false,
 }: PostProps) {
   const { token } = useUser()
   const toast = useToast()
@@ -66,13 +73,14 @@ export function Post({
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   const [likes, setLikes] = useState(rating)
-  const [isMark, setIsMark] = useState(false)
+  const [isMark, setIsMark] = useState(isSave)
   const [currentUserRating, setCurrentUserRating] = useState(currentRating)
 
   useEffect(() => {
     setCurrentUserRating(currentRating)
     setLikes(rating)
-  }, [currentRating, rating])
+    setIsMark(isSave)
+  }, [currentRating, rating, isSave])
 
   function handleClickOnPost() {
     navigate(`/topic/${id}`)
@@ -123,7 +131,25 @@ export function Post({
 
   function handleSave(e: MouseEvent) {
     e.preventDefault()
-    setIsMark(!isMark)
+
+    if (!token) {
+      renderAlertErrorForUnloggedUser()
+      return
+    }
+
+    if (!isMark) {
+      saveTopic(id)
+        .then((_) => {
+          setIsMark(true)
+        })
+        .catch((_) => {})
+    } else {
+      unsaveTopic(id)
+        .then((_) => {
+          setIsMark(false)
+        })
+        .catch((_) => {})
+    }
   }
 
   function renderMarkIcon() {
