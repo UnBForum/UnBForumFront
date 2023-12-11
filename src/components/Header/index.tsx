@@ -1,5 +1,6 @@
-import { Button, theme } from 'native-base'
-import { InlineLogo } from '../../assets/InlineLogo'
+import { Button, Menu, theme } from 'native-base'
+// import { InlineLogo } from '../../assets/InlineLogo'
+import InlineLogo from '../../assets/InlineLogo.png'
 import { HeaderContainer } from './styles'
 import { FaUser } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
@@ -7,16 +8,15 @@ import { BaseSyntheticEvent } from 'react'
 import { useUser } from '../../hooks/user'
 import { FiLogIn } from 'react-icons/fi'
 import { useMediaQuery } from 'usehooks-ts'
-import { UnBForumMenu } from '../UnBForumMenu'
 
 export function Header() {
   const { name, token } = useUser()
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)')
 
-  function handleClickUserIcon(event: BaseSyntheticEvent) {
+  function handleLogoClick(event: BaseSyntheticEvent) {
     event.preventDefault()
-    navigate('/profile')
+    navigate('/')
   }
 
   function handleClickLogin(event: BaseSyntheticEvent) {
@@ -24,40 +24,81 @@ export function Header() {
     navigate('/login/logon')
   }
 
+  function renderMenuButtonText() {
+    if (token) {
+      return isMobile ? '' : name
+    } else {
+      return isMobile ? '' : 'Entrar'
+    }
+  }
+
+  function renderMenuOptions() {
+    return (
+      <>
+        {!token && (
+          <Menu.Item onPress={() => navigate('/login/logon')}>Entrar</Menu.Item>
+        )}
+
+        <Menu.Item onPress={() => navigate('/')}>Feed</Menu.Item>
+
+        {token && (
+          <Menu.Item onPress={() => navigate('/profile')}>Perfil</Menu.Item>
+        )}
+
+        <Menu.Item onPress={() => navigate('/categories')}>
+          Categorias
+        </Menu.Item>
+      </>
+    )
+  }
+
   return (
     <HeaderContainer>
       <section className="header-container">
-        <InlineLogo />
+        <button onClick={(e) => handleLogoClick(e)}>
+          {/* <InlineLogo /> */}
+          <img src={InlineLogo} alt="Logo UnBFórum em linha" />
+        </button>
 
         <div className="user-container">
-          {token && !isMobile && (
-            <>
-              <Button
-                onPress={(e) => handleClickUserIcon(e)}
-                rightIcon={
-                  <FaUser size="30" color={theme.colors.tertiary['300']} />
-                }
-              >
-                {isMobile ? '' : name}
-              </Button>
-            </>
+          {token ? (
+            <Menu
+              w="190"
+              placement="bottom right"
+              trigger={(triggerProps) => {
+                return (
+                  <Button
+                    // onPress={(e) => handleClickUserIcon(e)}
+                    rightIcon={
+                      token ? (
+                        <FaUser
+                          size="30"
+                          color={theme.colors.tertiary['300']}
+                        />
+                      ) : (
+                        <FiLogIn size={30} color={theme.colors.white} />
+                      )
+                    }
+                    {...triggerProps}
+                  >
+                    {renderMenuButtonText()}
+                  </Button>
+                )
+              }}
+            >
+              {renderMenuOptions()}
+            </Menu>
+          ) : (
+            <Button
+              variant="solid"
+              bgColor={theme.colors.tertiary['500']}
+              _hover={{ shadow: '8' }}
+              rightIcon={<FiLogIn size={30} color={theme.colors.white} />}
+              onPress={(e) => handleClickLogin(e)}
+            >
+              {isMobile ? '' : 'Entrar'}
+            </Button>
           )}
-
-          {!token && !isMobile && (
-            <>
-              <Button
-                variant="solid"
-                bgColor={theme.colors.tertiary['500']}
-                _hover={{ shadow: '8' }}
-                rightIcon={<FiLogIn size={30} color={theme.colors.white} />}
-                onPress={(e) => handleClickLogin(e)}
-              >
-                {isMobile ? '' : 'Entrar'}
-              </Button>
-            </>
-          )}
-
-          <UnBForumMenu />
         </div>
       </section>
     </HeaderContainer>
