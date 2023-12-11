@@ -50,7 +50,19 @@ export const makeDownvoteTopic = async (
 }
 
 export const saveTopic = async (topicId: number): Promise<AxiosResponse> => {
-  const response = await api.post(`topics/${topicId}/save/`)
+  const response = await api.post(`topics/${topicId}/save`)
+
+  return response
+}
+
+export const unsaveTopic = async (topicId: number): Promise<AxiosResponse> => {
+  const response = await api.post(`topics/${topicId}/unsave`)
+
+  return response
+}
+
+export const getUserSavedTopics = async (): Promise<AxiosResponse> => {
+  const response = await api.get(`users/me/saved_topics/`)
 
   return response
 }
