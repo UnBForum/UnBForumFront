@@ -9,6 +9,7 @@ import { Profile } from './pages/Profile'
 import { Topic } from './pages/Topic'
 import { Categories } from './pages/Categories'
 import { CreateTopic } from './pages/CreateTopic'
+import { SavedTopics } from './pages/SavedTopics'
 
 export function Router() {
   return (
@@ -28,6 +29,10 @@ export function Router() {
 
       <Route path="/create-topic" element={<DefaultLayout />}>
         <Route path="/create-topic" element={<CreateTopic />} />
+      </Route>
+
+      <Route path="/saved-topics" element={<DefaultLayout />}>
+        <Route path="/saved-topics" element={<SavedTopics />} />
       </Route>
 
       <Route path="/login" element={<CreateAccountLayout />}>
