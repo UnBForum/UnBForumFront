@@ -58,6 +58,7 @@ export function Topic() {
             rating={topic.rating}
             files={topic.files}
             currentRating={topic.current_user_rating}
+            isSave={topic.current_user_has_saved}
             isInsideTopic
           />
 
