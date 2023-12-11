@@ -1,5 +1,6 @@
 import { Button, Menu, theme } from 'native-base'
-import { InlineLogo } from '../../assets/InlineLogo'
+// import { InlineLogo } from '../../assets/InlineLogo'
+import InlineLogo from '../../assets/InlineLogo.png'
 import { HeaderContainer } from './styles'
 import { FaUser } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
@@ -50,7 +51,8 @@ export function Header() {
     <HeaderContainer>
       <section className="header-container">
         <button onClick={(e) => handleLogoClick(e)}>
-          <InlineLogo />
+          {/* <InlineLogo /> */}
+          <img src={InlineLogo} alt="Logo UnBFórum em linha" />
         </button>
 
         <div className="user-container">

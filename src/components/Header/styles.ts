@@ -17,6 +17,10 @@ export const HeaderContainer = styled.header`
     align-items: center;
     justify-content: space-between;
     background: ${theme.colors.primary['800']};
+
+    & > button > img {
+      width: 15rem;
+    }
   }
 
   .user-container {
@@ -30,10 +34,14 @@ export const HeaderContainer = styled.header`
 
   @media (max-width: 768px) {
     .header-container {
-      width: 100%;
+      width: 90%;
       display: flex;
       align-items: center;
-      justify-content: space-around;
+      /* justify-content: space-around; */
+
+      & > button > img {
+        width: 10rem;
+      }
     }
 
     .user-container {
