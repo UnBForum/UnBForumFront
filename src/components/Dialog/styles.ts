@@ -7,6 +7,7 @@ export const DialogContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 99999999;
   background-color: rgba(0, 0, 0, 0.5); /* Fundo sombreado */
   display: flex;
   align-items: center;
@@ -16,6 +17,7 @@ export const DialogContainer = styled.div`
 export const DialogBox = styled.div`
   width: 40%;
   display: flex;
+
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;

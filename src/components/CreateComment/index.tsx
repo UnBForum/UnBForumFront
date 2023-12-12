@@ -5,7 +5,7 @@ import { useUser } from '../../hooks/user'
 import { UnBForumTextArea } from '../UnBForumTextArea'
 import { useMediaQuery } from 'usehooks-ts'
 import { LuSendHorizonal } from 'react-icons/lu'
-import { BaseSyntheticEvent, useEffect, useState } from 'react'
+import { BaseSyntheticEvent, useState } from 'react'
 import { createComment } from '../../service/comment'
 import { valiadateCreateComment } from '../../utils/valiadateCreateComment'
 import { ToastAlert } from '../Alert'
@@ -25,8 +25,6 @@ export const CreateComment: React.FC<CreateCommentProps> = ({
 
   const [comment, setComment] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => console.log({ comment }), [comment])
 
   const handleChangeComment = (_: string, text: string) => {
     setComment(text)

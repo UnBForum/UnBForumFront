@@ -152,13 +152,13 @@ export function CreateModalTopic({
     }),
   }
 
-  useEffect(() => console.log(topicData), [topicData])
-
   useEffect(() => {
-    getAllCategories().then((response) => {
-      setCategories(response.data)
-    })
-  }, [])
+    if (isModalOpen) {
+      getAllCategories().then((response) => {
+        setCategories(response.data)
+      })
+    }
+  }, [isModalOpen])
 
   useEffect(() => {
     setModalVisible(isModalOpen)
@@ -390,7 +390,6 @@ export function CreateModalTopic({
       }),
     )
 
-    console.log(formattedSelectCategories)
     return formattedSelectCategories
   }
 

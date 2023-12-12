@@ -17,7 +17,6 @@ import { Loading } from '../../components/Loading'
 import { useMediaQuery } from 'usehooks-ts'
 import { BackendUser, FileData } from '../../utils/interfaces'
 import { useUser } from '../../hooks/user'
-import { useNavigate } from 'react-router-dom'
 
 export interface Category {
   id: number
@@ -47,6 +46,7 @@ export interface Topic {
   files: FileData[]
   comments_count: number
   current_user_has_saved: boolean
+  is_fixed: boolean
 }
 
 export function Home() {
@@ -56,6 +56,9 @@ export function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [topics, setTopics] = useState<Topic[]>([])
 
+  const [favoriteTopics, setFavoriteTopics] = useState<Topic[]>([])
+  const [isLoadingFavoriteTopics, setIsLoadingFavoriteTopics] = useState(false)
+
   const [categoryFilters, setCategoryFilters] = useState<number[]>([])
   const [orderBy, setOrderBy] = useState('-created_at')
   const [onChangeSearchText, setOnChangeSearchText] = useState('')
@@ -64,12 +67,37 @@ export function Home() {
   const [isLoadingTopics, setIsLoadingTopics] = useState(false)
 
   useEffect(() => window.scrollTo(0, 0), [])
-  useEffect(() => console.log(topics), [topics])
 
   useEffect(() => {
     if (!isModalOpen) {
       setIsLoadingTopics(true)
+      setIsLoadingFavoriteTopics(true)
 
+      Promise.all([
+        getAllTopics({
+          search: searchText,
+          order_by: orderBy,
+          category__id__in: categoryFilters,
+        })
+          .then((response) => {
+            setTopics(response.data)
+          })
+          .finally(() => setIsLoadingTopics(false)),
+
+        getAllTopics({ is_fixed: true })
+          .then((response) => {
+            setFavoriteTopics(response.data)
+          })
+          .finally(() => setIsLoadingFavoriteTopics(false)),
+      ]).then()
+    }
+  }, [isModalOpen, searchText, orderBy, categoryFilters])
+
+  const fixedTopicCallback = useCallback(async () => {
+    setIsLoadingTopics(true)
+    setIsLoadingFavoriteTopics(true)
+
+    Promise.all([
       getAllTopics({
         search: searchText,
         order_by: orderBy,
@@ -78,9 +106,15 @@ export function Home() {
         .then((response) => {
           setTopics(response.data)
         })
-        .finally(() => setIsLoadingTopics(false))
-    }
-  }, [isModalOpen, searchText, orderBy, categoryFilters])
+        .finally(() => setIsLoadingTopics(false)),
+
+      getAllTopics({ is_fixed: true })
+        .then((response) => {
+          setFavoriteTopics(response.data)
+        })
+        .finally(() => setIsLoadingFavoriteTopics(false)),
+    ]).then()
+  }, [searchText, categoryFilters, orderBy])
 
   const handleModalOpen = useCallback((modalState: boolean) => {
     setIsModalOpen(modalState)
@@ -151,6 +185,8 @@ export function Home() {
                       commentsCount={topic.comments_count}
                       categories={topic.categories}
                       isSave={topic.current_user_has_saved}
+                      isFixed={topic.is_fixed}
+                      fixedTopicCallback={fixedTopicCallback}
                     />
                   )
                 })}
@@ -166,9 +202,13 @@ export function Home() {
               <FavouriteIcon color={theme.colors.rose['600']} size="22" />
             </div>
 
-            {Array.from({ length: 10 }).map((_, i) => {
-              return <FavoritePost key={i} />
-            })}
+            {isLoadingFavoriteTopics ? (
+              <Loading accessibilityLabel="Carregando tópicos favoritos..." />
+            ) : (
+              favoriteTopics.map((favoriteTopic, i) => {
+                return <FavoritePost key={i} favoriteTopic={favoriteTopic} />
+              })
+            )}
           </FavoritesListContainer>
         </LikesContainer>
       </HomeContainer>

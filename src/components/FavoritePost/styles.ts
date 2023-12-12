@@ -1,10 +1,11 @@
 import { theme } from 'native-base'
 import styled from 'styled-components'
 
-export const FavoritePostContainer = styled.div`
+export const FavoritePostContainer = styled.button`
   width: 90%;
   display: flex;
   flex-direction: column;
+  text-align: left;
   gap: 0.8rem;
 
   padding: 10px;

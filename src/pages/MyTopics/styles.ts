@@ -46,6 +46,8 @@ export const MyTopicsContainer = styled.section`
   }
 
   @media (max-width: 930px) {
+    width: 90%;
+
     .logo-my-topics-container {
       svg {
         width: 15rem;

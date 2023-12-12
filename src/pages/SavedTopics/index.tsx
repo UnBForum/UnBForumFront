@@ -41,7 +41,7 @@ export function SavedTopics() {
 
         <section className="saved-topics-list">
           <div className="reload-saved-topics">
-            <h1 className="saved-topics-title">Meus Tópicos Salvos</h1>
+            <h1 className="saved-topics-title">Tópicos Salvos</h1>
 
             <Button
               size={isMobile ? 'sm' : 'lg'}

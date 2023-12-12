@@ -46,6 +46,8 @@ export const CategoriesContainer = styled.section`
   }
 
   @media (max-width: 930px) {
+    width: 90%;
+
     .logo-categories-container {
       svg {
         width: 15rem;
