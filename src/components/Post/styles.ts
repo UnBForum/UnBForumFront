@@ -22,48 +22,86 @@ export const LikesContainer = styled.div<{
   flex-direction: column;
   align-items: center;
   justify-content: ${({ isComment }) =>
-    isComment ? 'flex-start' : 'flex-start'};
+    isComment ? 'space-between' : 'space-between'};
   gap: ${({ isInsideTopic, isComment }) =>
     isInsideTopic && !isComment ? '1rem' : '0.4rem'};
 
-  & > p {
-    font-weight: ${({ isComment }) => (isComment ? '700' : '900')};
-    font-size: ${({ isComment }) => (isComment ? '1.2rem' : '1.4rem')};
-    color: ${theme.colors.primary['900']};
-  }
+  #common-reactions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: ${({ isInsideTopic, isComment }) =>
+      isInsideTopic && !isComment ? '1rem' : '0.4rem'};
 
-  #markButton {
-    transition: 0.5s all ease;
-  }
-
-  #markButton:hover > svg {
-    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
-  }
-
-  #markButton:focus {
-    box-shadow: none;
-  }
-
-  #reactionButton {
-    & > svg {
-      width: ${({ isComment }) => (isComment ? '1.2rem' : '1.5rem')};
-      height: ${({ isComment }) => (isComment ? '1.2rem' : '1.5rem')};
+    #reactionButton {
+      & > svg {
+        width: ${({ isComment }) => (isComment ? '1.2rem' : '1.5rem')};
+        height: ${({ isComment }) => (isComment ? '1.2rem' : '1.5rem')};
+      }
     }
+
+    & > p {
+      font-weight: ${({ isComment }) => (isComment ? '700' : '900')};
+      font-size: ${({ isComment }) => (isComment ? '1.2rem' : '1.4rem')};
+      color: ${theme.colors.primary['900']};
+    }
+
+    #markButton {
+      transition: 0.5s all ease;
+    }
+
+    #markButton:hover > svg {
+      filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
+    }
+
+    #markButton:focus,
+    #deleteButton:focus {
+      box-shadow: none;
+    }
+  }
+
+  #deleteButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.2rem;
+    background-color: ${theme.colors.danger['500']};
+    transition: 0.2s all ease;
+  }
+
+  #editButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.2rem;
+    background-color: ${theme.colors.purple['600']};
+    transition: 0.2s all ease;
+  }
+
+  #deleteButton:hover,
+  #editButton:hover {
+    filter: brightness(70%);
   }
 
   @media (max-width: 768px) {
     width: ${({ isInsideTopic }) => (isInsideTopic ? '10%' : '15%')};
-    gap: 0.2rem;
 
-    & > p {
-      font-weight: 800;
-      font-size: 1.1rem;
-    }
+    #common-reactions {
+      gap: 0.2rem;
 
-    #reactionButton {
-      & > svg {
-        width: 1rem;
-        height: 1rem;
+      & > p {
+        font-weight: 800;
+        font-size: 1.1rem;
+      }
+
+      #reactionButton {
+        & > svg {
+          width: 1rem;
+          height: 1rem;
+        }
       }
     }
   }
