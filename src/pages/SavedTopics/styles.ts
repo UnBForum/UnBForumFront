@@ -46,6 +46,8 @@ export const SavedTopicsContainer = styled.section`
   }
 
   @media (max-width: 930px) {
+    width: 90%;
+
     .logo-saved-topics-container {
       svg {
         width: 15rem;
