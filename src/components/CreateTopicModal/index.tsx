@@ -23,7 +23,7 @@ import {
   theme,
   useToast,
 } from 'native-base'
-import Select, { MultiValue, PropsValue, StylesConfig } from 'react-select'
+import Select, { MultiValue, StylesConfig } from 'react-select'
 import { Category, FileData, TopicData } from '../../utils/interfaces'
 import { validateCreateTopic } from '../../utils/validateCreateTopic'
 import { ToastAlert } from '../Alert'
