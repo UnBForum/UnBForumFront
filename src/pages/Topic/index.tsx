@@ -59,6 +59,7 @@ export function Topic() {
             files={topic.files}
             currentRating={topic.current_user_rating}
             isSave={topic.current_user_has_saved}
+            isFixed={topic.is_fixed}
             isInsideTopic
           />
 

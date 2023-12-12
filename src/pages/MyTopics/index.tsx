@@ -73,6 +73,7 @@ export function MyTopics() {
                       isSave={topic.current_user_has_saved || false}
                       deleteTopicCallback={handleGetMyTopics}
                       isMyTopicScreen={true}
+                      isComment={false}
                     />
                   )
                 })}
