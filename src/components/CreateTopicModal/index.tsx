@@ -153,10 +153,12 @@ export function CreateModalTopic({
   }
 
   useEffect(() => {
-    getAllCategories().then((response) => {
-      setCategories(response.data)
-    })
-  }, [])
+    if (isModalOpen) {
+      getAllCategories().then((response) => {
+        setCategories(response.data)
+      })
+    }
+  }, [isModalOpen])
 
   useEffect(() => {
     setModalVisible(isModalOpen)
