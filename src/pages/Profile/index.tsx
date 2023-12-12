@@ -76,7 +76,7 @@ export function Profile() {
             return (
               <ToastAlert
                 id="delete-user-success"
-                title="Usuário deletado!"
+                title="Usuário excluído!"
                 description="A qualquer momento você poderá criar uma nova conta"
                 status="success"
               />
