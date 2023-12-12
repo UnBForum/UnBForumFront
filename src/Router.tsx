@@ -10,6 +10,7 @@ import { Topic } from './pages/Topic'
 import { Categories } from './pages/Categories'
 import { CreateTopic } from './pages/CreateTopic'
 import { SavedTopics } from './pages/SavedTopics'
+import { MyTopics } from './pages/MyTopics'
 
 export function Router() {
   return (
@@ -33,6 +34,10 @@ export function Router() {
 
       <Route path="/saved-topics" element={<DefaultLayout />}>
         <Route path="/saved-topics" element={<SavedTopics />} />
+      </Route>
+
+      <Route path="/my-topics" element={<DefaultLayout />}>
+        <Route path="/my-topics" element={<MyTopics />} />
       </Route>
 
       <Route path="/login" element={<CreateAccountLayout />}>
