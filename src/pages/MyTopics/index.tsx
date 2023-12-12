@@ -1,63 +1,63 @@
 import { useEffect, useState } from 'react'
 import { Logo } from '../../assets/Logo'
-import { SavedTopicsContainer, SavedTopicsListContainer } from './styles'
+import { MyTopicsContainer, MyTopicsListContainer } from './styles'
 import { Topic } from '../Home'
 import { Loading } from '../../components/Loading'
-import { getUserSavedTopics } from '../../service/topics'
+import { getUserTopics } from '../../service/topics'
 import { Post } from '../../components/Post'
 import { Button, theme } from 'native-base'
 
 import { TbReload } from 'react-icons/tb'
 import { useMediaQuery } from 'usehooks-ts'
 
-export function SavedTopics() {
+export function MyTopics() {
   const isMobile = useMediaQuery('(max-width: 768px)')
 
-  const [isLoadingSavedTopics, setIsLoadingSavedTopics] = useState(false)
-  const [savedTopics, setSavedTopics] = useState<Topic[]>([])
+  const [isLoadingMyTopics, setIsLoadingMyTopics] = useState(false)
+  const [myTopics, setMyTopics] = useState<Topic[]>([])
 
   useEffect(() => {
-    handleGetSavedTopics().then()
+    handleGetMyTopics().then()
   }, [])
 
-  const handleGetSavedTopics = async () => {
-    setIsLoadingSavedTopics(true)
+  const handleGetMyTopics = async () => {
+    setIsLoadingMyTopics(true)
 
-    getUserSavedTopics()
+    getUserTopics()
       .then((response) => {
-        setSavedTopics(response.data)
+        setMyTopics(response.data)
       })
       .finally(() => {
-        setIsLoadingSavedTopics(false)
+        setIsLoadingMyTopics(false)
       })
   }
 
   return (
     <>
-      <SavedTopicsContainer>
-        <div className="logo-saved-topics-container">
+      <MyTopicsContainer>
+        <div className="logo-my-topics-container">
           <Logo />
         </div>
 
-        <section className="saved-topics-list">
-          <div className="reload-saved-topics">
-            <h1 className="saved-topics-title">Meus Tópicos Salvos</h1>
+        <section className="my-topics-list">
+          <div className="reload-my-topics">
+            <h1 className="my-topics-title">Meus Tópicos Criados</h1>
 
             <Button
               size={isMobile ? 'sm' : 'lg'}
               rightIcon={<TbReload size={22} color={theme.colors.white} />}
-              onPress={handleGetSavedTopics}
+              onPress={handleGetMyTopics}
             >
               Recarregar
             </Button>
           </div>
 
-          <SavedTopicsListContainer>
-            {isLoadingSavedTopics ? (
-              <Loading accessibilityLabel="Carregando os tópicos salvos..." />
+          <MyTopicsListContainer>
+            {isLoadingMyTopics ? (
+              <Loading accessibilityLabel="Carregando os meus tópicos..." />
             ) : (
               <>
-                {savedTopics.map((topic) => {
+                {myTopics.map((topic) => {
                   return (
                     <Post
                       key={topic.id}
@@ -70,15 +70,17 @@ export function SavedTopics() {
                       author={topic.author.name}
                       commentsCount={topic.comments_count}
                       categories={topic.categories}
-                      isSave={topic.current_user_has_saved || true}
+                      isSave={topic.current_user_has_saved || false}
+                      deleteTopicCallback={handleGetMyTopics}
+                      isMyTopicScreen={true}
                     />
                   )
                 })}
               </>
             )}
-          </SavedTopicsListContainer>
+          </MyTopicsListContainer>
         </section>
-      </SavedTopicsContainer>
+      </MyTopicsContainer>
     </>
   )
 }

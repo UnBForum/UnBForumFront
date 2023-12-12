@@ -46,6 +46,12 @@ export function Header() {
         )}
 
         {token && (
+          <Menu.Item onPress={() => navigate('/my-topics')}>
+            Meus Tópicos
+          </Menu.Item>
+        )}
+
+        {token && (
           <Menu.Item onPress={() => navigate('/saved-topics')}>
             Tópicos Salvos
           </Menu.Item>

@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useState } from 'react'
+import { MouseEvent, useCallback, useEffect, useState } from 'react'
 import {
   ArrowUpIcon,
   ArrowDownIcon,
@@ -7,8 +7,10 @@ import {
   Divider,
   Badge,
   useToast,
+  DeleteIcon,
 } from 'native-base'
 import { FaComment } from 'react-icons/fa'
+import { MdEdit } from 'react-icons/md'
 import { IoBookmarkOutline, IoBookmark } from 'react-icons/io5'
 
 import {
@@ -24,6 +26,7 @@ import { useNavigate } from 'react-router-dom'
 import { Category } from '../../pages/Home'
 import { useMediaQuery } from 'usehooks-ts'
 import {
+  deleteUserTopic,
   makeDownvoteTopic,
   makeUpvoteTopic,
   saveTopic,
@@ -35,6 +38,8 @@ import { makeDownvoteComment, makeUpvoteComment } from '../../service/comment'
 import { FileData } from '../../utils/interfaces'
 import { createFileUrlDownload } from '../../utils/createFileUrlDownload'
 import { getInitialsLetters } from '../../utils/getInitialsLetter'
+import { Dialog } from '../Dialog'
+import { CreateModalTopic } from '../CreateTopicModal'
 
 interface PostProps {
   id: number
@@ -50,6 +55,8 @@ interface PostProps {
   categories?: Category[]
   commentsCount?: number
   isSave?: boolean
+  isMyTopicScreen?: boolean
+  deleteTopicCallback?: (id: number) => Promise<void>
 }
 
 export function Post({
@@ -66,6 +73,8 @@ export function Post({
   categories = [],
   commentsCount = 0,
   isSave = false,
+  isMyTopicScreen = false,
+  deleteTopicCallback = (_) => new Promise(() => null),
 }: PostProps) {
   const { token } = useUser()
   const toast = useToast()
@@ -75,6 +84,11 @@ export function Post({
   const [likes, setLikes] = useState(rating)
   const [isMark, setIsMark] = useState(isSave)
   const [currentUserRating, setCurrentUserRating] = useState(currentRating)
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [isLoadingDeleteTopic, setIsLoadingDeleteTopic] = useState(false)
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
   useEffect(() => {
     setCurrentUserRating(currentRating)
@@ -152,6 +166,48 @@ export function Post({
     }
   }
 
+  function handleDeleteUserTopic() {
+    if (!token) {
+      renderAlertErrorForUnloggedUser()
+      return
+    }
+
+    setIsLoadingDeleteTopic(true)
+
+    deleteUserTopic(id)
+      .then((_) => {
+        setIsLoadingDeleteTopic(false)
+        setIsDeleteDialogOpen(false)
+        deleteTopicCallback(id).then()
+
+        toast.show({
+          placement: 'top-right',
+          render: () => {
+            return (
+              <ToastAlert
+                id="delete-topic-success"
+                title="Tópico removido!"
+                description="Tópico removido com sucesso!"
+                status="success"
+              />
+            )
+          },
+        })
+      })
+      .catch((_) => {})
+  }
+
+  const handleModalOpen = useCallback(
+    (modalState: boolean) => {
+      setIsEditModalOpen(modalState)
+
+      if (!modalState) {
+        deleteTopicCallback(id).then()
+      }
+    },
+    [deleteTopicCallback, id],
+  )
+
   function renderMarkIcon() {
     switch (isMark) {
       case true:
@@ -168,34 +224,59 @@ export function Post({
     <>
       <PostContainer>
         <LikesContainer isInsideTopic={isInsideTopic} isComment={isComment}>
-          <button id="reactionButton" onClick={(e) => handleReaction(e, 1)}>
-            <ArrowUpIcon
-              color={
-                currentUserRating > 0
-                  ? theme.colors.tertiary['500']
-                  : theme.colors.muted['500']
-              }
-              size="18"
-            />
-          </button>
-
-          <p>{likes}</p>
-
-          <button id="reactionButton" onClick={(e) => handleReaction(e, -1)}>
-            <ArrowDownIcon
-              color={
-                currentUserRating < 0
-                  ? theme.colors.tertiary['500']
-                  : theme.colors.muted['500']
-              }
-              size="18"
-            />
-          </button>
-
-          {!isComment && (
-            <button id="markButton" onClick={(e) => handleSave(e)}>
-              {renderMarkIcon()}
+          <div id="common-reactions">
+            <button id="reactionButton" onClick={(e) => handleReaction(e, 1)}>
+              <ArrowUpIcon
+                color={
+                  currentUserRating > 0
+                    ? theme.colors.tertiary['500']
+                    : theme.colors.muted['500']
+                }
+                size="18"
+              />
             </button>
+
+            <p>{likes}</p>
+
+            <button id="reactionButton" onClick={(e) => handleReaction(e, -1)}>
+              <ArrowDownIcon
+                color={
+                  currentUserRating < 0
+                    ? theme.colors.tertiary['500']
+                    : theme.colors.muted['500']
+                }
+                size="18"
+              />
+            </button>
+
+            {!isComment && (
+              <button id="markButton" onClick={(e) => handleSave(e)}>
+                {renderMarkIcon()}
+              </button>
+            )}
+          </div>
+
+          {token && isMyTopicScreen && (
+            <div
+              id="user-buttons"
+              style={{ display: 'flex', flexDirection: 'column', gap: '.2rem' }}
+            >
+              <button
+                id="deleteButton"
+                onClick={() => setIsDeleteDialogOpen(true)}
+              >
+                <DeleteIcon
+                  color={theme.colors.white}
+                  size={isMobile ? '22' : '30'}
+                />
+              </button>
+              <button id="editButton" onClick={() => handleModalOpen(true)}>
+                <MdEdit
+                  color={theme.colors.white}
+                  size={isMobile ? '22' : '30'}
+                />
+              </button>
+            </div>
           )}
         </LikesContainer>
 
@@ -293,6 +374,29 @@ export function Post({
         _dark={{
           bg: 'muted.50',
         }}
+      />
+
+      <Dialog
+        isOpen={isDeleteDialogOpen}
+        handleAccept={handleDeleteUserTopic}
+        handleClose={() => setIsDeleteDialogOpen(false)}
+        question="Tem certeza que deseja remover seu tópico?"
+        acceptText="Remover"
+        isLoadingAcceptButton={isLoadingDeleteTopic}
+        loadingAcceptButtonText="Removendo..."
+      />
+
+      <CreateModalTopic
+        isModalOpen={isEditModalOpen}
+        setIsModalOpen={handleModalOpen}
+        isEditing={true}
+        topic={{
+          title,
+          categories: categories.map((c) => c.id),
+          files,
+          content,
+        }}
+        id={id}
       />
     </>
   )

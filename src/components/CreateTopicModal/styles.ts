@@ -2,12 +2,13 @@ import { theme } from 'native-base'
 import styled from 'styled-components'
 
 export const Overlay = styled.div<{ isOpen: boolean }>`
-  /* position: fixed;
+  position: fixed;
   top: 0;
-  left: 0; */
+  left: 0;
   width: 100%;
-  /* height: 100%; */
-  /* background-color: ${theme.colors.black + '75'}; fundo escurecido */
+  height: 100%;
+  z-index: 999;
+  background-color: ${theme.colors.black + '75'}; // fundo escurecido
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,10 +21,10 @@ export const Overlay = styled.div<{ isOpen: boolean }>`
 
 export const Content = styled.section<{ isOpen: boolean }>`
   position: relative;
-  /* background-color: white; */
+  background-color: white;
   width: 60%;
   max-width: 880px;
-  height: 80vh;
+  /* height: 90vh; */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -87,7 +88,7 @@ export const CloseButtonContainer = styled.button`
   border-radius: 0 8px 0 0;
   transition: 0.3s all ease;
 
-  /* background-color: ${theme.colors.danger['600']}; */
+  background-color: ${theme.colors.danger['600']};
 
   &:hover {
     filter: brightness(70%);

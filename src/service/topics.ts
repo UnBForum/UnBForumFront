@@ -33,6 +33,15 @@ export const createTopic = async (
   return response
 }
 
+export const editTopic = async (
+  data: CreateTopic,
+  id: number,
+): Promise<AxiosResponse> => {
+  const response = await api.put(`topics/${id}`, data)
+
+  return response
+}
+
 export const makeUpvoteTopic = async (
   topicId: number,
 ): Promise<AxiosResponse> => {
@@ -63,6 +72,18 @@ export const unsaveTopic = async (topicId: number): Promise<AxiosResponse> => {
 
 export const getUserSavedTopics = async (): Promise<AxiosResponse> => {
   const response = await api.get(`users/me/saved_topics/`)
+
+  return response
+}
+
+export const getUserTopics = async (): Promise<AxiosResponse> => {
+  const response = await api.get(`users/me/topics/`)
+
+  return response
+}
+
+export const deleteUserTopic = async (id: number): Promise<AxiosResponse> => {
+  const response = await api.delete(`topics/${id}/`)
 
   return response
 }

@@ -51,7 +51,6 @@ export interface Topic {
 
 export function Home() {
   const { token } = useUser()
-  const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -83,13 +82,10 @@ export function Home() {
     }
   }, [isModalOpen, searchText, orderBy, categoryFilters])
 
-  const handleModalOpen = useCallback(
-    (_) => {
-      // setIsModalOpen(modalState)
-      navigate('/create-topic')
-    },
-    [navigate],
-  )
+  const handleModalOpen = useCallback((modalState: boolean) => {
+    setIsModalOpen(modalState)
+    // navigate('/create-topic')
+  }, [])
 
   const onChangeCategoriesFilter = useCallback((newValue) => {
     setCategoryFilters(newValue.map((item) => item.value))
@@ -177,10 +173,10 @@ export function Home() {
         </LikesContainer>
       </HomeContainer>
 
-      {/* <CreateModalTopic
+      <CreateModalTopic
         isModalOpen={isModalOpen}
         setIsModalOpen={handleModalOpen}
-      /> */}
+      />
     </>
   )
 }
