@@ -41,7 +41,7 @@ export function MyTopics() {
 
         <section className="my-topics-list">
           <div className="reload-my-topics">
-            <h1 className="my-topics-title">Meus Tópicos Criados</h1>
+            <h1 className="my-topics-title">Meus Tópicos</h1>
 
             <Button
               size={isMobile ? 'sm' : 'lg'}
