@@ -45,7 +45,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const jwtToken = localStorage.getItem('@UnBForum:token')
-    console.log('Checando token...', jwtToken)
 
     if (jwtToken) {
       const user = jwtDecode(jwtToken.split(' ')[1]) as TokenPayload

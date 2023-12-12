@@ -51,8 +51,6 @@ export function CreateCategoryModal({
 
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => console.log(category), [category])
-
   useEffect(() => {
     setModalVisible(isModalOpen)
     setCategory(selectedCategory || { id: 0, color: '#10B981', name: '' })

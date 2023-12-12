@@ -152,8 +152,6 @@ export function CreateModalTopic({
     }),
   }
 
-  useEffect(() => console.log(topicData), [topicData])
-
   useEffect(() => {
     getAllCategories().then((response) => {
       setCategories(response.data)
@@ -390,7 +388,6 @@ export function CreateModalTopic({
       }),
     )
 
-    console.log(formattedSelectCategories)
     return formattedSelectCategories
   }
 

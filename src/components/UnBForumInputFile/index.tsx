@@ -29,15 +29,11 @@ export function UnBForumInputFile({
     const selectedFile = event.target.files && event.target.files[0]
 
     if (selectedFile && files.length + 1 <= filesUploadLimit) {
-      console.log('tentando subir arquivo1')
       setIsAddFileLoading(true)
-      console.log('tentando subir arquivo2')
 
       // const uploadResponse = await uploadFile(selectedFile)
       uploadFile(selectedFile)
         .then((uploadResponse) => {
-          console.log(uploadResponse.data[0])
-
           handleAddFile(uploadResponse.data[0])
         })
         .catch((_) => {

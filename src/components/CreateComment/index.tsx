@@ -26,8 +26,6 @@ export const CreateComment: React.FC<CreateCommentProps> = ({
   const [comment, setComment] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => console.log({ comment }), [comment])
-
   const handleChangeComment = (_: string, text: string) => {
     setComment(text)
   }

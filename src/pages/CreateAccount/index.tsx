@@ -46,7 +46,6 @@ export function CreateAccount() {
     e.preventDefault()
 
     const { isValid, fieldErrors } = validateCreateUser(userData)
-    console.log(userData)
 
     if (!isValid) {
       toast.show({
@@ -119,8 +118,6 @@ export function CreateAccount() {
       .finally(() => {
         setIsLoading(false)
       })
-
-    // console.log(response.status, response.data)
   }
 
   function renderInput(inputObject: InputsObjectProps) {

@@ -64,7 +64,6 @@ export function Home() {
   const [isLoadingTopics, setIsLoadingTopics] = useState(false)
 
   useEffect(() => window.scrollTo(0, 0), [])
-  useEffect(() => console.log(topics), [topics])
 
   useEffect(() => {
     if (!isModalOpen) {

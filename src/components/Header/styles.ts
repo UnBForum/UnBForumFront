@@ -16,7 +16,6 @@ export const HeaderContainer = styled.header`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background: ${theme.colors.primary['800']};
 
     & > button > img {
       width: 15rem;
