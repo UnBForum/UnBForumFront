@@ -70,7 +70,7 @@ export function SavedTopics() {
                       author={topic.author.name}
                       commentsCount={topic.comments_count}
                       categories={topic.categories}
-                      isSave={true}
+                      isSave={topic.current_user_has_saved || true}
                     />
                   )
                 })}
