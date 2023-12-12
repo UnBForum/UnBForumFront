@@ -17,18 +17,17 @@ import { UnBForumTextArea } from '../UnBForumTextArea'
 import { UnBForumInputFile } from '../UnBForumInputFile'
 import {
   AddIcon,
-  ArrowBackIcon,
   Button,
   CheckCircleIcon,
-  // CloseIcon,
+  CloseIcon,
   theme,
   useToast,
 } from 'native-base'
-import Select, { MultiValue, StylesConfig } from 'react-select'
+import Select, { MultiValue, PropsValue, StylesConfig } from 'react-select'
 import { Category, FileData, TopicData } from '../../utils/interfaces'
 import { validateCreateTopic } from '../../utils/validateCreateTopic'
 import { ToastAlert } from '../Alert'
-import { createTopic } from '../../service/topics'
+import { createTopic, editTopic } from '../../service/topics'
 import { formatCreateTopic } from '../../utils/formatCreateTopic'
 import { getAllCategories } from '../../service/categories'
 import chroma from 'chroma-js'
@@ -37,6 +36,14 @@ import { useMediaQuery } from 'usehooks-ts'
 interface CreateTopicModalProps {
   isModalOpen: boolean
   setIsModalOpen: (isOpen: boolean) => void
+  isEditing?: boolean
+  topic?: {
+    title: string
+    categories: number[]
+    files: FileData[]
+    content: string
+  } | null
+  id?: number | null
 }
 
 interface OptionsType {
@@ -54,6 +61,9 @@ interface OptionsType {
 export function CreateModalTopic({
   isModalOpen,
   setIsModalOpen,
+  isEditing = false,
+  topic = null,
+  id = null,
 }: CreateTopicModalProps) {
   const toast = useToast()
   const isMobile = useMediaQuery('(max-width: 768px)')
@@ -62,12 +72,14 @@ export function CreateModalTopic({
 
   const [modalVisible, setModalVisible] = useState(false)
 
-  const [topicData, setTopicData] = useState<TopicData>({
-    title: '',
-    content: '',
-    files: [],
-    categories: [],
-  })
+  const [topicData, setTopicData] = useState<TopicData>(
+    topic || {
+      title: '',
+      content: '',
+      files: [],
+      categories: [],
+    },
+  )
 
   const [isLoading, setIsLoading] = useState(false)
   const [isAddFileLoading, setIsAddFileLoading] = useState(false)
@@ -150,8 +162,8 @@ export function CreateModalTopic({
 
   useEffect(() => {
     setModalVisible(isModalOpen)
-    setTopicData({ title: '', content: '', files: [], categories: [] })
-  }, [isModalOpen])
+    setTopicData(topic || { title: '', content: '', files: [], categories: [] })
+  }, [isModalOpen, topic])
 
   const handleTopicChange = useCallback(
     (field: string, value: string | MultiValue<OptionsType>) => {
@@ -253,6 +265,85 @@ export function CreateModalTopic({
       })
   }
 
+  const handleEditTopic = (event: BaseSyntheticEvent) => {
+    event.preventDefault()
+
+    const { isValid, fieldErrors } = validateCreateTopic(topicData)
+
+    if (!isValid || id === null) {
+      toast.show({
+        placement: 'top-right',
+        render: () => {
+          return (
+            <ToastAlert
+              id="create-topic-error"
+              title="Campos Inválidos"
+              description={`Os sequintes campos estão incorretos: ${fieldErrors.reduce(
+                (prev, curr, idx) => {
+                  if (idx === 0) return `'${curr}'`
+                  if (idx === fieldErrors.length - 1)
+                    return `${prev} e '${curr}'`
+                  return `${prev}, '${curr}'`
+                },
+                '',
+              )}`}
+              status=""
+            />
+          )
+        },
+      })
+      return
+    }
+
+    setIsLoading(true)
+
+    editTopic(formatCreateTopic(topicData), id)
+      .then((_) => {
+        toast.show({
+          placement: 'top-right',
+          render: () => {
+            return (
+              <ToastAlert
+                id="edit-topic-success"
+                title="Tópico Editado com Sucesso"
+                description={`Agora todos podem ver seu tópico com as edições!`}
+                status="success"
+              />
+            )
+          },
+        })
+
+        handleClose()
+        setTopicData({ title: '', content: '', files: [], categories: [] })
+      })
+      .catch((error) => {
+        toast.show({
+          placement: 'top-right',
+          render: () => {
+            let msg = ''
+
+            if (typeof error.response.data.detail === 'object') {
+              msg = error.response.data.detail[0].msg.split(', ')[1]
+            } else {
+              msg = error.response.data.detail
+            }
+
+            return (
+              <ToastAlert
+                id="edit-topic-error"
+                title="Campos Inválidos"
+                description={`Erro: ${msg}`}
+                status=""
+              />
+            )
+          },
+        })
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
+
   const handleClose = () => {
     setModalVisible(false)
     setTimeout(() => {
@@ -282,99 +373,129 @@ export function CreateModalTopic({
     }
   }
 
+  const getSelectedCategories = () => {
+    const checkCategoryIsSelected = (categoryToCheck: number) => {
+      return categories.filter((c) => c.id === categoryToCheck)[0]
+    }
+
+    const selectedCategories = topicData.categories.map((c) =>
+      checkCategoryIsSelected(c),
+    )
+
+    const formattedSelectCategories = selectedCategories.map(
+      (category): OptionsType => ({
+        value: category.id.toString(),
+        label: category.name,
+        color: category.color,
+      }),
+    )
+
+    console.log(formattedSelectCategories)
+    return formattedSelectCategories
+  }
+
   return (
     <>
-      {/* {modalVisible && ( */}
-      <Overlay isOpen={modalVisible}>
-        {/* <Overlay isOpen={modalVisible} onClick={handleClose}> */}
-        <Content isOpen={modalVisible} onClick={(e) => e.stopPropagation()}>
-          <CloseButtonContainer onClick={handleClose}>
-            <ArrowBackIcon size="2rem" color={theme.colors.tertiary['400']} />
-          </CloseButtonContainer>
+      {modalVisible && (
+        // <Overlay isOpen={modalVisible}>
+        <Overlay isOpen={modalVisible} onClick={handleClose}>
+          <Content isOpen={modalVisible} onClick={(e) => e.stopPropagation()}>
+            <CloseButtonContainer onClick={handleClose}>
+              <CloseIcon size="2rem" color={theme.colors.white} />
+            </CloseButtonContainer>
 
-          <h1>Novo Tópico</h1>
+            <h1>{isEditing ? 'Editar Tópico' : 'Novo Tópico'}</h1>
 
-          <UnBForumInput
-            name="title"
-            onChange={handleTopicChange}
-            fontSize="1.2rem"
-            size="lg"
-            inputType="text"
-            accessibilityLabel="Título"
-            label="Título"
-            placeholder="Digite o título do tópico..."
-          />
-
-          <UnBForumTextArea
-            name="content"
-            onChange={handleTopicChange}
-            fontSize="1.2rem"
-            size="lg"
-            inputType="text"
-            accessibilityLabel="Conteúdo"
-            label="Conteúdo"
-            placeholder="Digite o conteúdo do tópico aqui..."
-          />
-
-          <CategoriesContainer>
-            <Select
-              isMulti
-              closeMenuOnSelect={false}
-              options={categories.map(
-                (category): OptionsType => ({
-                  value: category.id.toString(),
-                  label: category.name,
-                  color: category.color,
-                }),
-              )}
-              styles={colourStyles}
-              onChange={(newValue) => handleTopicChange('categories', newValue)}
-              placeholder="Adicionar categorias"
+            <UnBForumInput
+              name="title"
+              onChange={handleTopicChange}
+              value={topicData.title || undefined}
+              fontSize="1.2rem"
+              size="lg"
+              inputType="text"
+              accessibilityLabel="Título"
+              label="Título"
+              placeholder="Digite o título do tópico..."
             />
-          </CategoriesContainer>
 
-          <UnBForumInputFile
-            filesUploadLimit={2}
-            fileInputRef={fileInputRef}
-            handleAddFile={handleAddFile}
-            handleDeleteFile={handleDeleteFile}
-            files={topicData.files}
-            setIsAddFileLoading={handleIsAddFileLoading}
-          />
+            <UnBForumTextArea
+              name="content"
+              onChange={handleTopicChange}
+              value={topicData.content || undefined}
+              fontSize="1.2rem"
+              size="lg"
+              inputType="text"
+              accessibilityLabel="Conteúdo"
+              label="Conteúdo"
+              placeholder="Digite o conteúdo do tópico aqui..."
+            />
 
-          <ModalButtonsContainer>
-            <Button
-              onPress={() => handleAddFileButtonClick()}
-              size={isMobile ? 'xs' : 'md'}
-              isLoading={isAddFileLoading}
-              isLoadingText="Adicionando arquivo..."
-              borderRadius="4px"
-              _text={{ fontSize: '1rem', fontWeight: '400' }}
-              rightIcon={<AddIcon />}
-            >
-              Adicionar arquivos
-            </Button>
+            <CategoriesContainer>
+              <Select
+                isMulti
+                closeMenuOnSelect={false}
+                value={getSelectedCategories()}
+                options={categories.map(
+                  (category): OptionsType => ({
+                    value: category.id.toString(),
+                    label: category.name,
+                    color: category.color,
+                  }),
+                )}
+                styles={colourStyles}
+                onChange={(newValue) =>
+                  handleTopicChange('categories', newValue)
+                }
+                placeholder="Adicionar categorias"
+              />
+            </CategoriesContainer>
 
-            <Button
-              id="create-topic-button"
-              onPress={(e) => handleCreateTopic(e)}
-              bgColor={theme.colors.success['600']}
-              size={isMobile ? 'xs' : 'md'}
-              isDisabled={isAddFileLoading}
-              borderRadius="4px"
-              _text={{ fontSize: '1rem', fontWeight: '700' }}
-              isLoadingText="Criando..."
-              isLoading={isLoading}
-              rightIcon={<CheckCircleIcon />}
-            >
-              Criar
-            </Button>
-          </ModalButtonsContainer>
+            <UnBForumInputFile
+              filesUploadLimit={2}
+              fileInputRef={fileInputRef}
+              handleAddFile={handleAddFile}
+              handleDeleteFile={handleDeleteFile}
+              files={topicData.files}
+              setIsAddFileLoading={handleIsAddFileLoading}
+            />
 
-          {/* <button onClick={handleClose}>Fechar</button> */}
-        </Content>
-      </Overlay>
-      {/* )} */}
+            <ModalButtonsContainer>
+              <Button
+                onPress={() => handleAddFileButtonClick()}
+                size={isMobile ? 'xs' : 'md'}
+                isLoading={isAddFileLoading}
+                isLoadingText="Adicionando arquivo..."
+                borderRadius="4px"
+                _text={{ fontSize: '1rem', fontWeight: '400' }}
+                rightIcon={<AddIcon />}
+              >
+                Adicionar arquivos
+              </Button>
+
+              <Button
+                id="create-topic-button"
+                onPress={
+                  isEditing
+                    ? (e) => handleEditTopic(e)
+                    : (e) => handleCreateTopic(e)
+                }
+                bgColor={theme.colors.success['600']}
+                size={isMobile ? 'xs' : 'md'}
+                isDisabled={isAddFileLoading}
+                borderRadius="4px"
+                _text={{ fontSize: '1rem', fontWeight: '700' }}
+                isLoadingText={isEditing ? 'Editando...' : 'Criando...'}
+                isLoading={isLoading}
+                rightIcon={<CheckCircleIcon />}
+              >
+                {isEditing ? 'Editar' : 'Criar'}
+              </Button>
+            </ModalButtonsContainer>
+
+            {/* <button onClick={handleClose}>Fechar</button> */}
+          </Content>
+        </Overlay>
+      )}
     </>
   )
 }
