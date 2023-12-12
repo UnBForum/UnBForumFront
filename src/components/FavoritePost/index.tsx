@@ -1,65 +1,54 @@
-import { Avatar, Badge, theme } from 'native-base'
+import { Avatar, Badge } from 'native-base'
 import {
   AuthorContainer,
   BadgesContainer,
   FavoritePostContainer,
   PostContentContainer,
 } from './styles'
+import { Topic } from '../../pages/Home'
+import { getInitialsLetters } from '../../utils/getInitialsLetter'
+import { useNavigate } from 'react-router-dom'
 
-export function FavoritePost() {
+interface FavoritePostProps {
+  favoriteTopic: Topic
+}
+
+export function FavoritePost({ favoriteTopic }: FavoritePostProps) {
+  const navigate = useNavigate()
+
   return (
-    <FavoritePostContainer>
+    <FavoritePostContainer
+      onClick={() => navigate(`/topic/${favoriteTopic.id}`)}
+    >
       <AuthorContainer>
         <Avatar bg="emerald.800" marginRight="0.8rem" size="xs">
-          SH
+          {getInitialsLetters(favoriteTopic.author.name)}
         </Avatar>
-        <p>
-          Sandalo Henrique - Horários de Atendimento coordenação de Eng. de
-          Software
-        </p>
+        <p>{`${favoriteTopic.author.name} - ${favoriteTopic.title}`}</p>
       </AuthorContainer>
 
       <PostContentContainer>
-        <p>
-          Prezad@s discentes,
-          <br />
-          <br />
-          Prezad@s discentes, Bom dia! Espero que estejam bem. Deixo aqui
-          informações sobre a dinâmica de atendimento da Coordenação de Eng. de
-          Software durante o período da matrícula: - atendimento presencial nas
-          2a-feiras de 0830h às 0930h; - atendimento presencial nas 4a-feiras de
-          0830h às 1100h. Além do atendimento presencial, vocês têm acesso ao
-          sistema Sigaa que disponibiliza canal de contato com o Coordenador
-          para envio de mensagens.
-          <br />
-          <br />
-          ***Não haverá atendimento via Chat Teams durante esse período.
-          <br />
-          *** Att, TA
-          <br />
-          <br />
-          Para visualizar acesse{' '}
-          <a href="https://teste.com.br/teste">https://teste.com.br/teste</a>
-          <br />
-        </p>
+        <p
+          dangerouslySetInnerHTML={{
+            __html: favoriteTopic.content.replace(/\n/g, '<br>'),
+          }}
+        />
 
         <BadgesContainer>
-          {['TCC', 'Eng. Software', 'Eng. Eletrônica', '27/07'].map(
-            (label, key) => {
-              return (
-                <Badge
-                  key={key}
-                  variant="solid"
-                  bg={theme.colors.tertiary['500']}
-                  alignSelf="center"
-                  size="sm"
-                  textDecoration="solid .8rem bold"
-                >
-                  <p id="post-badge-text">{label}</p>
-                </Badge>
-              )
-            },
-          )}
+          {favoriteTopic.categories.map((category) => {
+            return (
+              <Badge
+                key={category.id}
+                variant="solid"
+                bg={category.color}
+                alignSelf="center"
+                size="sm"
+                textDecoration="solid .8rem bold"
+              >
+                <p id="post-badge-text">{category.name}</p>
+              </Badge>
+            )
+          })}
         </BadgesContainer>
       </PostContentContainer>
     </FavoritePostContainer>
