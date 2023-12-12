@@ -87,3 +87,9 @@ export const deleteUserTopic = async (id: number): Promise<AxiosResponse> => {
 
   return response
 }
+
+export const fixedTopic = async (id: number): Promise<AxiosResponse> => {
+  const response = await api.post(`topics/${id}/fix/`)
+
+  return response
+}
