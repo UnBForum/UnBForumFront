@@ -405,7 +405,7 @@ export function Profile() {
               size="md"
               onPress={() => setIsDeleteDialogOpen(true)}
             >
-              Deletar a Conta
+              Remover a Conta
             </Button>
           </div>
         )}
@@ -429,8 +429,8 @@ export function Profile() {
           handleDeleteUser()
         }}
         handleClose={() => setIsDeleteDialogOpen(false)}
-        question="Tem certeza que deseja deletar sua conta?"
-        acceptText="Deletar"
+        question="Tem certeza que deseja remover sua conta?"
+        acceptText="Remover"
         isLoadingAcceptButton={isLoadingDeleteUser}
         loadingAcceptButtonText="Deletando..."
       />
