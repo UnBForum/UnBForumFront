@@ -7,6 +7,7 @@ export const Overlay = styled.div<{ isOpen: boolean }>`
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 999999;
   background-color: ${theme.colors.black + '75'};
   display: flex;
   justify-content: center;
@@ -23,7 +24,6 @@ export const Content = styled.section<{ isOpen: boolean }>`
   background-color: white;
   width: 60%;
   max-width: 880px;
-  /* height: 80vh; */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
