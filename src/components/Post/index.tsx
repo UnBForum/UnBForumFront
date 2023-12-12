@@ -27,12 +27,13 @@ import { Category } from '../../pages/Home'
 import { useMediaQuery } from 'usehooks-ts'
 import {
   deleteUserTopic,
+  fixedTopic,
   makeDownvoteTopic,
   makeUpvoteTopic,
   saveTopic,
   unsaveTopic,
 } from '../../service/topics'
-import { useUser } from '../../hooks/user'
+import { ADMIN_SCOPE, MODERATOR_SCOPE, useUser } from '../../hooks/user'
 import { ToastAlert } from '../Alert'
 import { makeDownvoteComment, makeUpvoteComment } from '../../service/comment'
 import { FileData } from '../../utils/interfaces'
@@ -40,6 +41,8 @@ import { createFileUrlDownload } from '../../utils/createFileUrlDownload'
 import { getInitialsLetters } from '../../utils/getInitialsLetter'
 import { Dialog } from '../Dialog'
 import { CreateModalTopic } from '../CreateTopicModal'
+import { TbPinned } from 'react-icons/tb'
+import { Loading } from '../Loading'
 
 interface PostProps {
   id: number
@@ -55,8 +58,10 @@ interface PostProps {
   categories?: Category[]
   commentsCount?: number
   isSave?: boolean
+  isFixed?: boolean
   isMyTopicScreen?: boolean
   deleteTopicCallback?: (id: number) => Promise<void>
+  fixedTopicCallback?: () => Promise<void>
 }
 
 export function Post({
@@ -75,18 +80,23 @@ export function Post({
   isSave = false,
   isMyTopicScreen = false,
   deleteTopicCallback = (_) => new Promise(() => null),
+  fixedTopicCallback = () => new Promise(() => null),
+  isFixed = false,
 }: PostProps) {
-  const { token } = useUser()
+  const { token, checkScopePermissions } = useUser()
   const toast = useToast()
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   const [likes, setLikes] = useState(rating)
   const [isMark, setIsMark] = useState(isSave)
+  const [isPinned, setIsPinned] = useState(isFixed)
   const [currentUserRating, setCurrentUserRating] = useState(currentRating)
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isLoadingDeleteTopic, setIsLoadingDeleteTopic] = useState(false)
+
+  const [isLoadingFixedTopic, setIsLoadingFixedTopic] = useState(false)
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
@@ -94,7 +104,8 @@ export function Post({
     setCurrentUserRating(currentRating)
     setLikes(rating)
     setIsMark(isSave)
-  }, [currentRating, rating, isSave])
+    setIsPinned(isFixed)
+  }, [currentRating, rating, isSave, isFixed])
 
   function handleClickOnPost() {
     navigate(`/topic/${id}`)
@@ -176,7 +187,6 @@ export function Post({
 
     deleteUserTopic(id)
       .then((_) => {
-        setIsLoadingDeleteTopic(false)
         setIsDeleteDialogOpen(false)
         deleteTopicCallback(id).then()
 
@@ -195,6 +205,49 @@ export function Post({
         })
       })
       .catch((_) => {})
+      .finally(() => {
+        setIsLoadingDeleteTopic(false)
+      })
+  }
+
+  function handleFixedTopic() {
+    const previousFixedState = isPinned
+    if (!token) {
+      renderAlertErrorForUnloggedUser()
+      return
+    }
+
+    setIsLoadingFixedTopic(true)
+
+    fixedTopic(id)
+      .then((response) => {
+        fixedTopicCallback().then()
+        setIsPinned(response.data.is_fixed)
+
+        toast.show({
+          placement: 'top-right',
+          render: () => {
+            return (
+              <ToastAlert
+                id="fixed-topic-success"
+                title={
+                  previousFixedState ? 'Tópico Desafixado' : 'Tópico fixado!'
+                }
+                description={
+                  previousFixedState
+                    ? 'Tópico desafixado com sucesso!'
+                    : 'Tópico fixado com sucesso!'
+                }
+                status="success"
+              />
+            )
+          },
+        })
+      })
+      .catch((_) => {})
+      .finally(() => {
+        setIsLoadingFixedTopic(false)
+      })
   }
 
   const handleModalOpen = useCallback(
@@ -256,28 +309,66 @@ export function Post({
             )}
           </div>
 
-          {token && isMyTopicScreen && (
-            <div
-              id="user-buttons"
-              style={{ display: 'flex', flexDirection: 'column', gap: '.2rem' }}
-            >
+          {(checkScopePermissions(ADMIN_SCOPE) ||
+            checkScopePermissions(MODERATOR_SCOPE)) &&
+            !isComment && (
               <button
-                id="deleteButton"
-                onClick={() => setIsDeleteDialogOpen(true)}
+                id="pinnedButton"
+                onClick={() => handleFixedTopic()}
+                style={{
+                  border: isPinned
+                    ? `none`
+                    : `1px solid ${theme.colors.yellow['500']}`,
+                  backgroundColor: isPinned
+                    ? `${theme.colors.yellow['500']}`
+                    : `${theme.colors.white}`,
+                }}
               >
-                <DeleteIcon
-                  color={theme.colors.white}
-                  size={isMobile ? '22' : '30'}
-                />
+                {isLoadingFixedTopic ? (
+                  <Loading
+                    isInsideButton
+                    accessibilityLabel="Fixando tópico..."
+                  />
+                ) : (
+                  <TbPinned
+                    color={
+                      isPinned ? theme.colors.white : theme.colors.yellow['500']
+                    }
+                    size={isMobile ? '22' : '30'}
+                  />
+                )}
               </button>
-              <button id="editButton" onClick={() => handleModalOpen(true)}>
-                <MdEdit
-                  color={theme.colors.white}
-                  size={isMobile ? '22' : '30'}
-                />
-              </button>
-            </div>
-          )}
+            )}
+
+          {((token && isMyTopicScreen) ||
+            checkScopePermissions(ADMIN_SCOPE) ||
+            checkScopePermissions(MODERATOR_SCOPE)) &&
+            !isComment && (
+              <div
+                id="user-buttons"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '.2rem',
+                }}
+              >
+                <button
+                  id="deleteButton"
+                  onClick={() => setIsDeleteDialogOpen(true)}
+                >
+                  <DeleteIcon
+                    color={theme.colors.white}
+                    size={isMobile ? '22' : '30'}
+                  />
+                </button>
+                <button id="editButton" onClick={() => handleModalOpen(true)}>
+                  <MdEdit
+                    color={theme.colors.white}
+                    size={isMobile ? '22' : '30'}
+                  />
+                </button>
+              </div>
+            )}
         </LikesContainer>
 
         <InfoContainer>
