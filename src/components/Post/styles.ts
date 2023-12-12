@@ -81,8 +81,19 @@ export const LikesContainer = styled.div<{
     transition: 0.2s all ease;
   }
 
+  #pinnedButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.2rem;
+    background-color: ${theme.colors.yellow['500']};
+    transition: 0.2s all ease;
+  }
+
   #deleteButton:hover,
-  #editButton:hover {
+  #editButton:hover,
+  #pinnedButton:hover {
     filter: brightness(70%);
   }
 
@@ -117,8 +128,11 @@ export const PostContentContainer = styled.div<{
   isComment: boolean
 }>`
   width: ${({ isComment }) => (isComment ? '85%' : '100%')};
+  min-height: ${({ isComment }) => (isComment ? '0' : '30vh')};
   display: flex;
   flex-direction: column;
+  justify-content: ${({ isComment }) =>
+    isComment ? 'flex-start' : 'space-evenly'};
   gap: ${({ isComment }) => (isComment ? '0.4rem' : '0.6rem')};
 
   & > p {
