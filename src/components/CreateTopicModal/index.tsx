@@ -378,17 +378,20 @@ export function CreateModalTopic({
       return categories.filter((c) => c.id === categoryToCheck)[0]
     }
 
+    let formattedSelectCategories: OptionsType[] = []
     const selectedCategories = topicData.categories.map((c) =>
       checkCategoryIsSelected(c),
     )
 
-    const formattedSelectCategories = selectedCategories.map(
-      (category): OptionsType => ({
-        value: category.id.toString(),
-        label: category.name,
-        color: category.color,
-      }),
-    )
+    if (selectedCategories.filter((c) => c !== undefined).length > 0) {
+      formattedSelectCategories = selectedCategories.map(
+        (category): OptionsType => ({
+          value: category.id.toString(),
+          label: category.name,
+          color: category.color,
+        }),
+      )
+    }
 
     return formattedSelectCategories
   }
