@@ -1,27 +1,53 @@
-# React + TypeScript + Vite
+![unbforum_logo](./assets/logo.png)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# UnBFórum
 
-Currently, two official plugins are available:
+O UnBFórum é um fórum de discussão *online* cujo como objetivo é facilitar a busca e o compartilhamento de informações acadêmicas dentro da comunidade da Faculdade do Gama (FGA).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Para atingir esse objetivo, a construção do fórum orientou-se por critérios qualitativos fundamentais para a elaboração de fóruns de discussão. Além disso, a aplicação utilizou a Teoria dos Grafos para estruturar a relação entre tópicos e categorias, por meio de um grafo bipartido.
 
-## Expanding the ESLint configuration
+## UnBForumFront
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Este repositório consiste no desenvolvimento do frontend do UnBFórum, utilizando TypeScript e ReactJS.
 
-- Configure the top-level `parserOptions` property like this:
+A aplicação está disponível em: https://unbforum.netlify.app/
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+## Como rodar
+
+### Pré-Requisitos
+
+Para executar o projeto, é necessário ter instalado em sua máquina as seguintes ferramentas:
+
+- [Node.js](https://nodejs.org/)
+
+### Executando o projeto
+
+1. Clone o repositório
+```bash
+git clone https://github.com/UnBForum/UnBForumFront.git
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. Entre na pasta do projeto
+```bash
+cd UnBForumFront
+```
+
+3. Instale as dependências
+```bash
+npm install
+```
+
+4. Execute a aplicação
+```bash
+npm run dev
+```
+
+5. Acesse o endereço: http://localhost:3000/ para acessar a aplicação
+
+
+## Autores
+
+| ![Herick Portugues](https://github.com/herickport.png?size=96) | ![Lucas Boaventura](https://github.com/lboaventura25.png?size=96) |
+|----------------------------------------------------------------|-------------------------------------------------------------------|
+| Hérick Portugues                                               | Lucas Boaventura                                                  |
+
