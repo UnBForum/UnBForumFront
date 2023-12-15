@@ -182,11 +182,13 @@ export function Home() {
                       currentRating={topic.current_user_rating}
                       content={topic.content}
                       author={topic.author.name}
+                      authorEmail={topic.author.email}
                       commentsCount={topic.comments_count}
                       categories={topic.categories}
                       isSave={topic.current_user_has_saved}
                       isFixed={topic.is_fixed}
                       fixedTopicCallback={fixedTopicCallback}
+                      deleteTopicCallback={fixedTopicCallback}
                     />
                   )
                 })}
