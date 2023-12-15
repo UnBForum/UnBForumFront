@@ -132,7 +132,7 @@ export const PostContentContainer = styled.div<{
   display: flex;
   flex-direction: column;
   justify-content: ${({ isComment }) =>
-    isComment ? 'flex-start' : 'space-evenly'};
+    isComment ? 'space-evenly' : 'space-evenly'};
   gap: ${({ isComment }) => (isComment ? '0.4rem' : '0.6rem')};
 
   & > p {
