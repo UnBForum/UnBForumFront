@@ -32,6 +32,7 @@ import { formatCreateTopic } from '../../utils/formatCreateTopic'
 import { getAllCategories } from '../../service/categories'
 import chroma from 'chroma-js'
 import { useMediaQuery } from 'usehooks-ts'
+import { EditCommentModal } from '../EditCommentModal'
 
 interface CreateTopicModalProps {
   isModalOpen: boolean
@@ -44,6 +45,8 @@ interface CreateTopicModalProps {
     content: string
   } | null
   id?: number | null
+  isEditingComment?: boolean
+  topicId?: number | null
 }
 
 interface OptionsType {
@@ -64,6 +67,8 @@ export function CreateModalTopic({
   isEditing = false,
   topic = null,
   id = null,
+  topicId = null,
+  isEditingComment = false,
 }: CreateTopicModalProps) {
   const toast = useToast()
   const isMobile = useMediaQuery('(max-width: 768px)')
@@ -394,6 +399,19 @@ export function CreateModalTopic({
     }
 
     return formattedSelectCategories
+  }
+
+  if (isEditingComment && modalVisible) {
+    return (
+      <EditCommentModal
+        isModalOpen={modalVisible}
+        setIsModalOpen={setIsModalOpen}
+        comment={{ content: topicData.content }}
+        isEditing={true}
+        commentId={id}
+        topicId={topicId}
+      />
+    )
   }
 
   return (
