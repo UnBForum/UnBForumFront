@@ -67,6 +67,7 @@ export function MyTopics() {
                       files={topic.files}
                       currentRating={topic.current_user_rating}
                       content={topic.content}
+                      authorEmail={topic.author.email}
                       author={topic.author.name}
                       commentsCount={topic.comments_count}
                       categories={topic.categories}

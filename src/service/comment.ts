@@ -39,3 +39,35 @@ export const makeDownvoteComment = async (
 
   return response
 }
+
+export const deleteComment = async (
+  commentId: number,
+  topicId: number | null,
+): Promise<AxiosResponse> => {
+  const response = await api.delete(`topics/${topicId}/comments/${commentId}/`)
+
+  return response
+}
+
+export const fixComment = async (
+  commentId: number,
+  topicId: number | null,
+): Promise<AxiosResponse> => {
+  const response = await api.post(
+    `topics/${topicId}/comments/${commentId}/fix/`,
+  )
+
+  return response
+}
+
+export const updateComment = async (
+  commentId: number,
+  topicId: number | null,
+  content: string,
+): Promise<AxiosResponse> => {
+  const response = await api.put(`topics/${topicId}/comments/${commentId}/`, {
+    content,
+  })
+
+  return response
+}

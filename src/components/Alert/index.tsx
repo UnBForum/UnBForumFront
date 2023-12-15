@@ -35,6 +35,7 @@ export const ToastAlert = ({
       flexDirection="row"
       status={status || 'error'}
       variant={variant}
+      zIndex={999999999999}
       {...rest}
     >
       <VStack space={1} flexShrink={1} w="100%">

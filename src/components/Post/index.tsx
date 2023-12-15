@@ -35,7 +35,12 @@ import {
 } from '../../service/topics'
 import { ADMIN_SCOPE, MODERATOR_SCOPE, useUser } from '../../hooks/user'
 import { ToastAlert } from '../Alert'
-import { makeDownvoteComment, makeUpvoteComment } from '../../service/comment'
+import {
+  deleteComment,
+  fixComment,
+  makeDownvoteComment,
+  makeUpvoteComment,
+} from '../../service/comment'
 import { FileData } from '../../utils/interfaces'
 import { createFileUrlDownload } from '../../utils/createFileUrlDownload'
 import { getInitialsLetters } from '../../utils/getInitialsLetter'
@@ -50,6 +55,7 @@ interface PostProps {
   isComment?: boolean
   title?: string
   author: string
+  authorEmail: string
   topicId?: number | null
   files?: FileData[]
   content: string
@@ -70,6 +76,7 @@ export function Post({
   isComment = false,
   title = '',
   author,
+  authorEmail,
   content,
   topicId = null,
   currentRating = 0,
@@ -83,7 +90,7 @@ export function Post({
   fixedTopicCallback = () => new Promise(() => null),
   isFixed = false,
 }: PostProps) {
-  const { token, checkScopePermissions } = useUser()
+  const { token, checkScopePermissions, email } = useUser()
   const toast = useToast()
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)')
@@ -185,29 +192,55 @@ export function Post({
 
     setIsLoadingDeleteTopic(true)
 
-    deleteUserTopic(id)
-      .then((_) => {
-        setIsDeleteDialogOpen(false)
-        deleteTopicCallback(id).then()
+    if (isComment) {
+      deleteComment(id, topicId)
+        .then((_) => {
+          setIsDeleteDialogOpen(false)
+          deleteTopicCallback(id).then()
 
-        toast.show({
-          placement: 'top-right',
-          render: () => {
-            return (
-              <ToastAlert
-                id="delete-topic-success"
-                title="Tópico removido!"
-                description="Tópico removido com sucesso!"
-                status="success"
-              />
-            )
-          },
+          toast.show({
+            placement: 'top-right',
+            render: () => {
+              return (
+                <ToastAlert
+                  id="delete-topic-success"
+                  title="Comentário removido!"
+                  description="Comentário removido com sucesso!"
+                  status="success"
+                />
+              )
+            },
+          })
         })
-      })
-      .catch((_) => {})
-      .finally(() => {
-        setIsLoadingDeleteTopic(false)
-      })
+        .catch((_) => {})
+        .finally(() => {
+          setIsLoadingDeleteTopic(false)
+        })
+    } else {
+      deleteUserTopic(id)
+        .then((_) => {
+          setIsDeleteDialogOpen(false)
+          deleteTopicCallback(id).then()
+
+          toast.show({
+            placement: 'top-right',
+            render: () => {
+              return (
+                <ToastAlert
+                  id="delete-topic-success"
+                  title="Tópico removido!"
+                  description="Tópico removido com sucesso!"
+                  status="success"
+                />
+              )
+            },
+          })
+        })
+        .catch((_) => {})
+        .finally(() => {
+          setIsLoadingDeleteTopic(false)
+        })
+    }
   }
 
   function handleFixedTopic() {
@@ -219,35 +252,69 @@ export function Post({
 
     setIsLoadingFixedTopic(true)
 
-    fixedTopic(id)
-      .then((response) => {
-        fixedTopicCallback().then()
-        setIsPinned(response.data.is_fixed)
+    if (isComment) {
+      fixComment(id, topicId)
+        .then((response) => {
+          fixedTopicCallback().then()
+          setIsPinned(response.data.is_fixed)
 
-        toast.show({
-          placement: 'top-right',
-          render: () => {
-            return (
-              <ToastAlert
-                id="fixed-topic-success"
-                title={
-                  previousFixedState ? 'Tópico Desafixado' : 'Tópico fixado!'
-                }
-                description={
-                  previousFixedState
-                    ? 'Tópico desafixado com sucesso!'
-                    : 'Tópico fixado com sucesso!'
-                }
-                status="success"
-              />
-            )
-          },
+          toast.show({
+            placement: 'top-right',
+            render: () => {
+              return (
+                <ToastAlert
+                  id="fixed-topic-success"
+                  title={
+                    previousFixedState
+                      ? 'Comentário Desafixado'
+                      : 'Comentário fixado!'
+                  }
+                  description={
+                    previousFixedState
+                      ? 'Comentário desafixado com sucesso!'
+                      : 'Comentário fixado com sucesso!'
+                  }
+                  status="success"
+                />
+              )
+            },
+          })
         })
-      })
-      .catch((_) => {})
-      .finally(() => {
-        setIsLoadingFixedTopic(false)
-      })
+        .catch((_) => {})
+        .finally(() => {
+          setIsLoadingFixedTopic(false)
+        })
+    } else {
+      fixedTopic(id)
+        .then((response) => {
+          fixedTopicCallback().then()
+          setIsPinned(response.data.is_fixed)
+
+          toast.show({
+            placement: 'top-right',
+            render: () => {
+              return (
+                <ToastAlert
+                  id="fixed-topic-success"
+                  title={
+                    previousFixedState ? 'Tópico Desafixado' : 'Tópico fixado!'
+                  }
+                  description={
+                    previousFixedState
+                      ? 'Tópico desafixado com sucesso!'
+                      : 'Tópico fixado com sucesso!'
+                  }
+                  status="success"
+                />
+              )
+            },
+          })
+        })
+        .catch((_) => {})
+        .finally(() => {
+          setIsLoadingFixedTopic(false)
+        })
+    }
   }
 
   const handleModalOpen = useCallback(
@@ -310,65 +377,66 @@ export function Post({
           </div>
 
           {(checkScopePermissions(ADMIN_SCOPE) ||
-            checkScopePermissions(MODERATOR_SCOPE)) &&
-            !isComment && (
+            checkScopePermissions(MODERATOR_SCOPE)) && (
+            <button
+              id="pinnedButton"
+              onClick={() => handleFixedTopic()}
+              style={{
+                border: isPinned
+                  ? `none`
+                  : `1px solid ${theme.colors.yellow['500']}`,
+                backgroundColor: isPinned
+                  ? `${theme.colors.yellow['500']}`
+                  : `${theme.colors.white}`,
+              }}
+            >
+              {isLoadingFixedTopic ? (
+                <Loading
+                  isInsideButton
+                  accessibilityLabel="Fixando tópico..."
+                />
+              ) : (
+                <TbPinned
+                  color={
+                    isPinned ? theme.colors.white : theme.colors.yellow['500']
+                  }
+                  size={isMobile ? '22' : '30'}
+                />
+              )}
+            </button>
+          )}
+
+          <div
+            id="user-buttons"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '.2rem',
+            }}
+          >
+            {((token && isMyTopicScreen) ||
+              checkScopePermissions(ADMIN_SCOPE) ||
+              checkScopePermissions(MODERATOR_SCOPE)) && (
               <button
-                id="pinnedButton"
-                onClick={() => handleFixedTopic()}
-                style={{
-                  border: isPinned
-                    ? `none`
-                    : `1px solid ${theme.colors.yellow['500']}`,
-                  backgroundColor: isPinned
-                    ? `${theme.colors.yellow['500']}`
-                    : `${theme.colors.white}`,
-                }}
+                id="deleteButton"
+                onClick={() => setIsDeleteDialogOpen(true)}
               >
-                {isLoadingFixedTopic ? (
-                  <Loading
-                    isInsideButton
-                    accessibilityLabel="Fixando tópico..."
-                  />
-                ) : (
-                  <TbPinned
-                    color={
-                      isPinned ? theme.colors.white : theme.colors.yellow['500']
-                    }
-                    size={isMobile ? '22' : '30'}
-                  />
-                )}
+                <DeleteIcon
+                  color={theme.colors.white}
+                  size={isMobile ? '22' : '30'}
+                />
               </button>
             )}
 
-          {((token && isMyTopicScreen) ||
-            checkScopePermissions(ADMIN_SCOPE) ||
-            checkScopePermissions(MODERATOR_SCOPE)) &&
-            !isComment && (
-              <div
-                id="user-buttons"
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '.2rem',
-                }}
-              >
-                <button
-                  id="deleteButton"
-                  onClick={() => setIsDeleteDialogOpen(true)}
-                >
-                  <DeleteIcon
-                    color={theme.colors.white}
-                    size={isMobile ? '22' : '30'}
-                  />
-                </button>
-                <button id="editButton" onClick={() => handleModalOpen(true)}>
-                  <MdEdit
-                    color={theme.colors.white}
-                    size={isMobile ? '22' : '30'}
-                  />
-                </button>
-              </div>
+            {((token && isMyTopicScreen) || email === authorEmail) && (
+              <button id="editButton" onClick={() => handleModalOpen(true)}>
+                <MdEdit
+                  color={theme.colors.white}
+                  size={isMobile ? '22' : '30'}
+                />
+              </button>
             )}
+          </div>
         </LikesContainer>
 
         <InfoContainer>
@@ -471,7 +539,11 @@ export function Post({
         isOpen={isDeleteDialogOpen}
         handleAccept={handleDeleteUserTopic}
         handleClose={() => setIsDeleteDialogOpen(false)}
-        question="Tem certeza que deseja remover seu tópico?"
+        question={
+          isComment
+            ? 'Tem certeza que deseja remover seu comentário?'
+            : 'Tem certeza que deseja remover seu tópico?'
+        }
         acceptText="Remover"
         isLoadingAcceptButton={isLoadingDeleteTopic}
         loadingAcceptButtonText="Removendo..."
@@ -481,6 +553,7 @@ export function Post({
         isModalOpen={isEditModalOpen}
         setIsModalOpen={handleModalOpen}
         isEditing={true}
+        isEditingComment={isComment}
         topic={{
           title,
           categories: categories.map((c) => c.id),
@@ -488,6 +561,7 @@ export function Post({
           content,
         }}
         id={id}
+        topicId={topicId}
       />
     </>
   )
