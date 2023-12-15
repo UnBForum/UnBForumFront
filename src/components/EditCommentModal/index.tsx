@@ -35,7 +35,6 @@ export function EditCommentModal({
   isModalOpen,
   comment = null,
   setIsModalOpen,
-  isEditing = true,
   commentId = null,
   topicId = null,
 }: EditCommentModalProps) {
