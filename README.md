@@ -18,7 +18,7 @@ A aplicação está disponível em: https://unbforum.netlify.app/
 
 Para executar o projeto, é necessário ter instalado em sua máquina as seguintes ferramentas:
 
-- [Node.js](https://nodejs.org/)
+- [Node.js v18.14.0](https://nodejs.org/) 
 
 ### Executando o projeto
 
