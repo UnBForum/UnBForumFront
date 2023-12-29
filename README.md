@@ -10,7 +10,7 @@ To achieve this objective, the construction of the forum was guided by fundament
 
 This repository consists of the development of the UnBFórum frontend, using TypeScript and ReactJS.
 
-The figma's prototype is available at: ![UnBFórum Prototype link](https://www.figma.com/file/6Lt1uBitanOCOb1uOkFjOg/UnBForum?type=design&node-id=3403%3A13048&mode=design&t=tKWkYNkTJuy4umkW-1)
+The figma's prototype is available at: [UnBFórum Prototype link](https://www.figma.com/file/6Lt1uBitanOCOb1uOkFjOg/UnBForum?type=design&node-id=3403%3A13048&mode=design&t=tKWkYNkTJuy4umkW-1)
 
 The application is available at: https://unbforum.netlify.app/
 
