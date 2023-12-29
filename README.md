@@ -2,50 +2,50 @@
 
 # UnBFórum
 
-O UnBFórum é um fórum de discussão *online* cujo como objetivo é facilitar a busca e o compartilhamento de informações acadêmicas dentro da comunidade da Faculdade do Gama (FGA).
+UnBFórum is an *online* discussion forum whose objective is to facilitate the search and sharing of academic information within the Faculdade do Gama (FGA) community.
 
-Para atingir esse objetivo, a construção do fórum orientou-se por critérios qualitativos fundamentais para a elaboração de fóruns de discussão. Além disso, a aplicação utilizou a Teoria dos Grafos para estruturar a relação entre tópicos e categorias, por meio de um grafo bipartido.
+To achieve this objective, the construction of the forum was guided by fundamental qualitative criteria for the creation of discussion forums. Furthermore, the application used Graph Theory to structure the relationship between topics and categories, through a bipartite graph.
 
 ## UnBForumFront
 
-Este repositório consiste no desenvolvimento do frontend do UnBFórum, utilizando TypeScript e ReactJS.
+This repository consists of the development of the UnBFórum frontend, using TypeScript and ReactJS.
 
-A aplicação está disponível em: https://unbforum.netlify.app/
+The figma's prototype is available at: ![UnBFórum Prototype link](https://www.figma.com/file/6Lt1uBitanOCOb1uOkFjOg/UnBForum?type=design&node-id=3403%3A13048&mode=design&t=tKWkYNkTJuy4umkW-1)
 
-## Como rodar
+The application is available at: https://unbforum.netlify.app/
 
-### Pré-Requisitos
+## How to execute
 
-Para executar o projeto, é necessário ter instalado em sua máquina as seguintes ferramentas:
+To run the project, you must have the following tools installed on your machine:
 
 - [Node.js v18.14.0](https://nodejs.org/) 
 
-### Executando o projeto
+### Running the project
 
-1. Clone o repositório
+1. Clone the repository
 ```bash
 git clone https://github.com/UnBForum/UnBForumFront.git
 ```
 
-2. Entre na pasta do projeto
+2. Enter the project folder
 ```bash
 cd UnBForumFront
 ```
 
-3. Instale as dependências
+3. Install dependencies
 ```bash
 npm install
 ```
 
-4. Execute a aplicação
+4. Execute application
 ```bash
 npm run dev
 ```
 
-5. Acesse o endereço: http://localhost:3000/ para acessar a aplicação
+5. Access the url http://localhost:3000/ to see the web app.
 
 
-## Autores
+## Authors
 
 | ![Herick Portugues](https://github.com/herickport.png?size=96) | ![Lucas Boaventura](https://github.com/lboaventura25.png?size=96) |
 |----------------------------------------------------------------|-------------------------------------------------------------------|
